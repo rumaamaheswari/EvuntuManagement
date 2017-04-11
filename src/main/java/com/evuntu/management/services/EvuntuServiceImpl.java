@@ -142,22 +142,21 @@ public class EvuntuServiceImpl implements EvuntuService {
 	}
 	
   	@Override
-	public boolean addEventServices(EventServicesVO eventServices,List<MultipartFile> fileList) throws EvuntuManagementException {
+	public boolean addEventServices(EventServicesVO eventServicesVO,List<MultipartFile> fileList) throws EvuntuManagementException {
 		LOGGER.info("Service::addEventServices-start");
 		List<FileDetails> fileDetList= new ArrayList<>();
 		EventServices eServices=new EventServices();		
-		BeanUtils.copyProperties(eventServices, eServices);
+		BeanUtils.copyProperties(eventServicesVO, eServices);
 		Long eventId=evuntuDAO.addEventServices(eServices);
 		FileUploadUtil fileUtil=new FileUploadUtil();
 		for(MultipartFile file:fileList){
 			if (file != null && (!file.isEmpty())) {
 			    fileUtil.upload(file);
-			}					
-			FileDetails fileDetails =fileUtil.prepareObjectToStore(file,eventId);
-			fileDetList.add(fileDetails);
+			    FileDetails fileDetails =fileUtil.prepareObjectToStore(file,eventId);
+				fileDetList.add(fileDetails);
+			}
 		}
-		evuntuDAO.fileUpload(fileDetList);
-		
+		evuntuDAO.fileUpload(fileDetList);		
 		return true; 
 	}
 	

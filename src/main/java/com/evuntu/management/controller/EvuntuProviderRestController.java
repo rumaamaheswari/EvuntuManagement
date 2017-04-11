@@ -1,6 +1,5 @@
 package com.evuntu.management.controller;
 
-import java.io.File;
 import java.util.ArrayList;
 import java.util.Iterator;
 import java.util.List;
@@ -19,10 +18,8 @@ import org.springframework.web.multipart.MultipartFile;
 import org.springframework.web.multipart.MultipartHttpServletRequest;
 
 import com.evuntu.management.model.Company;
-import com.evuntu.management.model.FileDetails;
 import com.evuntu.management.model.Status;
 import com.evuntu.management.services.EvuntuService;
-import com.evuntu.management.util.FileUploadUtil;
 import com.evuntu.management.vo.CompanyVO;
 import com.evuntu.management.vo.EventServicesVO;
 
@@ -122,15 +119,13 @@ public class EvuntuProviderRestController {
 		LOGGER.info("contoller::addEvent-start");
 		Status status;
 		String companyId=request.getParameter("companyId");
-		if(companyId==null && "".equals(companyId)){
+		if(companyId==null || "".equals(companyId)){
 			LOGGER.error("company id should not be null");
 			status= new Status(0, "company id should not be null");
 			return new ResponseEntity<>(status,HttpStatus.BAD_REQUEST); 
 		}
 		
-		List<MultipartFile> fileList=new ArrayList<>();
-		
-		
+		List<MultipartFile> fileList=new ArrayList<>();		
 		try {
 			Iterator<String> itr = request.getFileNames();			
 			while (itr.hasNext()) {
