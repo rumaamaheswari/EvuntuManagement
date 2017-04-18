@@ -1,6 +1,7 @@
 package com.evuntu.management.services;
 
-import java.io.File;
+import java.io.UnsupportedEncodingException;
+import java.net.URLDecoder;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -18,7 +19,9 @@ import com.evuntu.management.model.Company;
 import com.evuntu.management.model.Customer;
 import com.evuntu.management.model.EventServices;
 import com.evuntu.management.model.FileDetails;
+import com.evuntu.management.model.User;
 import com.evuntu.management.util.FileUploadUtil;
+import com.evuntu.management.util.PassHashHelper;
 import com.evuntu.management.vo.CompanyVO;
 import com.evuntu.management.vo.CustomerVO;
 import com.evuntu.management.vo.EventServicesVO;
@@ -196,6 +199,25 @@ public class EvuntuServiceImpl implements EvuntuService {
 		LOGGER.info("Service::deleteEventServices-start");
 		return evuntuDAO.removeEventServices(eventServiceId);	
 		
+	}
+
+	@Override
+	public String authenticate(String userName, String password) throws EvuntuManagementException, UnsupportedEncodingException {
+		
+		User user=evuntuDAO.getUserDetails(userName);
+		Long authString=0L;
+		if(user==null){
+			throw new EvuntuManagementException("User does not exist");
+		}
+		String hashedPassword=URLDecoder.decode(password, "UTF-8");
+		//String decoded=PassHashHelper.getHash(URLDecoder.decode(password, "UTF-8"));
+		if(!(hashedPassword.equals(password))){
+			throw new EvuntuManagementException("Invalid password");
+		}
+		if(userName.equals(user.getUserName()) && password.equals(hashedPassword)){
+			authString = System.currentTimeMillis();			
+		}
+		return authString.toString();
 	}
 
 	

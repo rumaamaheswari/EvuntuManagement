@@ -1,5 +1,6 @@
 package com.evuntu.management.services;
 
+import java.io.UnsupportedEncodingException;
 import java.util.List;
 
 import org.springframework.web.multipart.MultipartFile;
@@ -8,6 +9,7 @@ import com.evuntu.management.exception.EvuntuManagementException;
 import com.evuntu.management.model.Company;
 import com.evuntu.management.model.Customer;
 import com.evuntu.management.model.FileDetails;
+import com.evuntu.management.model.Status;
 import com.evuntu.management.vo.CompanyVO;
 import com.evuntu.management.vo.CustomerVO;
 import com.evuntu.management.vo.EventServicesVO;
@@ -33,5 +35,6 @@ public interface EvuntuService {
 	public List<EventServicesVO> searchEventServices(String name, String city)throws EvuntuManagementException;
 	public EventServicesVO getEventServicesById(long id)throws EvuntuManagementException;
 	public boolean deleteEventServices(long id)throws EvuntuManagementException;
+	public String authenticate(String userName, String password)throws EvuntuManagementException, UnsupportedEncodingException;
 	
 }

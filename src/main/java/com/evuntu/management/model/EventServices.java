@@ -18,7 +18,7 @@ import javax.persistence.Table;
 public class EventServices {
 
 	@Id
-	@Column(name="EVENT_SERVICE_id")
+	@Column(name="EVENT_SERVICE_ID")
 	@GeneratedValue
 	private Long id;
 	
@@ -43,7 +43,7 @@ public class EventServices {
 	@Column(name="WEBSITE_LINK")
 	private String website;
 	
-	//@Column(name="CONTACT_NUMBER")
+	@Column(name="CONTACT_NUMBER")
 	private String contactNumber;
 	
 	@Column(name="FILE_ID")
@@ -51,7 +51,7 @@ public class EventServices {
 	
 	@Column(name="CREATED_TIME")
 	private Timestamp createdTime;
-
+	
 	
 	/**
 	 * @return the id

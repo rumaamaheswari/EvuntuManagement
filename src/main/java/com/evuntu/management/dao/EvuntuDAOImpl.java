@@ -95,6 +95,28 @@ public class EvuntuDAOImpl implements EvuntuDAO {
 		return false;
 	}
 	
+	@Override
+	public User getUserDetails(String userName) throws EvuntuManagementException {
+		LOGGER.info("UserId in getUserDetails :::" + userName);
+		Session session = null;
+		User userDetails = null;
+		try {
+			session = sessionFactory.openSession();
+			Criteria criteria = session.createCriteria(User.class).add(Restrictions.eq("userName",userName));
+			userDetails = (User) criteria.uniqueResult();            
+
+		} catch (HibernateException he) {
+			LOGGER.error(he);
+			throw new EvuntuManagementException(he.getMessage());
+		} catch (RuntimeException exception) {
+			LOGGER.error(exception);
+			throw new EvuntuManagementException(exception.getMessage());
+		} finally {
+			closeSession(session);
+		}
+		return userDetails;
+	}
+	
 	
 	@Override
 	public Long addCustomer(Customer c) throws EvuntuManagementException {
@@ -429,6 +451,14 @@ public class EvuntuDAOImpl implements EvuntuDAO {
 			session.close();
 		}
 		return false;
+	}
+	private void closeSession(Session session){
+		if(isSessionAvailable(session)){
+			session.close();
+		}
+	}
+	private boolean isSessionAvailable(Session session){
+		return session != null ? true : false;
 	}
 	
 	

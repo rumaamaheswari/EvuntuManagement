@@ -9,6 +9,7 @@ import com.evuntu.management.exception.EvuntuManagementException;
 import com.evuntu.management.model.Company;
 import com.evuntu.management.model.Customer;
 import com.evuntu.management.model.User;
+import com.evuntu.management.util.PassHashHelper;
 import com.evuntu.management.vo.CompanyVO;
 import com.evuntu.management.vo.CustomerVO;
 
@@ -27,7 +28,7 @@ public class EvuntuManagementHelper {
 			try{		
 				user.setId(customerVO.getUserId());
 				user.setUserName(customerVO.getUserName());
-				user.setPassword(customerVO.getUserPassword());
+				user.setPassword(PassHashHelper.getHash(customerVO.getUserPassword()));
 				user.setUserType(customerVO.getUserType());
 			}
 			catch(Exception e){
@@ -84,7 +85,8 @@ public class EvuntuManagementHelper {
 			try{		
 				user.setId(companyVO.getUserId());
 				user.setUserName(companyVO.getUserName());
-				user.setPassword(companyVO.getUserPassword());
+				user.setPassword(PassHashHelper.getHash(companyVO.getUserPassword()));
+				//String pwd=PassHashHelper.getHash(companyVO.getUserPassword());
 				user.setUserType(companyVO.getUserType());
 			}
 			catch(Exception e){
