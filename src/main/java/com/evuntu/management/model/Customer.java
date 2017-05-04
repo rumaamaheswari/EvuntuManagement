@@ -20,14 +20,19 @@ public class Customer {
 	@GeneratedValue
 	private Long id;
 	
+	@Column(name="FIRST_NAME")
 	private String firstName;
 	
+	@Column(name="LAST_NAME")
 	private String lastName;
 	
+	@Column(name="MOBILE_NUMBER")
 	private String mobileNumber;
 	
+	@Column(name="EMAIL_ADDRESS")
 	private String emailAddress;
 	
+	@Column(name="PURPOSE")
 	private String purpose;
 	
 	@Column(name="ALLOW_TO_CONTACT")

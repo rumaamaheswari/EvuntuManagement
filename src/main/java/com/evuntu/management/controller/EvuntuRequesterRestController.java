@@ -17,12 +17,15 @@ import com.evuntu.management.exception.EvuntuManagementException;
 import com.evuntu.management.model.Customer;
 import com.evuntu.management.model.Status;
 import com.evuntu.management.services.EvuntuService;
+import com.evuntu.management.vo.CustomerEventRequestVO;
 import com.evuntu.management.vo.CustomerVO;
 
 
 @RestController
 @RequestMapping("/evuntu/requester")
 public class EvuntuRequesterRestController {
+
+	private static final String EXCEPTION_OCCURED = "Exception occured::";
 
 	private static final String INTERNAL_SERVER_ERROR = "Internal server error";
 
@@ -76,7 +79,7 @@ public class EvuntuRequesterRestController {
 
 		} catch (Exception e) {
 			LOGGER.error(INTERNAL_SERVER_ERROR+e);
-			throw new EvuntuManagementException("Exception occured::"+e);
+			throw new EvuntuManagementException(EXCEPTION_OCCURED+e);
 		}
 		return new ResponseEntity<>(customer,HttpStatus.OK);
 	}
@@ -89,7 +92,7 @@ public class EvuntuRequesterRestController {
 			customerList = evuntuServices.listCustomer();
 		} catch (Exception e) {
 			LOGGER.error(INTERNAL_SERVER_ERROR+e);
-			throw new EvuntuManagementException("Exception occured::"+e);
+			throw new EvuntuManagementException(EXCEPTION_OCCURED+e);
 		}
 		return new ResponseEntity<>(customerList,HttpStatus.OK);
 	}
@@ -110,6 +113,90 @@ public class EvuntuRequesterRestController {
 
 	}
 	
+	@RequestMapping(value = "/newCustomerEventRequest", method = RequestMethod.POST, consumes = MediaType.APPLICATION_JSON_VALUE)
+	public ResponseEntity<Status> newCustomerEventRequest(@RequestBody CustomerEventRequestVO customerEventReqVO) {
+		LOGGER.info("contoller::newCustomerEventRequest-start");
+		Status status;
+		try {
+			evuntuServices.newCustomerEventRequest(customerEventReqVO);
+			status= new Status(1, "New Request for event placed Successfully !");
+			LOGGER.info("New Request for event placed Successfully !");
+			return new ResponseEntity<>(status,HttpStatus.OK);
+		} catch (Exception e) {
+			LOGGER.error(INTERNAL_SERVER_ERROR+e);
+			status=  new Status(0, e.toString());
+			return new ResponseEntity<>(status,HttpStatus.INTERNAL_SERVER_ERROR);
+		}
+	
+	}
+	
+	@RequestMapping(value = "/updateCustomerEventRequest", method = RequestMethod.POST, consumes = MediaType.APPLICATION_JSON_VALUE)
+	public ResponseEntity<Status> updateCustomerEventRequest(@RequestBody CustomerEventRequestVO customerEventReqVO) {
+		Status status;
+		LOGGER.info("contoller::updateCustomerEventRequest-start");
+		if(customerEventReqVO.getCustomerEventRequestId()==null && customerEventReqVO.getUserId()==null){
+			LOGGER.error("Customer id and rquest id should not be null");
+			status=new Status(0, "Customer id and request id should not be null");
+			return new ResponseEntity<>(status,HttpStatus.BAD_REQUEST);
+		}
+		try {
+			evuntuServices.updateCustomerEventRequest(customerEventReqVO);
+			status= new Status(1, "Customer event request updated Successfully !");
+			LOGGER.info("Customer event request updated Successfully !");
+			return new ResponseEntity<>(status,HttpStatus.OK);
+		} catch (Exception e) {
+			LOGGER.error(INTERNAL_SERVER_ERROR+e);
+			status=  new Status(0, e.toString());
+			return new ResponseEntity<>(status,HttpStatus.INTERNAL_SERVER_ERROR);
+		}
+	
+	}
+	@RequestMapping(value = "/getCustomerEventRequestDetails", method = RequestMethod.GET)
+	public ResponseEntity<CustomerEventRequestVO>  getCustomerEventRequestDetails(@RequestParam(value="customerEventRequestId", required=true) long CustomerEventRequestId) throws EvuntuManagementException {
+		LOGGER.info("contoller::getCustomerEventRequestDetails-start");
+		CustomerEventRequestVO customerEventRequestVO = null;
+		try {
+			customerEventRequestVO = evuntuServices.getCustomerEventRequestDetails(CustomerEventRequestId);
+	
+		} catch (Exception e) {
+			LOGGER.error(INTERNAL_SERVER_ERROR+e);
+			throw new EvuntuManagementException(EXCEPTION_OCCURED+e);
+		}
+		LOGGER.info("contoller::getCustomerEventRequest-end");
+		return new ResponseEntity<>(customerEventRequestVO,HttpStatus.OK);
+	}
+	
+	@RequestMapping(value = "/listCustomerEventRequest", method = RequestMethod.GET, produces="application/json")
+	public ResponseEntity<List<CustomerEventRequestVO>> listCustomerEventRequest(@RequestParam(value="userId", required=true) long userId) throws EvuntuManagementException {
+		LOGGER.info("contoller::listCustomerEventRequest-start");
+		List<CustomerEventRequestVO> customerEventRequestVOList = null;
+		try {
+			customerEventRequestVOList = evuntuServices.listCustomerEventRequestByUserId(userId);
+		} catch (Exception e) {
+			LOGGER.error(INTERNAL_SERVER_ERROR+e);
+			throw new EvuntuManagementException(EXCEPTION_OCCURED+e);
+		}
+		LOGGER.info("contoller::listCustomerEventRequest-end");
+		return new ResponseEntity<>(customerEventRequestVOList,HttpStatus.OK);
+	}
+	
+	@RequestMapping(value = "deleteCustomerEventRequest", method = RequestMethod.GET)
+	public ResponseEntity<Status> deleteCustomerEventRequest(@RequestParam(value="customerEventRequestId", required=true) long CustomerEventRequestId) {
+		LOGGER.info("contoller::deleteCustomerEventRequest-start");
+		Status status;
+		try {
+			evuntuServices.removeCustomerEventRequest(CustomerEventRequestId);
+			status= new Status(1, "Customer event request deleted Successfully !");
+			LOGGER.info("Customer event request deleted Successfully !");			
+			return new ResponseEntity<>(status,HttpStatus.OK);
+		} catch (Exception e) {
+			LOGGER.error(INTERNAL_SERVER_ERROR+e);
+			status=  new Status(0, e.toString());
+			return new ResponseEntity<>(status,HttpStatus.INTERNAL_SERVER_ERROR);
+		}
+	
+	}
+		
 	
 	
 }

@@ -16,10 +16,17 @@ import org.springframework.stereotype.Repository;
 import com.evuntu.management.exception.EvuntuManagementException;
 import com.evuntu.management.model.Company;
 import com.evuntu.management.model.Customer;
+import com.evuntu.management.model.CustomerEventRequest;
+import com.evuntu.management.model.EventMaster;
 import com.evuntu.management.model.EventServices;
+import com.evuntu.management.model.Facility;
 import com.evuntu.management.model.FileDetails;
 import com.evuntu.management.model.User;
+import com.evuntu.management.vo.CustomerEventRequestVO;
+import com.evuntu.management.vo.EventMasterVO;
 import com.evuntu.management.vo.EventServicesVO;
+
+import antlr.debug.Event;
 
 @Repository
 public class EvuntuDAOImpl implements EvuntuDAO {
@@ -460,7 +467,143 @@ public class EvuntuDAOImpl implements EvuntuDAO {
 	private boolean isSessionAvailable(Session session){
 		return session != null ? true : false;
 	}
-	
-	
-	
+
+	@Override
+	public List<EventMaster> listEvents() throws EvuntuManagementException {
+		LOGGER.info("DAO::listEvents-start");
+		try{
+			session = sessionFactory.openSession();
+			tx = session.beginTransaction();
+			List<EventMaster> eventList = session.createQuery("FROM EventMaster").list();
+			System.out.println("List size: " + (eventList).size());
+
+			tx.commit();
+			LOGGER.info("All the Event details fetched successfully");
+			return eventList;
+
+		}catch(HibernateException e){
+			throw new EvuntuManagementException("Error while accessing db"+e);
+		}finally{
+			session.close();
+		}
+	}
+
+	@Override
+	public void addEvent(EventMaster eventDO) throws EvuntuManagementException {
+		LOGGER.info("DAO::addEvent-start");
+		try{
+			session = sessionFactory.openSession();
+			tx = session.beginTransaction();
+			for(Facility facility:eventDO.getFacility()){
+				session.save(facility);
+			}
+			session.save(eventDO);
+			
+			
+			tx.commit();
+			LOGGER.info("Event added successfully");
+		}catch(HibernateException e){
+			throw new EvuntuManagementException("Error while accessing db"+e);
+		}finally{
+			session.close();
+		}
+	}
+
+	@Override
+	public Long addCustomerEventRequest(CustomerEventRequest customerEventRequest)
+			throws EvuntuManagementException {
+		LOGGER.info("DAO::addCustomerEventRequest-start");
+		Long id;
+		try{
+			session = sessionFactory.openSession();
+			tx = session.beginTransaction();
+			id=(Long)session.save(customerEventRequest);
+			tx.commit();
+			LOGGER.info("Customer added successfully");
+		}catch(HibernateException e){
+			throw new EvuntuManagementException("Error while accessing db"+e);
+		}finally{
+			session.close();
+		}
+		return id;
+	}
+
+	@Override
+	public boolean updateCustomerEventRequest(CustomerEventRequest customerEventRequest)
+			throws EvuntuManagementException {
+		LOGGER.info("DAO::updateCustomerEventRequest-start");
+		try{
+			session = sessionFactory.openSession();
+			tx = session.beginTransaction();
+			session.update(customerEventRequest);
+			tx.commit();
+		}catch(HibernateException e){
+			throw new EvuntuManagementException("Error while accessing db"+e);
+		}finally{
+			session.close();
+		}
+		LOGGER.info("Customer event request updated successfully for customer::"+customerEventRequest.getUserId());
+		return true;
+	}
+
+	@Override
+	public List getCustomerEventRequestDetails(long customerEventRequestId) throws EvuntuManagementException {
+		LOGGER.info("DAO::getCustomerEventRequestDetails-start");
+		try{
+			session = sessionFactory.openSession();
+			Criteria cr = session.createCriteria(CustomerEventRequest.class);
+			cr.add(Restrictions.eq("customerEventRequestId",customerEventRequestId));
+			LOGGER.info("Customer event request details loaded for the request="+customerEventRequestId);
+			return  cr.list();
+		}catch(HibernateException e){
+			throw new EvuntuManagementException("Error while accessing db"+e);
+		}catch(Exception e){
+			throw new EvuntuManagementException("Internal server error"+e);
+		}
+		finally{
+			session.close();
+		}
+	}
+
+	@Override
+	public List<CustomerEventRequest> listCustomerEventRequestByUserId(long userId) throws EvuntuManagementException {
+		LOGGER.info("DAO::listCompanyr-start");
+		try{
+			session = sessionFactory.openSession();
+			tx = session.beginTransaction();
+			Criteria cr = session.createCriteria(CustomerEventRequest.class);
+			cr.add(Restrictions.eq("userId",userId));
+			tx.commit();
+			LOGGER.info("All the event request details fetched successfully for the user "+userId);
+			return  cr.list();
+
+		}catch(HibernateException e){
+			throw new EvuntuManagementException("Error while accessing db"+e);
+		}finally{
+			session.close();
+		}
+	}
+
+	@Override
+	public boolean removeCustomerEventRequest(long customerEventRequestId) throws EvuntuManagementException {
+		LOGGER.info("DAO::removeCustomerEventRequest-start");
+		try{
+			session = sessionFactory.openSession();
+			Object o = session.load(CustomerEventRequest.class, customerEventRequestId);
+			tx = session.getTransaction();
+			session.beginTransaction();
+			session.delete(o);
+			tx.commit();
+			LOGGER.info("Company removed successfully"+customerEventRequestId);
+		}catch(HibernateException e){
+			throw new EvuntuManagementException("Error while accessing db"+e);
+		}catch(Exception e){
+			throw new EvuntuManagementException("Internal server error"+e);
+		}
+		finally{
+			session.close();
+		}
+		return false;
+	}
+
 }

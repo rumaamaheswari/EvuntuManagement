@@ -25,10 +25,13 @@ public class User implements java.io.Serializable{
 	@GeneratedValue(strategy=GenerationType.IDENTITY)
 	private Long id;
 	
+	@Column(name="USERNAME")
 	private String userName;
 	
+	@Column(name="PASSWORD")
 	private String password;
 	
+	@Column(name="USERTYPE")
 	private String userType;
 	
 

@@ -49,6 +49,9 @@ public class EventServices {
 	@Column(name="FILE_ID")
 	private Long fileId;
 	
+	@Column(name="UPDATED_TIME")
+	private Timestamp updatedTime;
+	
 	@Column(name="CREATED_TIME")
 	private Timestamp createdTime;
 	

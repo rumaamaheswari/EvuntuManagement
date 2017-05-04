@@ -19,32 +19,44 @@ import javax.persistence.Table;
 public class Company {
 
 	@Id
-	@Column(name="company_id")
+	@Column(name="COMPANY_ID")
 	@GeneratedValue
 	private Long id;
 	
+	@Column(name="COMPANY_NAME")
 	private String companyName;
 	
+	@Column(name="ADDRESS")
 	private String address;
 	
+	@Column(name="CONTACTPERSON")
 	private String contactPerson;
 	
+	@Column(name="MOBILENUMBER")
 	private String mobileNumber;
 	
+	@Column(name="FACEBOOKLINK")
 	private String faceBookLink;
 	
+	@Column(name="YOUTUBELINK")
 	private String youTubeLink;
 	
+	@Column(name="WEBSITE")
 	private String website;
 	
+	@Column(name="OFFICENUMBER")
 	private String officeNumber;
 	
+	@Column(name="BRANCHNAME")
 	private String branchName;
 	
+	@Column(name="CITY")
 	private String city;
 	
+	@Column(name="STATE")
 	private String state;
 	
+	@Column(name="COUNTRY")
 	private String country;
 	
 	/*@OneToOne(cascade = CascadeType.ALL)

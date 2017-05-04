@@ -5,10 +5,14 @@ import java.util.List;
 import com.evuntu.management.exception.EvuntuManagementException;
 import com.evuntu.management.model.Company;
 import com.evuntu.management.model.Customer;
+import com.evuntu.management.model.CustomerEventRequest;
+import com.evuntu.management.model.EventMaster;
 import com.evuntu.management.model.EventServices;
 import com.evuntu.management.model.FileDetails;
 import com.evuntu.management.model.User;
 import com.evuntu.management.vo.EventServicesVO;
+import com.evuntu.management.vo.CustomerEventRequestVO;
+import com.evuntu.management.vo.EventMasterVO;
 
 public interface EvuntuDAO {
 
@@ -36,4 +40,13 @@ public interface EvuntuDAO {
 	public List getEventServicesById(Long eventServiceId)throws EvuntuManagementException ;
 	public boolean removeEventServices(Long eventServiceId) throws EvuntuManagementException;
 	public User getUserDetails(String username) throws EvuntuManagementException;
+	
+	public List<EventMaster> listEvents()throws EvuntuManagementException;
+	public void addEvent(EventMaster eventDO)throws EvuntuManagementException;
+	
+	public Long addCustomerEventRequest(CustomerEventRequest customerEventRequest) throws EvuntuManagementException;
+	public boolean updateCustomerEventRequest(CustomerEventRequest customerEventRequest)throws EvuntuManagementException;
+	public List getCustomerEventRequestDetails(long customerEventRequestId)throws EvuntuManagementException;
+	public List<CustomerEventRequest> listCustomerEventRequestByUserId(long userId)throws EvuntuManagementException;
+	public boolean removeCustomerEventRequest(long customerEventRequestId)throws EvuntuManagementException;
 }

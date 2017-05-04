@@ -17,19 +17,24 @@ import com.evuntu.management.exception.EvuntuManagementException;
 import com.evuntu.management.helper.EvuntuManagementHelper;
 import com.evuntu.management.model.Company;
 import com.evuntu.management.model.Customer;
+import com.evuntu.management.model.CustomerEventRequest;
+import com.evuntu.management.model.EventMaster;
 import com.evuntu.management.model.EventServices;
 import com.evuntu.management.model.FileDetails;
 import com.evuntu.management.model.User;
 import com.evuntu.management.util.FileUploadUtil;
-import com.evuntu.management.util.PassHashHelper;
 import com.evuntu.management.vo.CompanyVO;
+import com.evuntu.management.vo.CustomerEventRequestVO;
 import com.evuntu.management.vo.CustomerVO;
+import com.evuntu.management.vo.EventMasterVO;
 import com.evuntu.management.vo.EventServicesVO;
 
 
 
 @Service
 public class EvuntuServiceImpl implements EvuntuService {
+	private static final String ERROR_WHILE_ACCESSING_DB = "Error while accessing DB";
+
 	@Autowired
 	private EvuntuDAO evuntuDAO;
 	
@@ -45,7 +50,7 @@ public class EvuntuServiceImpl implements EvuntuService {
 			evuntuDAO.addCustomer(helper.convertCustomerVOToDO(customerVO));
 		}
 		catch(HibernateException he){
-			throw new EvuntuManagementException("Error while accessing DB"+he);
+			throw new EvuntuManagementException(ERROR_WHILE_ACCESSING_DB+he);
 		}
 		return true;	
 	}
@@ -58,25 +63,24 @@ public class EvuntuServiceImpl implements EvuntuService {
 			return evuntuDAO.updateCustomer(helper.convertCustomerVOToDO(customerVO));
 		}
 		catch(HibernateException he){
-			throw new EvuntuManagementException("Error while accessing DB"+he);
+			throw new EvuntuManagementException(ERROR_WHILE_ACCESSING_DB+he);
 		}		
 	}
 
 	@Override
 	public List<Customer> listCustomer() throws EvuntuManagementException{
 		LOGGER.info("Service::listCustomer-start");
-		List<Customer> t=evuntuDAO.listCustomer();
-		return t;
+		return evuntuDAO.listCustomer();
 	}
 
 	@Override
 	public Customer getCustomerById(Long id) throws EvuntuManagementException { 
 		LOGGER.info("Service::getCustomerById-start");
 		List list=evuntuDAO.getCustomerById(id);
-		if(list.size()>0){
-			return (Customer) list.get(0);
+		if(list.isEmpty()){			
+			return new Customer();
 		}
-		return new Customer();		
+		return (Customer) list.get(0);		
 	}
 
 	@Override
@@ -85,12 +89,6 @@ public class EvuntuServiceImpl implements EvuntuService {
 		return evuntuDAO.removeCustomer(id);		
 	}
 	
-	/*@Override
-	public Customer authenticate(String userName, String password) {
-		// TODO Auto-generated method stub
-		return null;
-	}*/
-
 	@Override
 	public boolean addCompany(CompanyVO companyVO) throws EvuntuManagementException {
 		LOGGER.info("Service::addCompany-start");
@@ -103,7 +101,7 @@ public class EvuntuServiceImpl implements EvuntuService {
 			evuntuDAO.addCompany(helper.convertCompanyVOToDO(companyVO));
 		}
 		catch(HibernateException he){
-			throw new EvuntuManagementException("Error while accessing DB"+he);
+			throw new EvuntuManagementException(ERROR_WHILE_ACCESSING_DB+he);
 		}
 		return true;
 	}
@@ -116,7 +114,7 @@ public class EvuntuServiceImpl implements EvuntuService {
 			return evuntuDAO.updateCompany(helper.convertCompanyVOToDO(companyVO));
 		}
 		catch(HibernateException he){
-			throw new EvuntuManagementException("Error while accessing DB"+he);
+			throw new EvuntuManagementException(ERROR_WHILE_ACCESSING_DB+he);
 		}	
 	}
 
@@ -124,17 +122,16 @@ public class EvuntuServiceImpl implements EvuntuService {
 	public Company getCompanyById(long id) throws EvuntuManagementException {
 		LOGGER.info("Service::getCompanyById-start");
 		List list=evuntuDAO.getCompanyById(id);
-		if(list.size()>0){
-			return (Company) list.get(0);
-		}
-		return new Company();	
+		if(list.isEmpty()){
+			return new Company();	
+		}		
+		return (Company) list.get(0);
 	}
 
 	@Override
 	public List<Company> listCompany() throws EvuntuManagementException {
 		LOGGER.info("Service::listCompany-start");
-		List<Company> t=evuntuDAO.listCompany();
-		return t;
+		return evuntuDAO.listCompany();
 	}
 
 	@Override
@@ -172,7 +169,7 @@ public class EvuntuServiceImpl implements EvuntuService {
 			return evuntuDAO.updateEventServices(eServices);
 		}
 		catch(HibernateException he){
-			throw new EvuntuManagementException("Error while accessing DB"+he);
+			throw new EvuntuManagementException(ERROR_WHILE_ACCESSING_DB+he);
 		}	
 		
 	}
@@ -190,8 +187,7 @@ public class EvuntuServiceImpl implements EvuntuService {
 	@Override
 	public List<EventServicesVO> searchEventServices(String eventName, String city) throws EvuntuManagementException {
 		LOGGER.info("Service::searchEventServices-start");
-		List<EventServicesVO> eventServicesVO=evuntuDAO.searchServices(eventName, city);
-		return eventServicesVO;
+		return evuntuDAO.searchServices(eventName, city);
 	}
 
 	@Override
@@ -202,22 +198,117 @@ public class EvuntuServiceImpl implements EvuntuService {
 	}
 
 	@Override
-	public String authenticate(String userName, String password) throws EvuntuManagementException, UnsupportedEncodingException {
+	public String authenticate(String userName, String password) throws EvuntuManagementException {
 		
 		User user=evuntuDAO.getUserDetails(userName);
 		Long authString=0L;
 		if(user==null){
 			throw new EvuntuManagementException("User does not exist");
 		}
-		String hashedPassword=URLDecoder.decode(password, "UTF-8");
+		String hashedPassword;
+		try {
+			hashedPassword = URLDecoder.decode(password, "UTF-8");
+		} catch (UnsupportedEncodingException e) {
+			LOGGER.error("UnsupportedEncodingException occured::"+e);
+			throw new EvuntuManagementException("UnsupportedEncodingException"+e);
+		}
 		//String decoded=PassHashHelper.getHash(URLDecoder.decode(password, "UTF-8"));
 		if(!(hashedPassword.equals(password))){
+			LOGGER.error("Invalid password");
 			throw new EvuntuManagementException("Invalid password");
 		}
 		if(userName.equals(user.getUserName()) && password.equals(hashedPassword)){
 			authString = System.currentTimeMillis();			
 		}
 		return authString.toString();
+	}
+
+	@Override
+	public List<EventMasterVO> getAllEvents() throws EvuntuManagementException {
+		LOGGER.info("Service::getAllEvents-start");
+		List<EventMaster> eventDOList=evuntuDAO.listEvents();
+		
+		EvuntuManagementHelper helper=new EvuntuManagementHelper();
+		return helper.convertEventMasterDOToEventMasterVO(eventDOList);
+		
+		
+		//BeanUtils.copyProperties(eventDO, eventVO);
+		//return eventVO;
+	}
+
+	@Override
+	public boolean addEvent(EventMasterVO eventVO) throws EvuntuManagementException {
+		LOGGER.info("Service::addEvent-start");
+		try{
+			/*EventMaster eventDO=new EventMaster();
+			BeanUtils.copyProperties(eventVO, eventDO);*/
+			
+			EvuntuManagementHelper helper=new EvuntuManagementHelper();
+			evuntuDAO.addEvent(helper.convertEventMasterVOToEventMasterDO(eventVO));
+
+		}
+		catch(HibernateException he){
+			throw new EvuntuManagementException(ERROR_WHILE_ACCESSING_DB+he);
+		}
+		return true;
+	}
+
+	@Override
+	public boolean newCustomerEventRequest(CustomerEventRequestVO customerEventReqVO) throws EvuntuManagementException {
+		LOGGER.info("Service::newCustomerEventRequest-start");
+		/*EvuntuManagementHelper helper=new EvuntuManagementHelper();
+		return evuntuDAO.addCompany(helper.convertCompanyVOToDO(companyVO));*/
+		try{
+			EvuntuManagementHelper helper=new EvuntuManagementHelper();
+			Long id=evuntuDAO.addCustomerEventRequest(helper.convertCustomerEventRequestVOToDO(customerEventReqVO));
+			
+		}
+		catch(HibernateException he){
+			throw new EvuntuManagementException(ERROR_WHILE_ACCESSING_DB+he);
+		}
+		return true;
+	}
+
+	@Override
+	public boolean updateCustomerEventRequest(CustomerEventRequestVO customerEventReqVO)
+			throws EvuntuManagementException {
+		LOGGER.info("Service::updateCustomerEventRequest-start");
+		try{
+			EvuntuManagementHelper helper=new EvuntuManagementHelper();
+			
+			return evuntuDAO.updateCustomerEventRequest(helper.convertCustomerEventRequestVOToDO(customerEventReqVO));
+		}
+		catch(HibernateException he){
+			throw new EvuntuManagementException(ERROR_WHILE_ACCESSING_DB+he);
+		}	
+	}
+
+	@Override
+	public CustomerEventRequestVO getCustomerEventRequestDetails(long customerEventRequestId) throws EvuntuManagementException {
+		LOGGER.info("Service::getCustomerEventRequest-start");
+		List list=evuntuDAO.getCustomerEventRequestDetails(customerEventRequestId);
+		if(list.isEmpty()){
+			return new CustomerEventRequestVO();	
+		}		
+		return (CustomerEventRequestVO) list.get(0);
+	}
+
+	@Override
+	public List<CustomerEventRequestVO> listCustomerEventRequestByUserId(long userId) throws EvuntuManagementException {
+		LOGGER.info("Service::listCustomerEventRequest-start");
+		List<CustomerEventRequestVO> customerEventRequestVOList=new ArrayList<>();
+		EvuntuManagementHelper helper=new EvuntuManagementHelper();
+		for (CustomerEventRequest custRqr:evuntuDAO.listCustomerEventRequestByUserId(userId)){			
+			customerEventRequestVOList.add(helper.convertCustomerEventRequestDOToVO(custRqr));
+		}
+		return customerEventRequestVOList;
+		
+	}
+
+	@Override
+	public boolean removeCustomerEventRequest(long CustomerEventRequestId) throws EvuntuManagementException {
+		LOGGER.info("Service::removeCustomerEventRequest-start");
+		return evuntuDAO.removeCustomerEventRequest(CustomerEventRequestId);	
 	}
 
 	

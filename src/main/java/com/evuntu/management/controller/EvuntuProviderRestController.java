@@ -22,6 +22,7 @@ import com.evuntu.management.model.Status;
 import com.evuntu.management.services.EvuntuService;
 import com.evuntu.management.vo.CompanyVO;
 import com.evuntu.management.vo.EventServicesVO;
+import com.evuntu.management.vo.EventMasterVO;
 
 
 @RestController
@@ -98,7 +99,7 @@ public class EvuntuProviderRestController {
 		return  new ResponseEntity<>(companyList,HttpStatus.OK);
 	}
 
-	@RequestMapping(value = "deleteCompany", method = RequestMethod.GET)
+	@RequestMapping(value = "/deleteCompany", method = RequestMethod.GET)
 	public ResponseEntity<Status> deleteCompany(@RequestParam(value="id", required=true) long id) {
 		LOGGER.info("contoller::deleteCompany-start");
 		Status status;
@@ -114,7 +115,7 @@ public class EvuntuProviderRestController {
 
 	}
 	
-	@RequestMapping(value = "/createEvent", method = RequestMethod.POST)
+	@RequestMapping(value = "/addEventServices", method = RequestMethod.POST)
 	public ResponseEntity<Status> addEventServices(@RequestBody MultipartHttpServletRequest request) {
 		LOGGER.info("contoller::addEvent-start");
 		Status status;
@@ -152,8 +153,8 @@ public class EvuntuProviderRestController {
 
 	}
 	
-	@RequestMapping(value = "/updateEvent", method = RequestMethod.POST)
-	public ResponseEntity<Status> updateEvent(@RequestBody EventServicesVO eventServices) {
+	@RequestMapping(value = "/updateEventServices", method = RequestMethod.POST)
+	public ResponseEntity<Status> updateEventServices(@RequestBody EventServicesVO eventServices) {
 		LOGGER.info("contoller::updateEvent-start");
 		Status status;
 		if(eventServices.getEventServiceId()==null){
@@ -199,13 +200,40 @@ public class EvuntuProviderRestController {
 		return  new ResponseEntity<>(eventServicesList,HttpStatus.OK);
 	}
 
-	@RequestMapping(value = "deleteEventServices", method = RequestMethod.GET)
+	@RequestMapping(value = "/deleteEventServices", method = RequestMethod.GET)
 	public ResponseEntity<Status> deleteEventServices(@RequestParam(value="id", required=true) long id) {
 		LOGGER.info("contoller::deleteEvent-start");
 		Status status;
 		try {
 			evuntuServices.deleteEventServices(id);
 			status= new Status(1, "Event Services deleted Successfully !");
+			return new ResponseEntity<>(status,HttpStatus.OK);
+		} catch (Exception e) {
+			LOGGER.error(INTERNAL_SERVER_ERROR+e);
+			status=  new Status(0, e.toString());
+			return new ResponseEntity<>(status,HttpStatus.INTERNAL_SERVER_ERROR);
+		}
+	}
+	@RequestMapping(value = "/getAllEvents", method = RequestMethod.GET)
+	public ResponseEntity<List<EventMasterVO>> getAllEvents() {
+		LOGGER.info("contoller::getAllEvents-start");
+		List<EventMasterVO> eventList = null;
+		try {
+			eventList = evuntuServices.getAllEvents();
+
+		} catch (Exception e) {
+			LOGGER.error(INTERNAL_SERVER_ERROR+e);
+			return new ResponseEntity<>(eventList,HttpStatus.INTERNAL_SERVER_ERROR);
+		}
+		return new ResponseEntity<>(eventList,HttpStatus.OK);
+	}
+	@RequestMapping(value = "/addEvent", method = RequestMethod.POST)
+	public ResponseEntity<Status> addEvent(@RequestBody EventMasterVO event) {
+		LOGGER.info("contoller::addEvent-start");
+		Status status;
+		try {
+			evuntuServices.addEvent(event);
+			status= new Status(1, "Event added Successfully !");
 			return new ResponseEntity<>(status,HttpStatus.OK);
 		} catch (Exception e) {
 			LOGGER.error(INTERNAL_SERVER_ERROR+e);

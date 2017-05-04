@@ -11,8 +11,10 @@ import com.evuntu.management.model.Customer;
 import com.evuntu.management.model.FileDetails;
 import com.evuntu.management.model.Status;
 import com.evuntu.management.vo.CompanyVO;
+import com.evuntu.management.vo.CustomerEventRequestVO;
 import com.evuntu.management.vo.CustomerVO;
 import com.evuntu.management.vo.EventServicesVO;
+import com.evuntu.management.vo.EventMasterVO;
 
 
 public interface EvuntuService {
@@ -35,6 +37,17 @@ public interface EvuntuService {
 	public List<EventServicesVO> searchEventServices(String name, String city)throws EvuntuManagementException;
 	public EventServicesVO getEventServicesById(long id)throws EvuntuManagementException;
 	public boolean deleteEventServices(long id)throws EvuntuManagementException;
-	public String authenticate(String userName, String password)throws EvuntuManagementException, UnsupportedEncodingException;
+	
+	public String authenticate(String userName, String password)throws EvuntuManagementException;
+	
+	public List<EventMasterVO> getAllEvents()throws EvuntuManagementException;
+	public boolean addEvent(EventMasterVO event)throws EvuntuManagementException;
+	
+	
+	public boolean newCustomerEventRequest(CustomerEventRequestVO customerEventReqVO) throws EvuntuManagementException;
+	public boolean updateCustomerEventRequest(CustomerEventRequestVO customerEventReqVO)throws EvuntuManagementException;
+	public CustomerEventRequestVO getCustomerEventRequestDetails(long CustomerEventRequestId)throws EvuntuManagementException;
+	public List<CustomerEventRequestVO> listCustomerEventRequestByUserId(long userId)throws EvuntuManagementException;
+	public boolean removeCustomerEventRequest(long CustomerEventRequestId)throws EvuntuManagementException;
 	
 }
