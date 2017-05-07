@@ -1,6 +1,9 @@
 package com.evuntu.management.vo;
 
 import java.sql.Timestamp;
+import java.util.List;
+
+import org.springframework.web.multipart.MultipartFile;
 
 /**
  * Value bean
@@ -25,13 +28,11 @@ public class EventServicesVO {
 	
 	private String youTubeLink;
 	
-	private String website;
-	
 	private String contactNumber;
 	
 	private Long fileId;
 	
-	private Timestamp createdTime;
+	private List<MultipartFile> inputFile;
 
 	
 	public String getFaceBookLink() {
@@ -40,14 +41,6 @@ public class EventServicesVO {
 
 	public void setFaceBookLink(String faceBookLink) {
 		this.faceBookLink = faceBookLink;
-	}
-
-	public String getWebsite() {
-		return website;
-	}
-
-	public void setWebsite(String website) {
-		this.website = website;
 	}
 
 	public String getYouTubeLink() {
@@ -106,14 +99,6 @@ public class EventServicesVO {
 		this.fileId = fileId;
 	}
 
-	public Timestamp getCreatedTime() {
-		return createdTime;
-	}
-
-	public void setCreatedTime(Timestamp createdTime) {
-		this.createdTime = createdTime;
-	}
-
 	public Long getEventServiceId() {
 		return eventServiceId;
 	}
@@ -122,4 +107,19 @@ public class EventServicesVO {
 		this.eventServiceId = eventServiceId;
 	}
 
+	/**
+	 * @return the inputFile
+	 */
+	public List<MultipartFile> getInputFile() {
+		return inputFile;
+	}
+
+	/**
+	 * @param inputFile the inputFile to set
+	 */
+	public void setInputFile(List<MultipartFile> inputFile) {
+		this.inputFile = inputFile;
+	}
+
+	
 }

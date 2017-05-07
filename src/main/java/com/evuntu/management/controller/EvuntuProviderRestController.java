@@ -36,6 +36,7 @@ public class EvuntuProviderRestController {
 
 	private static final Logger LOGGER = Logger.getLogger(EvuntuProviderRestController.class);
 
+	
 	@RequestMapping(value = "/createCompany", method = RequestMethod.POST, consumes = MediaType.APPLICATION_JSON_VALUE)
 	public ResponseEntity<Status> addCompany(@RequestBody CompanyVO company) {
 		LOGGER.info("contoller::addCompany-start");
@@ -116,39 +117,23 @@ public class EvuntuProviderRestController {
 	}
 	
 	@RequestMapping(value = "/addEventServices", method = RequestMethod.POST)
-	public ResponseEntity<Status> addEventServices(@RequestBody MultipartHttpServletRequest request) {
+	public ResponseEntity<String> addEventServices(@RequestBody EventServicesVO eventServicesVO) {
 		LOGGER.info("contoller::addEvent-start");
 		Status status;
-		String companyId=request.getParameter("companyId");
+		Long companyId=eventServicesVO.getCompanyId();
 		if(companyId==null || "".equals(companyId)){
 			LOGGER.error("company id should not be null");
 			status= new Status(0, "company id should not be null");
-			return new ResponseEntity<>(status,HttpStatus.BAD_REQUEST); 
-		}
-		
-		List<MultipartFile> fileList=new ArrayList<>();		
-		try {
-			Iterator<String> itr = request.getFileNames();			
-			while (itr.hasNext()) {
-				fileList.add(request.getFile(itr.next()));
-			}
-			EventServicesVO eventServicesVO=new EventServicesVO();
-			eventServicesVO.setCity(request.getParameter("city"));
-			eventServicesVO.setFaceBookLink(request.getParameter("faceBookLink"));
-			eventServicesVO.setContactPerson(request.getParameter("contactPerson"));
-			eventServicesVO.setEventName(request.getParameter("eventName"));
-			eventServicesVO.setCompanyId(Long.parseLong(companyId));
-			eventServicesVO.setWebsite(request.getParameter("website"));
-			eventServicesVO.setYouTubeLink(request.getParameter("youTubeLink"));
-			
-			evuntuServices.addEventServices(eventServicesVO,fileList);
+			return new ResponseEntity<>(HttpStatus.BAD_REQUEST); 
+		}		
+		try{
+			evuntuServices.addEventServices(eventServicesVO);
 			status= new Status(1, "EventServices added Successfully !");
-			
-			return new ResponseEntity<>(status,HttpStatus.OK);
+			return new ResponseEntity<>(HttpStatus.OK);
 		} catch (Exception e) {
 			LOGGER.error(INTERNAL_SERVER_ERROR+e);
 			status=  new Status(0, e.toString());
-			return new ResponseEntity<>(status,HttpStatus.INTERNAL_SERVER_ERROR);
+			return new ResponseEntity<>(HttpStatus.INTERNAL_SERVER_ERROR);
 		}
 
 	}

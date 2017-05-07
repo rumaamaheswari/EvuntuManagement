@@ -32,7 +32,7 @@ public interface EvuntuService {
 	public Company getCompanyById(long id)throws EvuntuManagementException;	
 	public boolean removeCompany(long id)throws EvuntuManagementException;
 	
-	public boolean addEventServices(EventServicesVO eventServices,List<MultipartFile> fileList)throws EvuntuManagementException;
+	public boolean addEventServices(EventServicesVO eventServices)throws EvuntuManagementException;
 	public boolean updateEventServices(EventServicesVO eventServices)throws EvuntuManagementException;
 	public List<EventServicesVO> searchEventServices(String name, String city)throws EvuntuManagementException;
 	public EventServicesVO getEventServicesById(long id)throws EvuntuManagementException;

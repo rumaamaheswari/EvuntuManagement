@@ -40,9 +40,6 @@ public class EventServices {
 	@Column(name="YOUTUBE_LINK")
 	private String youTubeLink;
 	
-	@Column(name="WEBSITE_LINK")
-	private String website;
-	
 	@Column(name="CONTACT_NUMBER")
 	private String contactNumber;
 	
@@ -76,14 +73,6 @@ public class EventServices {
 
 	public void setFaceBookLink(String faceBookLink) {
 		this.faceBookLink = faceBookLink;
-	}
-
-	public String getWebsite() {
-		return website;
-	}
-
-	public void setWebsite(String website) {
-		this.website = website;
 	}
 
 	public String getYouTubeLink() {
