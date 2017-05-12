@@ -9,6 +9,7 @@ import org.hibernate.HibernateException;
 import org.hibernate.Session;
 import org.hibernate.SessionFactory;
 import org.hibernate.Transaction;
+import org.hibernate.criterion.Order;
 import org.hibernate.criterion.Restrictions;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Repository;
@@ -404,6 +405,10 @@ public class EvuntuDAOImpl implements EvuntuDAO {
 			}
 			if(city!=""){
 				servicesList.add(Restrictions.eq("city", city));
+			}
+			if(eventName=="" && city==""){
+				servicesList.addOrder(Order.asc("updatedTime"));
+				servicesList.setMaxResults(10);
 			}
 			LOGGER.info("All the Company details fetched successfully");
 			return servicesList.list();

@@ -174,7 +174,7 @@ public class EvuntuProviderRestController {
 	}
 
 	@RequestMapping(value = "/searchEventServices", method = RequestMethod.GET)
-	public ResponseEntity<List<EventServicesVO>> searchEventServices(String name,String city) {
+	public ResponseEntity<List<EventServicesVO>> searchEventServices(@RequestParam(value="name") String name,@RequestParam(value="city") String city) {
 		LOGGER.info("contoller::searchEventServices-start");
 		List<EventServicesVO> eventServicesList = null;
 		try {
