@@ -16,6 +16,7 @@ import com.evuntu.management.dao.EvuntuDAO;
 import com.evuntu.management.exception.EvuntuManagementException;
 import com.evuntu.management.helper.EvuntuManagementHelper;
 import com.evuntu.management.model.Company;
+import com.evuntu.management.model.CompanyEventBidding;
 import com.evuntu.management.model.Customer;
 import com.evuntu.management.model.CustomerEventRequest;
 import com.evuntu.management.model.EventMaster;
@@ -23,6 +24,7 @@ import com.evuntu.management.model.EventServices;
 import com.evuntu.management.model.FileDetails;
 import com.evuntu.management.model.User;
 import com.evuntu.management.util.FileUploadUtil;
+import com.evuntu.management.vo.CompanyEventBiddingVO;
 import com.evuntu.management.vo.CompanyVO;
 import com.evuntu.management.vo.CustomerEventRequestVO;
 import com.evuntu.management.vo.CustomerVO;
@@ -309,6 +311,67 @@ public class EvuntuServiceImpl implements EvuntuService {
 	public boolean removeCustomerEventRequest(long CustomerEventRequestId) throws EvuntuManagementException {
 		LOGGER.info("Service::removeCustomerEventRequest-start");
 		return evuntuDAO.removeCustomerEventRequest(CustomerEventRequestId);	
+	}
+
+	@Override
+	public boolean addCompanyEventBidding(CompanyEventBiddingVO companyEventBiddingVO) throws EvuntuManagementException {
+			LOGGER.info("Service::addCompanyEventBidding-start");
+		try{
+			CompanyEventBidding  companyEventBidding=new CompanyEventBidding();		
+			BeanUtils.copyProperties(companyEventBiddingVO, companyEventBidding);
+			evuntuDAO.addCompanyEventBidding(companyEventBidding);	
+		}
+		catch(HibernateException he){
+			throw new EvuntuManagementException(ERROR_WHILE_ACCESSING_DB+he);
+		}
+		return true;
+		
+	}
+
+	@Override
+	public boolean updateCompanyEventBidding(CompanyEventBiddingVO companyEventBiddingVO)
+			throws EvuntuManagementException {
+		LOGGER.info("Service::updateCompanyEventBidding-start");
+		try{
+			CompanyEventBidding  companyEventBidding=new CompanyEventBidding();
+			BeanUtils.copyProperties(companyEventBiddingVO, companyEventBidding);
+			return evuntuDAO.updateCompanyEventBidding(companyEventBidding);
+		}
+		catch(HibernateException he){
+			throw new EvuntuManagementException(ERROR_WHILE_ACCESSING_DB+he);
+		}	
+	}
+
+	@Override
+	public boolean removeCompanyEventBidding(long companyEventBiddingId) throws EvuntuManagementException {
+		LOGGER.info("Service::removeCompanyEventBidding-start");
+		return evuntuDAO.removeCompanyEventBidding(companyEventBiddingId);	
+	}
+
+	@Override
+	public CompanyEventBiddingVO getCompanyEventBiddingDetails(long companyEventBiddingId) throws EvuntuManagementException {
+		LOGGER.info("Service::getCompanyEventBiddingDetails-start");
+		CompanyEventBiddingVO companyEventBiddingVO=new CompanyEventBiddingVO();
+		List list=evuntuDAO.getCompanyEventBiddingDetails(companyEventBiddingId);
+		if(list.isEmpty()){			
+			return companyEventBiddingVO;
+		}
+		BeanUtils.copyProperties(list.get(0), companyEventBiddingVO);
+		return companyEventBiddingVO;	
+	}
+
+	@Override
+	public List<CompanyEventBiddingVO> listCompanyEventBiddingByCompanyId(long companyEventBiddingId)
+			throws EvuntuManagementException {
+		LOGGER.info("Service::listCompanyEventBiddingByUserId-start");
+		List<CompanyEventBiddingVO> companyEventBiddingVOList=new ArrayList<>();
+		EvuntuManagementHelper helper=new EvuntuManagementHelper();
+		for (CompanyEventBidding cmpyEventBidding:evuntuDAO.listCompanyEventBiddingByCompanyId(companyEventBiddingId)){
+			CompanyEventBiddingVO companyEventBiddingVO=new CompanyEventBiddingVO();
+			BeanUtils.copyProperties(cmpyEventBidding, companyEventBiddingVO);
+			companyEventBiddingVOList.add(companyEventBiddingVO);
+		}
+		return companyEventBiddingVOList;
 	}
 
 	

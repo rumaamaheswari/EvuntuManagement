@@ -15,6 +15,7 @@ import org.springframework.stereotype.Repository;
 
 import com.evuntu.management.exception.EvuntuManagementException;
 import com.evuntu.management.model.Company;
+import com.evuntu.management.model.CompanyEventBidding;
 import com.evuntu.management.model.Customer;
 import com.evuntu.management.model.CustomerEventRequest;
 import com.evuntu.management.model.EventMaster;
@@ -22,11 +23,7 @@ import com.evuntu.management.model.EventServices;
 import com.evuntu.management.model.Facility;
 import com.evuntu.management.model.FileDetails;
 import com.evuntu.management.model.User;
-import com.evuntu.management.vo.CustomerEventRequestVO;
-import com.evuntu.management.vo.EventMasterVO;
 import com.evuntu.management.vo.EventServicesVO;
-
-import antlr.debug.Event;
 
 @Repository
 public class EvuntuDAOImpl implements EvuntuDAO {
@@ -605,5 +602,104 @@ public class EvuntuDAOImpl implements EvuntuDAO {
 		}
 		return false;
 	}
+	@Override
+	public Long addCompanyEventBidding(CompanyEventBidding companyEventBidding)
+			throws EvuntuManagementException {
+		LOGGER.info("DAO::CompanyEventBidding-start");
+		Long id;
+		try{
+			session = sessionFactory.openSession();
+			tx = session.beginTransaction();
+			id=(Long)session.save(companyEventBidding);
+			tx.commit();
+			LOGGER.info("Company bidding added successfully");
+		}catch(HibernateException e){
+			throw new EvuntuManagementException("Error while accessing db"+e);
+		}finally{
+			session.close();
+		}
+		return id;
+	}
+
+	@Override
+	public boolean updateCompanyEventBidding(CompanyEventBidding companyEventBidding)
+			throws EvuntuManagementException {
+		LOGGER.info("DAO::updateCompanyEventBidding-start");
+		try{
+			session = sessionFactory.openSession();
+			tx = session.beginTransaction();
+			session.update(companyEventBidding);
+			tx.commit();
+		}catch(HibernateException e){
+			throw new EvuntuManagementException("Error while accessing db"+e);
+		}finally{
+			session.close();
+		}
+		LOGGER.info("Company event bidding updated successfully for company::"+companyEventBidding.getCompanyId());
+		return true;
+	}
+	
+	@Override
+	public boolean removeCompanyEventBidding(long companyEventBiddingId) throws EvuntuManagementException {
+		LOGGER.info("DAO::removeCustomerEventRequest-start");
+		try{
+			session = sessionFactory.openSession();
+			Object o = session.load(CompanyEventBidding.class, companyEventBiddingId);
+			tx = session.getTransaction();
+			session.beginTransaction();
+			session.delete(o);
+			tx.commit();
+			LOGGER.info("Company event bidding removed successfully"+companyEventBiddingId);
+		}catch(HibernateException e){
+			throw new EvuntuManagementException("Error while accessing db"+e);
+		}catch(Exception e){
+			throw new EvuntuManagementException("Internal server error"+e);
+		}
+		finally{
+			session.close();
+		}
+		return false;
+	}
+	
+	@Override
+	public List getCompanyEventBiddingDetails(long companyEventBiddingId) throws EvuntuManagementException {
+		LOGGER.info("DAO::getCompanyEventBiddingDetails-start");
+		try{
+			session = sessionFactory.openSession();
+			Criteria cr = session.createCriteria(CompanyEventBidding.class);
+			cr.add(Restrictions.eq("customerEventRequestId",companyEventBiddingId));
+			LOGGER.info("Company event Bidding details loaded for the bid="+companyEventBiddingId);
+			return  cr.list();
+		}catch(HibernateException e){
+			throw new EvuntuManagementException("Error while accessing db"+e);
+		}catch(Exception e){
+			throw new EvuntuManagementException("Internal server error"+e);
+		}
+		finally{
+			session.close();
+		}
+	}
+
+	@Override
+	public List<CompanyEventBidding> listCompanyEventBiddingByCompanyId(long companyId) throws EvuntuManagementException {
+		LOGGER.info("DAO::listCompanyr-start");
+		try{
+			session = sessionFactory.openSession();
+			tx = session.beginTransaction();
+			Criteria cr = session.createCriteria(CompanyEventBidding.class);
+			cr.add(Restrictions.eq("companyId",companyId));
+			tx.commit();
+			LOGGER.info("All the bidding details fetched successfully for the company "+companyId);
+			return  cr.list();
+
+		}catch(HibernateException e){
+			throw new EvuntuManagementException("Error while accessing db"+e);
+		}finally{
+			session.close();
+		}
+	}
+
+	
+
 
 }

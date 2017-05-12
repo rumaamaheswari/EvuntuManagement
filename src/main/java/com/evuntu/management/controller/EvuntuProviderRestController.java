@@ -20,6 +20,7 @@ import org.springframework.web.multipart.MultipartHttpServletRequest;
 import com.evuntu.management.model.Company;
 import com.evuntu.management.model.Status;
 import com.evuntu.management.services.EvuntuService;
+import com.evuntu.management.vo.CompanyEventBiddingVO;
 import com.evuntu.management.vo.CompanyVO;
 import com.evuntu.management.vo.EventServicesVO;
 import com.evuntu.management.vo.EventMasterVO;
@@ -226,5 +227,77 @@ public class EvuntuProviderRestController {
 			return new ResponseEntity<>(status,HttpStatus.INTERNAL_SERVER_ERROR);
 		}
 	}
+	
+	@RequestMapping(value = "/addCompanyEventBidding", method = RequestMethod.POST)
+	public ResponseEntity<Status> addCompanyEventBidding(@RequestBody CompanyEventBiddingVO companyEventBiddingVO) {
+		LOGGER.info("contoller::addCompanyEventBidding-start");
+		Status status;
+		try {
+			evuntuServices.addCompanyEventBidding(companyEventBiddingVO);
+			status= new Status(1, "Bidding added Successfully !");
+			return new ResponseEntity<>(status,HttpStatus.OK);
+		} catch (Exception e) {
+			LOGGER.error(INTERNAL_SERVER_ERROR+e);
+			status=  new Status(0, e.toString());
+			return new ResponseEntity<>(status,HttpStatus.INTERNAL_SERVER_ERROR);
+		}
+	}
+	
+	@RequestMapping(value = "/updateCompanyEventBidding", method = RequestMethod.POST)
+	public ResponseEntity<Status> updateCompanyEventBidding(@RequestBody CompanyEventBiddingVO companyEventBiddingVO) {
+		LOGGER.info("contoller::updateCompanyEventBidding-start");
+		Status status;
+		try {
+			evuntuServices.updateCompanyEventBidding(companyEventBiddingVO);
+			status= new Status(1, "Bidding updated Successfully !");
+			return new ResponseEntity<>(status,HttpStatus.OK);
+		} catch (Exception e) {
+			LOGGER.error(INTERNAL_SERVER_ERROR+e);
+			status=  new Status(0, e.toString());
+			return new ResponseEntity<>(status,HttpStatus.INTERNAL_SERVER_ERROR);
+		}
+	}
+	
+	@RequestMapping(value = "/deleteCompanyEventBidding", method = RequestMethod.POST)
+	public ResponseEntity<Status> deleteCompanyEventBidding(@RequestParam(value="id", required=true)long companyEventBiddingId) {
+		LOGGER.info("contoller::deleteCompanyEventBidding-start");
+		Status status;
+		try {
+			evuntuServices.removeCompanyEventBidding(companyEventBiddingId);
+			status= new Status(1, "Bidding deleted Successfully !");
+			return new ResponseEntity<>(status,HttpStatus.OK);
+		} catch (Exception e) {
+			LOGGER.error(INTERNAL_SERVER_ERROR+e);
+			status=  new Status(0, e.toString());
+			return new ResponseEntity<>(status,HttpStatus.INTERNAL_SERVER_ERROR);
+		}
+	}
+	
+	@RequestMapping(value = "/listCompanyEventBiddingByCompanyId", method = RequestMethod.GET, produces="application/json")
+	public ResponseEntity<List<CompanyEventBiddingVO>> listCompanyEventBiddingByCompanyId(long companyEventBiddingId) {
+		LOGGER.info("contoller::listCompanyEventBiddingByCompanyId-start");
+		List<CompanyEventBiddingVO> biddingList = null;
+		try {
+			biddingList = evuntuServices.listCompanyEventBiddingByCompanyId(companyEventBiddingId);
+		} catch (Exception e) {
+			LOGGER.error(INTERNAL_SERVER_ERROR+e);
+			return new ResponseEntity<>(biddingList,HttpStatus.INTERNAL_SERVER_ERROR);
+		}
+		return  new ResponseEntity<>(biddingList,HttpStatus.OK);
+	}
+	
+	@RequestMapping(value = "/getCompanyEventBiddingDetails", method = RequestMethod.GET, produces="application/json")
+	public ResponseEntity<CompanyEventBiddingVO> getCompanyEventBiddingDetails(long companyEventBiddingId) {
+		LOGGER.info("contoller::listCompanyEventBiddingByCompanyId-start");
+		CompanyEventBiddingVO biddingDetails = null;
+		try {
+			biddingDetails = evuntuServices.getCompanyEventBiddingDetails(companyEventBiddingId);
+		} catch (Exception e) {
+			LOGGER.error(INTERNAL_SERVER_ERROR+e);
+			return new ResponseEntity<>(biddingDetails,HttpStatus.INTERNAL_SERVER_ERROR);
+		}
+		return  new ResponseEntity<>(biddingDetails,HttpStatus.OK);
+	}
+	
 	
 }

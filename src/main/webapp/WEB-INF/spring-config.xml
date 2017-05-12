@@ -31,16 +31,21 @@
 				<value>com.evuntu.management.model.User</value>
 				<value>com.evuntu.management.model.Company</value>
 				<value>com.evuntu.management.model.FileDetails</value>
+				<value>com.evuntu.management.model.EventServices</value>
+				<value>com.evuntu.management.model.EventMaster</value>
+				<value>com.evuntu.management.model.Facility</value>
+				<value>com.evuntu.management.model.CustomerEventRequest</value>
 			</list>
 		</property>
 		<property name="hibernateProperties">
 			<props>
 				<prop key="hibernate.dialect">org.hibernate.dialect.MySQL5Dialect</prop>
 				<prop key="hibernate.show_sql">true</prop>
-				<!-- <prop key="hibernate.hbm2ddl.auto">update</prop> -->
+			   <!--  <prop key="hibernate.hbm2ddl.auto">update</prop>  -->
 			</props>
 		</property>
 	</bean>
+
 
 	<bean id="txManager"
 		class="org.springframework.orm.hibernate4.HibernateTransactionManager">

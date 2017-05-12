@@ -1,20 +1,17 @@
 package com.evuntu.management.services;
 
-import java.io.UnsupportedEncodingException;
 import java.util.List;
-
-import org.springframework.web.multipart.MultipartFile;
 
 import com.evuntu.management.exception.EvuntuManagementException;
 import com.evuntu.management.model.Company;
+import com.evuntu.management.model.CompanyEventBidding;
 import com.evuntu.management.model.Customer;
-import com.evuntu.management.model.FileDetails;
-import com.evuntu.management.model.Status;
+import com.evuntu.management.vo.CompanyEventBiddingVO;
 import com.evuntu.management.vo.CompanyVO;
 import com.evuntu.management.vo.CustomerEventRequestVO;
 import com.evuntu.management.vo.CustomerVO;
-import com.evuntu.management.vo.EventServicesVO;
 import com.evuntu.management.vo.EventMasterVO;
+import com.evuntu.management.vo.EventServicesVO;
 
 
 public interface EvuntuService {
@@ -49,5 +46,11 @@ public interface EvuntuService {
 	public CustomerEventRequestVO getCustomerEventRequestDetails(long CustomerEventRequestId)throws EvuntuManagementException;
 	public List<CustomerEventRequestVO> listCustomerEventRequestByUserId(long userId)throws EvuntuManagementException;
 	public boolean removeCustomerEventRequest(long CustomerEventRequestId)throws EvuntuManagementException;
+	
+	public boolean addCompanyEventBidding(CompanyEventBiddingVO companyEventBiddingVO) throws EvuntuManagementException;
+	public boolean updateCompanyEventBidding(CompanyEventBiddingVO companyEventBiddingVO) throws EvuntuManagementException;
+	public boolean removeCompanyEventBidding(long companyEventBiddingId) throws EvuntuManagementException;
+	public CompanyEventBiddingVO getCompanyEventBiddingDetails(long companyEventBiddingId) throws EvuntuManagementException;
+	public List<CompanyEventBiddingVO> listCompanyEventBiddingByCompanyId(long companyEventBiddingId) throws EvuntuManagementException;
 	
 }

@@ -4,6 +4,7 @@ import java.util.List;
 
 import com.evuntu.management.exception.EvuntuManagementException;
 import com.evuntu.management.model.Company;
+import com.evuntu.management.model.CompanyEventBidding;
 import com.evuntu.management.model.Customer;
 import com.evuntu.management.model.CustomerEventRequest;
 import com.evuntu.management.model.EventMaster;
@@ -49,4 +50,10 @@ public interface EvuntuDAO {
 	public List getCustomerEventRequestDetails(long customerEventRequestId)throws EvuntuManagementException;
 	public List<CustomerEventRequest> listCustomerEventRequestByUserId(long userId)throws EvuntuManagementException;
 	public boolean removeCustomerEventRequest(long customerEventRequestId)throws EvuntuManagementException;
+	
+	public Long addCompanyEventBidding(CompanyEventBidding companyEventBidding) throws EvuntuManagementException;
+	public boolean updateCompanyEventBidding(CompanyEventBidding companyEventBidding) throws EvuntuManagementException;
+	public boolean removeCompanyEventBidding(long companyEventBiddingId) throws EvuntuManagementException;
+	public List getCompanyEventBiddingDetails(long companyEventBiddingId) throws EvuntuManagementException;
+	List<CompanyEventBidding> listCompanyEventBiddingByCompanyId(long companyId) throws EvuntuManagementException;
 }

@@ -29,7 +29,8 @@ public class CORSFilter implements Filter {
 				"POST, GET, HEAD, OPTIONS");
 		response.setHeader(
 				"Access-Control-Allow-Headers",
-				"X-User-Id, X-Application-Access-Key, Origin, Accept, X-Requested-With, Content-Type, Access-Control-Request-Method, Access-Control-Request-Headers");
+				"Content-Type, Accept, X-Requested-With, remember-me");
+				//"X-User-Id, X-Application-Access-Key, Origin, Accept, X-Requested-With, Content-Type, Access-Control-Request-Method, Access-Control-Request-Headers");
 
 		request.getSession();
 
