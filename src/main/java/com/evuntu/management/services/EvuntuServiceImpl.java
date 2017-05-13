@@ -192,8 +192,7 @@ public class EvuntuServiceImpl implements EvuntuService {
 		if(!list.isEmpty()){
 			BeanUtils.copyProperties(list.get(0), eventServicesVO);
 			return eventServicesVO;
-		}
-		
+		}		
 		return new EventServicesVO();	
 	}
 
@@ -201,6 +200,7 @@ public class EvuntuServiceImpl implements EvuntuService {
 	public List<EventServicesVO> searchEventServices(String eventName, String city) throws EvuntuManagementException {
 		LOGGER.info("Service::searchEventServices-start");
 		List<EventServices> list=evuntuDAO.searchServices(eventName, city);
+		
 		EvuntuManagementHelper helper=new EvuntuManagementHelper();
 		return helper.convertEventServicesDOtoVO(list);
 

@@ -396,7 +396,7 @@ public class EvuntuDAOImpl implements EvuntuDAO {
 
 	@Override
 	public List<EventServices> searchServices(String eventName,String city)throws EvuntuManagementException  {
-		LOGGER.info("DAO::listCompanyr-start");
+		LOGGER.info("DAO::searchServices-start");
 		try{
 			session = sessionFactory.openSession();
 			Criteria servicesList = session.createCriteria(EventServices.class);
@@ -410,7 +410,7 @@ public class EvuntuDAOImpl implements EvuntuDAO {
 				servicesList.addOrder(Order.asc("updatedTime"));
 				servicesList.setMaxResults(10);
 			}
-			LOGGER.info("All the Company details fetched successfully");
+			LOGGER.info("DAO::searchServices-end");
 			return servicesList.list();
 
 		}catch(HibernateException e){

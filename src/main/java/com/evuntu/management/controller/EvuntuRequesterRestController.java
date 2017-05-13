@@ -97,7 +97,7 @@ public class EvuntuRequesterRestController {
 		return new ResponseEntity<>(customerList,HttpStatus.OK);
 	}
 
-	@RequestMapping(value = "deleteCustomer", method = RequestMethod.GET)
+	@RequestMapping(value = "/deleteCustomer", method = RequestMethod.GET)
 	public ResponseEntity<Status> deleteCustomer(@RequestParam(value="id", required=true) long id) {
 		LOGGER.info("contoller::deleteCustomer-start");
 		Status status;
@@ -180,7 +180,7 @@ public class EvuntuRequesterRestController {
 		return new ResponseEntity<>(customerEventRequestVOList,HttpStatus.OK);
 	}
 	
-	@RequestMapping(value = "deleteCustomerEventRequest", method = RequestMethod.GET)
+	@RequestMapping(value = "/deleteCustomerEventRequest", method = RequestMethod.GET)
 	public ResponseEntity<Status> deleteCustomerEventRequest(@RequestParam(value="customerEventRequestId", required=true) long CustomerEventRequestId) {
 		LOGGER.info("contoller::deleteCustomerEventRequest-start");
 		Status status;
