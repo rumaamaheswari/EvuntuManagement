@@ -12,6 +12,7 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.bind.annotation.RequestPart;
 import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.multipart.MultipartFile;
 
@@ -116,24 +117,24 @@ public class EvuntuProviderRestController {
 	}
 	
 	@RequestMapping(value = "/addEventServices", method = RequestMethod.POST, consumes = {"multipart/form-data"})
-	public ResponseEntity<String> addEventServices(@RequestBody EventServicesVO eventServicesVO,@RequestParam("file") MultipartFile[] inputFile) {
+	public ResponseEntity<Status> addEventServices(@RequestPart EventServicesVO eventServicesVO,@RequestParam("file") MultipartFile[] inputFile) {
 		LOGGER.info("contoller::addEvent-start");
 		Status status;
 		Long companyId=eventServicesVO.getCompanyId();
 		if(companyId==null || "".equals(companyId)){
 			LOGGER.error("company id should not be null");
 			status= new Status(0, "company id should not be null");
-			return new ResponseEntity<>(HttpStatus.BAD_REQUEST); 
+			return new ResponseEntity<>(status,HttpStatus.BAD_REQUEST); 
 		}		
 		try{
 			eventServicesVO.setInputFile(Arrays.asList(inputFile));
 			evuntuServices.addEventServices(eventServicesVO);
 			status= new Status(1, "EventServices added Successfully !");
-			return new ResponseEntity<>(HttpStatus.OK);
+			return new ResponseEntity<>(status,HttpStatus.OK);
 		} catch (Exception e) {
 			LOGGER.error(INTERNAL_SERVER_ERROR+e);
 			status=  new Status(0, e.toString());
-			return new ResponseEntity<>(HttpStatus.INTERNAL_SERVER_ERROR);
+			return new ResponseEntity<>(status,HttpStatus.INTERNAL_SERVER_ERROR);
 		}
 
 	}
