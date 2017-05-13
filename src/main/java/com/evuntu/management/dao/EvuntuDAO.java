@@ -37,7 +37,7 @@ public interface EvuntuDAO {
 	
 	public Long addEventServices(EventServices eServices)throws EvuntuManagementException;
 	public boolean updateEventServices(EventServices eServices) throws EvuntuManagementException;
-	public List<EventServicesVO> searchServices(String eventName,String city)throws EvuntuManagementException ;
+	public List<EventServices> searchServices(String eventName,String city)throws EvuntuManagementException ;
 	public List getEventServicesById(Long eventServiceId)throws EvuntuManagementException ;
 	public boolean removeEventServices(Long eventServiceId) throws EvuntuManagementException;
 	public User getUserDetails(String username) throws EvuntuManagementException;

@@ -395,7 +395,7 @@ public class EvuntuDAOImpl implements EvuntuDAO {
 	}
 
 	@Override
-	public List<EventServicesVO> searchServices(String eventName,String city)throws EvuntuManagementException  {
+	public List<EventServices> searchServices(String eventName,String city)throws EvuntuManagementException  {
 		LOGGER.info("DAO::listCompanyr-start");
 		try{
 			session = sessionFactory.openSession();

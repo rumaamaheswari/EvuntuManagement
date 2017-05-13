@@ -13,6 +13,7 @@ import com.evuntu.management.model.Company;
 import com.evuntu.management.model.Customer;
 import com.evuntu.management.model.CustomerEventRequest;
 import com.evuntu.management.model.EventMaster;
+import com.evuntu.management.model.EventServices;
 import com.evuntu.management.model.Facility;
 import com.evuntu.management.model.User;
 import com.evuntu.management.util.PassHashHelper;
@@ -20,6 +21,7 @@ import com.evuntu.management.vo.CompanyVO;
 import com.evuntu.management.vo.CustomerEventRequestVO;
 import com.evuntu.management.vo.CustomerVO;
 import com.evuntu.management.vo.EventMasterVO;
+import com.evuntu.management.vo.EventServicesVO;
 import com.evuntu.management.vo.FacilityVO;
 
 
@@ -69,23 +71,27 @@ public class EvuntuManagementHelper {
 			return customer;
 		}
 		
-		public CustomerVO convertCustomerDOToVO(Customer customer) throws EvuntuManagementException {
+		public List<CustomerVO> convertCustomerDOToVO(List<Customer> customerList) throws EvuntuManagementException {
 			LOGGER.info("Helper::convertCustomerDOToVO-start");
-			CustomerVO customerVO = new CustomerVO();
-			try{
-				customer.setId(customer.getId());
-				customer.setFirstName(customer.getFirstName());
-				customer.setLastName(customer.getLastName());
-				customer.setMobileNumber(customer.getMobileNumber());
-				customer.setAllowToContact(customer.getAllowToContact());
-				customer.setMobileNumber(customer.getMobileNumber());
-				customer.setEmailAddress(customer.getEmailAddress());
-			}
-			catch(Exception e){ 
-				throw new EvuntuManagementException("Excption while converting VO to DO"+e);
+			List<CustomerVO> customerVOList=new ArrayList<>();
+			for(Customer customer:customerList){
+				CustomerVO customerVO = new CustomerVO();
+				try{
+					customer.setId(customer.getId());
+					customer.setFirstName(customer.getFirstName());
+					customer.setLastName(customer.getLastName());
+					customer.setMobileNumber(customer.getMobileNumber());
+					customer.setAllowToContact(customer.getAllowToContact());
+					customer.setMobileNumber(customer.getMobileNumber());
+					customer.setEmailAddress(customer.getEmailAddress());
+					customerVOList.add(customerVO);
+				}
+				catch(Exception e){ 
+					throw new EvuntuManagementException("Exception while converting VO to DO"+e);
+				}
 			}
 			LOGGER.info("Helper::convertCustomerDOToVO-end");
-			return customerVO;
+			return customerVOList;
 		}
 		
 		public User convertCompanyVOToUserDO(CompanyVO companyVO) throws EvuntuManagementException {
@@ -130,29 +136,33 @@ public class EvuntuManagementHelper {
 			LOGGER.info("Helper::convertCompanyVOToDO-end");
 			return company;
 		}
-		public CompanyVO convertCompanyDOToVO(Company company) throws EvuntuManagementException {
+		public List<CompanyVO> convertCompanyDOToVO(List<Company> companylist) throws EvuntuManagementException {
 			LOGGER.info("Helper::convertCustomerDOToVO-start");
-			CompanyVO companyVO = new CompanyVO();
-			try{
-				companyVO.setId(company.getId());
-				companyVO.setCompanyName(company.getCompanyName());
-				companyVO.setAddress(company.getAddress());
-				companyVO.setMobileNumber(company.getMobileNumber());
-				companyVO.setContactPerson(company.getContactPerson());
-				companyVO.setFaceBookLink(company.getMobileNumber());
-				companyVO.setWebsite(company.getWebsite());
-				companyVO.setYouTubeLink(company.getYouTubeLink());
-				companyVO.setBranchName(company.getBranchName());
-				companyVO.setCity(company.getCity());
-				companyVO.setOfficeNumber(company.getOfficeNumber());
-				companyVO.setState(company.getState());
-				companyVO.setCountry(company.getCountry());
-			}
-			catch(Exception e){ 
-				throw new EvuntuManagementException("Excption while converting VO to DO"+e);
+			List<CompanyVO> companyVOList=new ArrayList<>();
+			for(Company company:companylist){
+				CompanyVO companyVO = new CompanyVO();
+				try{
+					companyVO.setId(company.getId());
+					companyVO.setCompanyName(company.getCompanyName());
+					companyVO.setAddress(company.getAddress());
+					companyVO.setMobileNumber(company.getMobileNumber());
+					companyVO.setContactPerson(company.getContactPerson());
+					companyVO.setFaceBookLink(company.getMobileNumber());
+					companyVO.setWebsite(company.getWebsite());
+					companyVO.setYouTubeLink(company.getYouTubeLink());
+					companyVO.setBranchName(company.getBranchName());
+					companyVO.setCity(company.getCity());
+					companyVO.setOfficeNumber(company.getOfficeNumber());
+					companyVO.setState(company.getState());
+					companyVO.setCountry(company.getCountry());
+					companyVOList.add(companyVO);
+				}
+				catch(Exception e){ 
+					throw new EvuntuManagementException("Excption while converting VO to DO"+e);
+				}
 			}
 			LOGGER.info("Helper::convertCompanyDOToVO-end");
-			return companyVO;
+			return companyVOList;
 		}
 
 
@@ -243,6 +253,31 @@ public class EvuntuManagementHelper {
 			}
 			LOGGER.info("Helper::convertCustomerEventRequestVOToDO-end");
 			return customerEventRequestVO;
+		}
+
+
+		public List<EventServicesVO> convertEventServicesDOtoVO(List<EventServices> EventServicesList) throws EvuntuManagementException {
+			LOGGER.info("Helper::convertEventServicesDOtoVO-start");
+			List<EventServicesVO> eventServicesVOList=new ArrayList<>();
+			for(EventServices eventServices:EventServicesList){
+				try{				
+					EventServicesVO eventServicesVO = new EventServicesVO();
+					eventServicesVO.setCompanyId(eventServices.getCompanyId());
+					eventServicesVO.setCity(eventServices.getCity());
+					eventServicesVO.setContactNumber(eventServices.getContactNumber());
+					eventServicesVO.setContactPerson(eventServices.getContactPerson());
+					eventServicesVO.setEventName(eventServices.getEventName());
+					eventServicesVO.setEventServiceId(eventServices.getId());
+					eventServicesVO.setFaceBookLink(eventServices.getFaceBookLink());
+					eventServicesVO.setFileId(eventServices.getFileId());
+					eventServicesVO.setYouTubeLink(eventServices.getFaceBookLink());
+					eventServicesVOList.add(eventServicesVO);
+				}
+				catch(Exception e){
+					throw new EvuntuManagementException("Excption while converting VO to DO"+e);
+				}
+			}
+			return eventServicesVOList;
 		}
 
 }

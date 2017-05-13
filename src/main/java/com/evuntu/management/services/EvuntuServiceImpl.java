@@ -70,19 +70,23 @@ public class EvuntuServiceImpl implements EvuntuService {
 	}
 
 	@Override
-	public List<Customer> listCustomer() throws EvuntuManagementException{
+	public List<CustomerVO> listCustomer() throws EvuntuManagementException{
 		LOGGER.info("Service::listCustomer-start");
-		return evuntuDAO.listCustomer();
+		List<Customer> list=evuntuDAO.listCustomer();		
+		EvuntuManagementHelper helper=new EvuntuManagementHelper();
+		return helper.convertCustomerDOToVO(list);
 	}
 
 	@Override
-	public Customer getCustomerById(Long id) throws EvuntuManagementException { 
+	public CustomerVO getCustomerById(Long id) throws EvuntuManagementException { 
 		LOGGER.info("Service::getCustomerById-start");
-		List list=evuntuDAO.getCustomerById(id);
+		List<?> list=evuntuDAO.getCustomerById(id);
+		CustomerVO customer=new CustomerVO();
 		if(list.isEmpty()){			
-			return new Customer();
+			return new CustomerVO();
 		}
-		return (Customer) list.get(0);		
+		BeanUtils.copyProperties(list.get(0), customer);
+		return customer;		
 	}
 
 	@Override
@@ -121,19 +125,23 @@ public class EvuntuServiceImpl implements EvuntuService {
 	}
 
 	@Override
-	public Company getCompanyById(long id) throws EvuntuManagementException {
+	public CompanyVO getCompanyById(long id) throws EvuntuManagementException {
 		LOGGER.info("Service::getCompanyById-start");
 		List list=evuntuDAO.getCompanyById(id);
+		CompanyVO company=new CompanyVO();
 		if(list.isEmpty()){
-			return new Company();	
-		}		
-		return (Company) list.get(0);
+			return new CompanyVO();	
+		}	
+		BeanUtils.copyProperties(list.get(0), company);
+		return company;
 	}
 
 	@Override
-	public List<Company> listCompany() throws EvuntuManagementException {
+	public List<CompanyVO> listCompany() throws EvuntuManagementException {
 		LOGGER.info("Service::listCompany-start");
-		return evuntuDAO.listCompany();
+		List<Company> list=evuntuDAO.listCompany();		
+		EvuntuManagementHelper helper=new EvuntuManagementHelper();
+		return helper.convertCompanyDOToVO(list);
 	}
 
 	@Override
@@ -179,17 +187,23 @@ public class EvuntuServiceImpl implements EvuntuService {
 	@Override
 	public EventServicesVO getEventServicesById(long eventServiceId) throws EvuntuManagementException {
 		LOGGER.info("Service::getEventServicesById-start");
-		List list=evuntuDAO.getEventServicesById(eventServiceId);
-		if(list.size()>0){
-			return (EventServicesVO) list.get(0);
+		List<?> list=evuntuDAO.getEventServicesById(eventServiceId);
+		EventServicesVO eventServicesVO=new EventServicesVO();
+		if(!list.isEmpty()){
+			BeanUtils.copyProperties(list.get(0), eventServicesVO);
+			return eventServicesVO;
 		}
+		
 		return new EventServicesVO();	
 	}
 
 	@Override
 	public List<EventServicesVO> searchEventServices(String eventName, String city) throws EvuntuManagementException {
 		LOGGER.info("Service::searchEventServices-start");
-		return evuntuDAO.searchServices(eventName, city);
+		List<EventServices> list=evuntuDAO.searchServices(eventName, city);
+		EvuntuManagementHelper helper=new EvuntuManagementHelper();
+		return helper.convertEventServicesDOtoVO(list);
+
 	}
 
 	@Override
@@ -229,13 +243,8 @@ public class EvuntuServiceImpl implements EvuntuService {
 	public List<EventMasterVO> getAllEvents() throws EvuntuManagementException {
 		LOGGER.info("Service::getAllEvents-start");
 		List<EventMaster> eventDOList=evuntuDAO.listEvents();
-		
 		EvuntuManagementHelper helper=new EvuntuManagementHelper();
 		return helper.convertEventMasterDOToEventMasterVO(eventDOList);
-		
-		
-		//BeanUtils.copyProperties(eventDO, eventVO);
-		//return eventVO;
 	}
 
 	@Override

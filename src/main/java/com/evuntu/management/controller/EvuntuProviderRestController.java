@@ -74,9 +74,9 @@ public class EvuntuProviderRestController {
 
 	}
 	@RequestMapping(value = "/getCompany", method = RequestMethod.GET)
-	public ResponseEntity<Company> getCompany(@RequestParam(value="id", required=true) long id) {
+	public ResponseEntity<CompanyVO> getCompany(@RequestParam(value="id", required=true) long id) {
 		LOGGER.info("contoller::getCompany-start");
-		Company company = null;
+		CompanyVO company = null;
 		try {
 			company = evuntuServices.getCompanyById(id);
 
@@ -88,9 +88,9 @@ public class EvuntuProviderRestController {
 	}
 
 	@RequestMapping(value = "/listCompany", method = RequestMethod.GET, produces="application/json")
-	public ResponseEntity<List<Company>> getCompanyList() {
+	public ResponseEntity<List<CompanyVO>> getCompanyList() {
 		LOGGER.info("contoller::getCompanyList-start");
-		List<Company> companyList = null;
+		List<CompanyVO> companyList = null;
 		try {
 			companyList = evuntuServices.listCompany();
 		} catch (Exception e) {

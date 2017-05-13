@@ -71,9 +71,9 @@ public class EvuntuRequesterRestController {
 
 	}
 	@RequestMapping(value = "/getCustomer", method = RequestMethod.GET)
-	public ResponseEntity<Customer>  getCustomer(@RequestParam(value="id", required=true) long id) throws EvuntuManagementException {
+	public ResponseEntity<CustomerVO>  getCustomer(@RequestParam(value="id", required=true) long id) throws EvuntuManagementException {
 		LOGGER.info("contoller::getCustomer-start");
-		Customer customer = null;
+		CustomerVO customer = null;
 		try {
 			customer = evuntuServices.getCustomerById(id);
 
@@ -85,9 +85,9 @@ public class EvuntuRequesterRestController {
 	}
 
 	@RequestMapping(value = "/listCustomer", method = RequestMethod.GET, produces="application/json")
-	public ResponseEntity<List<Customer>> getCustomerList() throws EvuntuManagementException {
+	public ResponseEntity<List<CustomerVO>> getCustomerList() throws EvuntuManagementException {
 		LOGGER.info("contoller::getCustomerList-start");
-		List<Customer> customerList = null;
+		List<CustomerVO> customerList = null;
 		try {
 			customerList = evuntuServices.listCustomer();
 		} catch (Exception e) {

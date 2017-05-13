@@ -18,15 +18,15 @@ public interface EvuntuService {
 
 	public boolean addCustomer(CustomerVO c) throws EvuntuManagementException;
 	public boolean updateCustomer(CustomerVO c) throws EvuntuManagementException;
-	public List<Customer> listCustomer()throws EvuntuManagementException;
-	public Customer getCustomerById(Long id)throws EvuntuManagementException;
+	public List<CustomerVO> listCustomer()throws EvuntuManagementException;
+	public CustomerVO getCustomerById(Long id)throws EvuntuManagementException;
 	public boolean removeCustomer(Long id)throws EvuntuManagementException;
 	//public Customer authenticate(String userName, String password);
 	
 	public boolean addCompany(CompanyVO company) throws EvuntuManagementException;
 	public boolean updateCompany(CompanyVO company)throws EvuntuManagementException;
-	public List<Company> listCompany()throws EvuntuManagementException;
-	public Company getCompanyById(long id)throws EvuntuManagementException;	
+	public List<CompanyVO> listCompany()throws EvuntuManagementException;
+	public CompanyVO getCompanyById(long id)throws EvuntuManagementException;	
 	public boolean removeCompany(long id)throws EvuntuManagementException;
 	
 	public boolean addEventServices(EventServicesVO eventServices)throws EvuntuManagementException;
