@@ -2,6 +2,8 @@ package com.evuntu.management.controller;
 
 import java.io.File;
 import java.io.IOException;
+import java.util.ArrayList;
+import java.util.List;
 
 import javax.servlet.ServletContext;
 
@@ -32,26 +34,33 @@ public class FileUploadController {
      private static final Logger LOGGER = Logger.getLogger(FileUploadController.class);
      
 	 @RequestMapping(value = "/fileupload", headers=("content-type=multipart/*"), method = RequestMethod.POST)
-	 public ResponseEntity<FileInfo> fileupload(@RequestParam("file") MultipartFile inputFile) throws EvuntuManagementException{
+	 public ResponseEntity<List<FileInfo>> fileupload(@RequestParam("test") MultipartFile[] inputFile) throws EvuntuManagementException{
 		  LOGGER.info("FileUploadController::fileupload-start");
-		  FileInfo fileInfo = new FileInfo();
+		 
+		  List<FileInfo> fileList=new ArrayList<>();
 		  HttpHeaders headers = new HttpHeaders();
-		  if (!inputFile.isEmpty()) {
+		  for(int i=0;i<inputFile.length;i++){
+			  
+			 if (!inputFile[i].isEmpty()) {
 			   try {
-				    File destinationFile = upload(inputFile);	    
+				    FileInfo fileInfo = new FileInfo();
+				    File destinationFile = upload(inputFile[i]);	    
 				    
 				    fileInfo.setFileName(destinationFile.getPath());
-				    fileInfo.setFileSize(inputFile.getSize());
+				    fileInfo.setFileSize(inputFile[i].getSize());
+				    fileList.add(fileInfo);
+				    headers.add("File Uploaded Successfully - ", inputFile[i].getOriginalFilename());
 				    
-				    headers.add("File Uploaded Successfully - ", inputFile.getOriginalFilename());
-				    return new ResponseEntity<>(fileInfo, headers, HttpStatus.OK);
 			   } catch (Exception e) {
 				   LOGGER.error(INTERNAL_SERVER_ERROR+e);
 				   return new ResponseEntity<>(HttpStatus.BAD_REQUEST);
 			   }
-		  }else{
-		   return new ResponseEntity<>(HttpStatus.BAD_REQUEST);
-		  }
+			  }else{
+			   return new ResponseEntity<>(HttpStatus.BAD_REQUEST);
+			  }
+		  } 
+		  return new ResponseEntity<>(fileList, headers, HttpStatus.OK);
+		 // return new ResponseEntity<>(HttpStatus.OK);
 	 }
 	 
 	 /*@RequestMapping(value = "/fileupload1", headers=("content-type=multipart/*"), method = RequestMethod.POST)

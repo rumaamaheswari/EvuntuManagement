@@ -1,7 +1,6 @@
 package com.evuntu.management.controller;
 
-import java.util.ArrayList;
-import java.util.Iterator;
+import java.util.Arrays;
 import java.util.List;
 
 import org.apache.log4j.Logger;
@@ -15,15 +14,14 @@ import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.multipart.MultipartFile;
-import org.springframework.web.multipart.MultipartHttpServletRequest;
 
 import com.evuntu.management.model.Company;
 import com.evuntu.management.model.Status;
 import com.evuntu.management.services.EvuntuService;
 import com.evuntu.management.vo.CompanyEventBiddingVO;
 import com.evuntu.management.vo.CompanyVO;
-import com.evuntu.management.vo.EventServicesVO;
 import com.evuntu.management.vo.EventMasterVO;
+import com.evuntu.management.vo.EventServicesVO;
 
 
 @RestController
@@ -118,7 +116,7 @@ public class EvuntuProviderRestController {
 	}
 	
 	@RequestMapping(value = "/addEventServices", method = RequestMethod.POST)
-	public ResponseEntity<String> addEventServices(@RequestBody EventServicesVO eventServicesVO) {
+	public ResponseEntity<String> addEventServices(@RequestBody EventServicesVO eventServicesVO,@RequestParam("file") MultipartFile[] inputFile) {
 		LOGGER.info("contoller::addEvent-start");
 		Status status;
 		Long companyId=eventServicesVO.getCompanyId();
@@ -128,6 +126,7 @@ public class EvuntuProviderRestController {
 			return new ResponseEntity<>(HttpStatus.BAD_REQUEST); 
 		}		
 		try{
+			eventServicesVO.setInputFile(Arrays.asList(inputFile));
 			evuntuServices.addEventServices(eventServicesVO);
 			status= new Status(1, "EventServices added Successfully !");
 			return new ResponseEntity<>(HttpStatus.OK);
