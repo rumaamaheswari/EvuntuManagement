@@ -59,10 +59,15 @@ public class Company {
 	@Column(name="COUNTRY")
 	private String country;
 	
+	@Column(name="USER_ID")
+	private Long userId;
+	
 	/*@OneToOne(cascade = CascadeType.ALL)
-	@JoinColumn(name = "USER_ID")
-	private User users;
-	*/
+	@JoinColumn(name = "USER_ID")*/
+	/*@OneToOne(targetEntity=User.class,cascade=CascadeType.ALL)
+	@JoinColumn(name="USER_ID",referencedColumnName="USER_ID")
+	private User users;*/
+	
 	
 
 	
@@ -183,18 +188,34 @@ public class Company {
 		this.country = country;
 	}
 	
+
 	/**
-	 * @return the users
-	 *//*
-	public User getUsers() {
-		return users;
+	 * @return the userId
+	 */
+	public Long getUserId() {
+		return userId;
 	}
 
-	*//**
-	 * @param users the users to set
-	 *//*
-	public void setUsers(User users) {
-		this.users = users;
+	/**
+	 * @param userId the userId to set
+	 */
+	public void setUserId(Long userId) {
+		this.userId = userId;
+	}
+
+	
+	/**
+	 * @return the users
+	 */
+	/*public User getUsers() {
+		return users;
 	}*/
 
+	/**
+	 * @param users the users to set
+	 */
+	/*public void setUsers(User users) {
+		this.users = users;
+	}
+*/
 }

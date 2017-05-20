@@ -1,9 +1,7 @@
 package com.evuntu.management.model;
 
 import java.util.ArrayList;
-import java.util.HashSet;
 import java.util.List;
-import java.util.Set;
 
 import javax.persistence.CascadeType;
 import javax.persistence.Column;
@@ -38,7 +36,7 @@ public class EventMaster {
 	
 	@OneToMany(cascade = CascadeType.ALL,fetch=FetchType.EAGER)
 	@JoinTable(name = "EVENT_FACILITY", joinColumns = { @JoinColumn(name = "EVENT_ID") }, inverseJoinColumns = { @JoinColumn(name = "FACILITY_ID") })	
-	private List<Facility> facility=new ArrayList<Facility>(); 
+	private List<Facility> facility=new ArrayList<>(); 
 
 	
 

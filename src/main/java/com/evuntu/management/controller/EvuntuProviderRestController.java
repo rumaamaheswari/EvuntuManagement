@@ -1,5 +1,6 @@
 package com.evuntu.management.controller;
 
+import java.math.BigInteger;
 import java.util.Arrays;
 import java.util.List;
 
@@ -16,12 +17,12 @@ import org.springframework.web.bind.annotation.RequestPart;
 import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.multipart.MultipartFile;
 
-import com.evuntu.management.model.Company;
 import com.evuntu.management.model.Status;
 import com.evuntu.management.services.EvuntuService;
 import com.evuntu.management.vo.CompanyEventBiddingVO;
 import com.evuntu.management.vo.CompanyVO;
 import com.evuntu.management.vo.EventMasterVO;
+import com.evuntu.management.vo.EventServicesResponseVO;
 import com.evuntu.management.vo.EventServicesVO;
 
 
@@ -120,7 +121,7 @@ public class EvuntuProviderRestController {
 	public ResponseEntity<Status> addEventServices(@RequestPart EventServicesVO eventServicesVO,@RequestParam("file") MultipartFile[] inputFile) {
 		LOGGER.info("contoller::addEvent-start");
 		Status status;
-		Long companyId=eventServicesVO.getCompanyId();
+		BigInteger companyId=eventServicesVO.getCompanyId();
 		if(companyId==null || "".equals(companyId)){
 			LOGGER.error("company id should not be null");
 			status= new Status(0, "company id should not be null");
@@ -160,9 +161,9 @@ public class EvuntuProviderRestController {
 
 	}
 	@RequestMapping(value = "/getEventServices", method = RequestMethod.GET)
-	public ResponseEntity<EventServicesVO> getEventServices(@RequestParam(value="id", required=true) long id) {
+	public ResponseEntity<EventServicesResponseVO> getEventServices(@RequestParam(value="id", required=true) long id) {
 		LOGGER.info("contoller::getEventServices-start");
-		EventServicesVO eventServices = null;
+		EventServicesResponseVO eventServices = null;
 		try {
 			eventServices = evuntuServices.getEventServicesById(id);
 
@@ -174,9 +175,10 @@ public class EvuntuProviderRestController {
 	}
 
 	@RequestMapping(value = "/searchEventServices", method = RequestMethod.GET)
-	public ResponseEntity<List<EventServicesVO>> searchEventServices(@RequestParam(value="name") String name,@RequestParam(value="city") String city) {
+	public ResponseEntity<List<EventServicesResponseVO>> searchEventServices(@RequestParam(value="name",required=false) String name,
+								@RequestParam(value="city",required=false) String city) {
 		LOGGER.info("contoller::searchEventServices-start");
-		List<EventServicesVO> eventServicesList = null;
+		List<EventServicesResponseVO> eventServicesList = null;
 		try {
 			eventServicesList = evuntuServices.searchEventServices(name,city);
 		} catch (Exception e) {

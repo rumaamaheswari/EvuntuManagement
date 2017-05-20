@@ -390,7 +390,7 @@ public class EvuntuDAOImpl implements EvuntuDAO {
 		}finally{
 			session.close();
 		}
-		LOGGER.info("Event Service details updated successfully for User::"+eServices.getId());
+		LOGGER.info("Event Service details updated successfully for User::"+eServices.getEventServiceId());
 		return true;		
 	}
 
@@ -401,7 +401,7 @@ public class EvuntuDAOImpl implements EvuntuDAO {
 			session = sessionFactory.openSession();
 			Criteria servicesList = session.createCriteria(EventServices.class);
 			if(eventName!=""){
-				servicesList.add(Restrictions.like("name", eventName));
+				servicesList.add(Restrictions.like("eventName", eventName));
 			}
 			if(city!=""){
 				servicesList.add(Restrictions.eq("city", city));
@@ -416,6 +416,25 @@ public class EvuntuDAOImpl implements EvuntuDAO {
 		}catch(HibernateException e){
 			throw new EvuntuManagementException("Error while accessing db"+e);
 		}finally{
+			session.close();
+		}
+	}
+	
+	@Override
+	public List<FileDetails> getFileDetails(Long eventServicesId)throws EvuntuManagementException  {
+		LOGGER.info("DAO::getFileDetails-start");
+		try{
+			session = sessionFactory.openSession();
+			Criteria cr = session.createCriteria(FileDetails.class);
+			cr.add(Restrictions.eq("id", eventServicesId));
+			LOGGER.info("Filedetails loaded fro service="+eventServicesId);
+			return  cr.list();
+		}catch(HibernateException e){
+			throw new EvuntuManagementException("Error while accessing db"+e);
+		}catch(Exception e){
+			throw new EvuntuManagementException("Internal server error"+e);
+		}
+		finally{
 			session.close();
 		}
 	}

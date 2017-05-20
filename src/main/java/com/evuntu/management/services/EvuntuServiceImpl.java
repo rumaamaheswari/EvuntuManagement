@@ -29,6 +29,7 @@ import com.evuntu.management.vo.CompanyVO;
 import com.evuntu.management.vo.CustomerEventRequestVO;
 import com.evuntu.management.vo.CustomerVO;
 import com.evuntu.management.vo.EventMasterVO;
+import com.evuntu.management.vo.EventServicesResponseVO;
 import com.evuntu.management.vo.EventServicesVO;
 
 
@@ -127,7 +128,7 @@ public class EvuntuServiceImpl implements EvuntuService {
 	@Override
 	public CompanyVO getCompanyById(long id) throws EvuntuManagementException {
 		LOGGER.info("Service::getCompanyById-start");
-		List list=evuntuDAO.getCompanyById(id);
+		List<?> list=evuntuDAO.getCompanyById(id);
 		CompanyVO company=new CompanyVO();
 		if(list.isEmpty()){
 			return new CompanyVO();	
@@ -161,7 +162,7 @@ public class EvuntuServiceImpl implements EvuntuService {
 		FileUploadUtil fileUtil=new FileUploadUtil();
 		for(MultipartFile file:eventServicesVO.getInputFile()){
 			if (file != null && (!file.isEmpty())) {
-			    fileUtil.upload(file); 
+			    fileUtil.upload(file,eventServicesVO.getCompanyId()); 
 			    FileDetails fileDetails =fileUtil.prepareObjectToStore(file,eventId);
 				fileDetList.add(fileDetails);
 			}
@@ -185,24 +186,40 @@ public class EvuntuServiceImpl implements EvuntuService {
 	}
 	
 	@Override
-	public EventServicesVO getEventServicesById(long eventServiceId) throws EvuntuManagementException {
+	public EventServicesResponseVO getEventServicesById(long eventServiceId) throws EvuntuManagementException {
 		LOGGER.info("Service::getEventServicesById-start");
+		EvuntuManagementHelper helper=new EvuntuManagementHelper();
 		List<?> list=evuntuDAO.getEventServicesById(eventServiceId);
-		EventServicesVO eventServicesVO=new EventServicesVO();
+		EventServicesResponseVO eventServicesVO=new EventServicesResponseVO();
 		if(!list.isEmpty()){
-			BeanUtils.copyProperties(list.get(0), eventServicesVO);
-			return eventServicesVO;
+			EventServices eventServices=(EventServices) list.get(0);
+			List<FileDetails> filesList=evuntuDAO.getFileDetails(eventServiceId);
+			eventServices.setFileDetails(filesList);
+			eventServicesVO=helper.convertEventServicesDOtoVO(eventServices);
 		}		
-		return new EventServicesVO();	
+		return eventServicesVO;	
 	}
 
 	@Override
-	public List<EventServicesVO> searchEventServices(String eventName, String city) throws EvuntuManagementException {
+	public List<EventServicesResponseVO> searchEventServices(String eventName, String city) throws EvuntuManagementException {
 		LOGGER.info("Service::searchEventServices-start");
-		List<EventServices> list=evuntuDAO.searchServices(eventName, city);
-		
 		EvuntuManagementHelper helper=new EvuntuManagementHelper();
-		return helper.convertEventServicesDOtoVO(list);
+		List<EventServicesResponseVO> reponseList=new ArrayList<>();
+		if(eventName==null){
+			eventName="";
+		}
+		if(city==null){
+			city="";
+		}
+		List<EventServices> list=evuntuDAO.searchServices(eventName, city);
+		for(EventServices eventServices:list){
+			List<FileDetails> filesList=evuntuDAO.getFileDetails(eventServices.getEventServiceId());
+			eventServices.setFileDetails(filesList);
+		}	
+		for(EventServices eventServices:list){
+			reponseList.add(helper.convertEventServicesDOtoVO(eventServices));
+		}		
+		return reponseList;
 
 	}
 
@@ -361,7 +378,7 @@ public class EvuntuServiceImpl implements EvuntuService {
 	public CompanyEventBiddingVO getCompanyEventBiddingDetails(long companyEventBiddingId) throws EvuntuManagementException {
 		LOGGER.info("Service::getCompanyEventBiddingDetails-start");
 		CompanyEventBiddingVO companyEventBiddingVO=new CompanyEventBiddingVO();
-		List list=evuntuDAO.getCompanyEventBiddingDetails(companyEventBiddingId);
+		List<?> list=evuntuDAO.getCompanyEventBiddingDetails(companyEventBiddingId);
 		if(list.isEmpty()){			
 			return companyEventBiddingVO;
 		}
@@ -374,7 +391,6 @@ public class EvuntuServiceImpl implements EvuntuService {
 			throws EvuntuManagementException {
 		LOGGER.info("Service::listCompanyEventBiddingByUserId-start");
 		List<CompanyEventBiddingVO> companyEventBiddingVOList=new ArrayList<>();
-		EvuntuManagementHelper helper=new EvuntuManagementHelper();
 		for (CompanyEventBidding cmpyEventBidding:evuntuDAO.listCompanyEventBiddingByCompanyId(companyEventBiddingId)){
 			CompanyEventBiddingVO companyEventBiddingVO=new CompanyEventBiddingVO();
 			BeanUtils.copyProperties(cmpyEventBidding, companyEventBiddingVO);

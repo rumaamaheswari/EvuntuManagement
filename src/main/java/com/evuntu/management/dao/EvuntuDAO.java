@@ -38,6 +38,7 @@ public interface EvuntuDAO {
 	public Long addEventServices(EventServices eServices)throws EvuntuManagementException;
 	public boolean updateEventServices(EventServices eServices) throws EvuntuManagementException;
 	public List<EventServices> searchServices(String eventName,String city)throws EvuntuManagementException ;
+	public List<FileDetails> getFileDetails(Long eventServicesId) throws EvuntuManagementException;
 	public List getEventServicesById(Long eventServiceId)throws EvuntuManagementException ;
 	public boolean removeEventServices(Long eventServiceId) throws EvuntuManagementException;
 	public User getUserDetails(String username) throws EvuntuManagementException;
@@ -56,4 +57,5 @@ public interface EvuntuDAO {
 	public boolean removeCompanyEventBidding(long companyEventBiddingId) throws EvuntuManagementException;
 	public List getCompanyEventBiddingDetails(long companyEventBiddingId) throws EvuntuManagementException;
 	List<CompanyEventBidding> listCompanyEventBiddingByCompanyId(long companyId) throws EvuntuManagementException;
+	
 }

@@ -11,7 +11,7 @@ import org.springframework.web.multipart.MultipartFile;
  *
  */
 
-public class EventServicesVO {
+public class EventServicesResponseVO {
 
 
 	private BigInteger eventServiceId;
@@ -29,14 +29,6 @@ public class EventServicesVO {
 	private String youTubeLink;
 	
 	private String contactNumber;
-	
-/*	private BigInteger fileId;
-	
-	private String fileName;
-	
-	private String filePath;*/
-	
-	private  List<MultipartFile> inputFile;
 	
 	private  List<FileDetailsVO> fileDetails;
 
@@ -97,14 +89,6 @@ public class EventServicesVO {
 		this.contactNumber = contactNumber;
 	}
 
-	/*public BigInteger getFileId() {
-		return fileId;
-	}
-
-	public void setFileId(BigInteger fileId) {
-		this.fileId = fileId;
-	}*/
-
 	public BigInteger getEventServiceId() {
 		return eventServiceId;
 	}
@@ -113,36 +97,7 @@ public class EventServicesVO {
 		this.eventServiceId = eventServiceId;
 	}
 
-	/**
-	 * @return the inputFile
-	 */
-	public List<MultipartFile> getInputFile() {
-		return inputFile;
-	}
-
-	/**
-	 * @param inputFile the inputFile to set
-	 */
-	public void setInputFile(List<MultipartFile> inputFile) {
-		this.inputFile = inputFile;
-	}
-
-	/*public String getFileName() {
-		return fileName;
-	}
-
-	public void setFileName(String fileName) {
-		this.fileName = fileName;
-	}
-
-	public String getFilePath() {
-		return filePath;
-	}
-
-	public void setFilePath(String filePath) {
-		this.filePath = filePath;
-	}*/
-
+	
 	public List<FileDetailsVO> getFileDetails() {
 		return fileDetails;
 	}

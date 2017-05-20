@@ -1,80 +1,38 @@
-package com.evuntu.management.model;
+package com.evuntu.management.vo;
 
 import java.io.Serializable;
 import java.sql.Timestamp;
 
-import javax.persistence.CascadeType;
-import javax.persistence.Column;
-import javax.persistence.Entity;
-import javax.persistence.GeneratedValue;
-import javax.persistence.GenerationType;
-import javax.persistence.Id;
-import javax.persistence.JoinColumn;
-import javax.persistence.ManyToOne;
-import javax.persistence.Table;
 
 
-
-@Entity
-@Table(name = "FILE_DETAILS")
-public class FileDetails implements Serializable{
+public class FileDetailsVO implements Serializable{
 
 	private static final long serialVersionUID = 98756779L;
-	@Id
-	@GeneratedValue(strategy = GenerationType.AUTO)
-	@Column(name = "FILE_ID", unique = true, nullable = false)
+
 	private Long fileId;
 	
-	@Column(name = "FILE_NAME", nullable = false)
 	private String fileName;
 	
-	@Column(name = "FILE_PATH", nullable = false)
 	private String filePath;
 	
-	@Column(name = "FILE_TYPE", nullable = false)
 	private String fileType;
 	
-	@Column(name = "FILE_DESC", nullable = false)
 	private String fileDesc;
 	
-	@Column(name = "TIMESTAMP", nullable = false)
 	private Timestamp fileUploadedTime;
 	
-	@Column(name = "USER_ID", nullable = false)
 	private String userId;
 	
-	@Column(name = "FILE_SIZE", nullable = true)
 	private Long fileSize;
 	
-	@Column(name = "STATUS", nullable = false)
 	private char status;
 	
-	@Column(name = "EVENT_SERVICES_ID", nullable = false)
-	private Long eventServicesId;
-	
-	/*//bi-directional many-to-one association to EventService
-	@ManyToOne(cascade=CascadeType.ALL)
-	@JoinColumn(name="EVENT_SERVICES_ID")
-	private EventServices eventServices;*/
-	
-	
+	private Long eventServicesId;	
 	/**
 	 * @return the fileId
 	 */
 	public Long getFileId() {
 	    return fileId;
-	}
-	/**
-	 * @return the eventServicesId
-	 */
-	public Long getEventServicesId() {
-		return eventServicesId;
-	}
-	/**
-	 * @param eventServicesId the eventServicesId to set
-	 */
-	public void setEventServicesId(Long eventServicesId) {
-		this.eventServicesId = eventServicesId;
 	}
 	/**
 	 * @param fileId the fileId to set
@@ -203,7 +161,7 @@ public class FileDetails implements Serializable{
 	        return false;
 	    if (getClass() != obj.getClass())
 	        return false;
-	    FileDetails other = (FileDetails) obj;
+	    FileDetailsVO other = (FileDetailsVO) obj;
 	    if (fileDesc == null) {
 	        if (other.fileDesc != null)
 	            return false;
@@ -245,6 +203,12 @@ public class FileDetails implements Serializable{
 	    } else if (!userId.equals(other.userId))
 	        return false;
 	    return true;
+	}
+	public Long getEventServicesId() {
+		return eventServicesId;
+	}
+	public void setEventServicesId(Long eventServicesId) {
+		this.eventServicesId = eventServicesId;
 	}
 	
 

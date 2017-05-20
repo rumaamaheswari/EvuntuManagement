@@ -11,6 +11,7 @@ import com.evuntu.management.vo.CompanyVO;
 import com.evuntu.management.vo.CustomerEventRequestVO;
 import com.evuntu.management.vo.CustomerVO;
 import com.evuntu.management.vo.EventMasterVO;
+import com.evuntu.management.vo.EventServicesResponseVO;
 import com.evuntu.management.vo.EventServicesVO;
 
 
@@ -31,8 +32,8 @@ public interface EvuntuService {
 	
 	public boolean addEventServices(EventServicesVO eventServices)throws EvuntuManagementException;
 	public boolean updateEventServices(EventServicesVO eventServices)throws EvuntuManagementException;
-	public List<EventServicesVO> searchEventServices(String name, String city)throws EvuntuManagementException;
-	public EventServicesVO getEventServicesById(long id)throws EvuntuManagementException;
+	public List<EventServicesResponseVO> searchEventServices(String name, String city)throws EvuntuManagementException;
+	public EventServicesResponseVO getEventServicesById(long id)throws EvuntuManagementException;
 	public boolean deleteEventServices(long id)throws EvuntuManagementException;
 	
 	public String authenticate(String userName, String password)throws EvuntuManagementException;
