@@ -121,7 +121,7 @@ public class EvuntuProviderRestController {
 	public ResponseEntity<Status> addEventServices(@RequestPart EventServicesVO eventServicesVO,@RequestParam("file") MultipartFile[] inputFile) {
 		LOGGER.info("contoller::addEvent-start");
 		Status status;
-		BigInteger companyId=eventServicesVO.getCompanyId();
+		Long companyId=eventServicesVO.getCompanyId();
 		if(companyId==null || "".equals(companyId)){
 			LOGGER.error("company id should not be null");
 			status= new Status(0, "company id should not be null");

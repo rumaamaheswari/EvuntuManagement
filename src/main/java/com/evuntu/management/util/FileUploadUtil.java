@@ -2,7 +2,6 @@ package com.evuntu.management.util;
 
 import java.io.File;
 import java.io.IOException;
-import java.math.BigInteger;
 import java.sql.Timestamp;
 import java.util.Date;
 
@@ -24,7 +23,7 @@ public class FileUploadUtil {
 	 * @throws EvuntuManagementException 
 	 * @throws IOException
 	 */
-	public boolean upload(MultipartFile inputFile,BigInteger companyId) throws EvuntuManagementException  {
+	public boolean upload(MultipartFile inputFile,Long companyId) throws EvuntuManagementException  {
 		LOGGER.info("FileUploadController::upload-start");
 		String filePath="D:\\evuntuLog\\uploaded\\"+companyId;
 		String originalFilename = inputFile.getOriginalFilename();

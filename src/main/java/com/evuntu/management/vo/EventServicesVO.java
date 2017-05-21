@@ -14,9 +14,9 @@ import org.springframework.web.multipart.MultipartFile;
 public class EventServicesVO {
 
 
-	private BigInteger eventServiceId;
+	private Long eventServiceId;
 	
-	private BigInteger companyId;
+	private Long companyId;
 	
 	private String eventName;
 	
@@ -38,7 +38,7 @@ public class EventServicesVO {
 	
 	private  List<MultipartFile> inputFile;
 	
-	private  List<FileDetailsVO> fileDetails;
+	//private  List<FileDetailsVO> fileDetails;
 
 	
 	public String getFaceBookLink() {
@@ -81,11 +81,11 @@ public class EventServicesVO {
 		this.eventName = eventName;
 	}
 
-	public BigInteger getCompanyId() {
+	public Long getCompanyId() {
 		return companyId;
 	}
 
-	public void setCompanyId(BigInteger companyId) {
+	public void setCompanyId(Long companyId) {
 		this.companyId = companyId;
 	}
 
@@ -105,11 +105,11 @@ public class EventServicesVO {
 		this.fileId = fileId;
 	}*/
 
-	public BigInteger getEventServiceId() {
+	public Long getEventServiceId() {
 		return eventServiceId;
 	}
 
-	public void setEventServiceId(BigInteger eventServiceId) {
+	public void setEventServiceId(Long eventServiceId) {
 		this.eventServiceId = eventServiceId;
 	}
 
@@ -143,13 +143,13 @@ public class EventServicesVO {
 		this.filePath = filePath;
 	}*/
 
-	public List<FileDetailsVO> getFileDetails() {
+	/*public List<FileDetailsVO> getFileDetails() {
 		return fileDetails;
 	}
 
 	public void setFileDetails(List<FileDetailsVO> fileDetails) {
 		this.fileDetails = fileDetails;
-	}
+	}*/
 
 	
 }

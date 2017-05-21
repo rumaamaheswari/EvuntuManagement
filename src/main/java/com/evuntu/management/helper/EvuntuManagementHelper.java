@@ -3,7 +3,6 @@
  */
 package com.evuntu.management.helper;
 
-import java.math.BigInteger;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -267,12 +266,12 @@ public class EvuntuManagementHelper {
 				EventServicesResponseVO eventServicesVO = new EventServicesResponseVO();
 				List<FileDetailsVO> fileDetailsVOList=new ArrayList<>();
 				try{				
-					eventServicesVO.setCompanyId(BigInteger.valueOf(eventServices.getCompanyId()));
+					eventServicesVO.setCompanyId(eventServices.getCompanyId());
 					eventServicesVO.setCity(eventServices.getCity());
 					eventServicesVO.setContactNumber(eventServices.getContactNumber());
 					eventServicesVO.setContactPerson(eventServices.getContactPerson());
 					eventServicesVO.setEventName(eventServices.getEventName());
-					eventServicesVO.setEventServiceId(BigInteger.valueOf(eventServices.getEventServiceId()));
+					eventServicesVO.setEventServiceId(eventServices.getEventServiceId());
 					eventServicesVO.setFaceBookLink(eventServices.getFacebookLink());
 					eventServicesVO.setYouTubeLink(eventServices.getYoutubeLink());
 					for(FileDetails fileDetails:eventServices.getFileDetails()){

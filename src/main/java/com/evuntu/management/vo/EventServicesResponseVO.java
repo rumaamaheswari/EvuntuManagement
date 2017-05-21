@@ -1,9 +1,6 @@
 package com.evuntu.management.vo;
 
-import java.math.BigInteger;
 import java.util.List;
-
-import org.springframework.web.multipart.MultipartFile;
 
 /**
  * Value bean
@@ -14,9 +11,9 @@ import org.springframework.web.multipart.MultipartFile;
 public class EventServicesResponseVO {
 
 
-	private BigInteger eventServiceId;
+	private Long eventServiceId;
 	
-	private BigInteger companyId;
+	private Long companyId;
 	
 	private String eventName;
 	
@@ -73,11 +70,11 @@ public class EventServicesResponseVO {
 		this.eventName = eventName;
 	}
 
-	public BigInteger getCompanyId() {
+	public Long getCompanyId() {
 		return companyId;
 	}
 
-	public void setCompanyId(BigInteger companyId) {
+	public void setCompanyId(Long companyId) {
 		this.companyId = companyId;
 	}
 
@@ -89,11 +86,11 @@ public class EventServicesResponseVO {
 		this.contactNumber = contactNumber;
 	}
 
-	public BigInteger getEventServiceId() {
+	public Long getEventServiceId() {
 		return eventServiceId;
 	}
 
-	public void setEventServiceId(BigInteger eventServiceId) {
+	public void setEventServiceId(Long eventServiceId) {
 		this.eventServiceId = eventServiceId;
 	}
 
