@@ -1,17 +1,12 @@
 package com.evuntu.management.model;
 
-import java.util.ArrayList;
-import java.util.List;
+import java.util.HashSet;
+import java.util.Set;
 
-import javax.persistence.CascadeType;
 import javax.persistence.Column;
 import javax.persistence.Entity;
-import javax.persistence.FetchType;
 import javax.persistence.GeneratedValue;
-import javax.persistence.GenerationType;
 import javax.persistence.Id;
-import javax.persistence.JoinColumn;
-import javax.persistence.JoinTable;
 import javax.persistence.OneToMany;
 import javax.persistence.Table;
 
@@ -26,39 +21,28 @@ import javax.persistence.Table;
 @Table(name="EVENT")
 public class EventMaster {
 
-	@Id
+	@Id	
+	@GeneratedValue
 	@Column(name="EVENT_ID")
-	@GeneratedValue(strategy = GenerationType.IDENTITY)
 	private Long eventId;
 	
 	@Column(name="EVENT_NAME")
 	private String eventName;
 	
-	@OneToMany(cascade = CascadeType.ALL,fetch=FetchType.EAGER)
+	/*@OneToMany(cascade = CascadeType.ALL,fetch=FetchType.EAGER)
 	@JoinTable(name = "EVENT_FACILITY", joinColumns = { @JoinColumn(name = "EVENT_ID") }, inverseJoinColumns = { @JoinColumn(name = "FACILITY_ID") })	
-	private List<Facility> facility=new ArrayList<>(); 
-
+	private List<Facility> facility=new ArrayList<>(); */
 	
+	@OneToMany(mappedBy = "event")
+	private Set<EventFacility> eventFacility = new HashSet<>();
 
-	public EventMaster() {
-		
-	}
-
-	public EventMaster(Long eventId, String eventName, List<Facility> facility) {
+	//no default constuctor -parent insert will not work if provided
+	public EventMaster(Long eventId, String eventName) {
 		this.eventId = eventId;
 		this.eventName = eventName;
-		this.facility = facility;
+		
 	}
-
-
-	public List<Facility> getFacility() {
-		return facility;
-	}
-
-	public void setFacility(List<Facility> facility) {
-		this.facility = facility;
-	}
-
+	
 	public Long getEventId() {
 		return eventId;
 	}
@@ -74,4 +58,17 @@ public class EventMaster {
 	public void setEventName(String eventName) {
 		this.eventName = eventName;
 	}
+
+	
+	public Set<EventFacility> getEventFacility() {
+		return eventFacility;
+	}
+
+	public void setEventFacility(Set<EventFacility> eventFacility) {
+		this.eventFacility = eventFacility;
+	}
+	
+	public void addEventFacility(EventFacility eventFacility) {
+		this.eventFacility.add(eventFacility);
+	}	
 }

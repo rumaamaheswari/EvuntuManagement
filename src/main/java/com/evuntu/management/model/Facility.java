@@ -1,10 +1,14 @@
 package com.evuntu.management.model;
 
+import java.util.HashSet;
+import java.util.Set;
+
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
+import javax.persistence.OneToMany;
 import javax.persistence.Table;
 
 /**
@@ -24,10 +28,11 @@ public class Facility {
 	@Column(name="FACILITY_NAME")
 	private String facilityName;
 	
-
-	public Facility() {
-	}
-
+	 @OneToMany(mappedBy = "facility")
+	 private Set<EventFacility> eventFacility = new HashSet<>();
+	
+	//no default constuctor -parent insert will not work if provided
+	 
 	public Facility(Long facilityId, String facilityName) {
 		this.facilityId = facilityId;
 		this.facilityName = facilityName;
@@ -47,6 +52,24 @@ public class Facility {
 
 	public void setFacilityName(String facilityName) {
 		this.facilityName = facilityName;
+	}
+
+	/**
+	 * @return the eventFacility
+	 */
+	public Set<EventFacility> getEventFacility() {
+		return eventFacility;
+	}
+
+	/**
+	 * @param eventFacility the eventFacility to set
+	 */
+	public void setEventFacility(Set<EventFacility> eventFacility) {
+		this.eventFacility = eventFacility;
+	}
+	
+	public void addEventFacility(EventFacility eventFacility) {
+		this.eventFacility.add(eventFacility);
 	}
 	
 }

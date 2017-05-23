@@ -14,11 +14,11 @@ import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
 import com.evuntu.management.exception.EvuntuManagementException;
-import com.evuntu.management.model.Customer;
 import com.evuntu.management.model.Status;
 import com.evuntu.management.services.EvuntuService;
 import com.evuntu.management.vo.CustomerEventRequestVO;
-import com.evuntu.management.vo.CustomerVO;
+import com.evuntu.management.vo.CustomerRequestVO;
+import com.evuntu.management.vo.CustomerResponseVO;
 
 
 @RestController
@@ -35,7 +35,7 @@ public class EvuntuRequesterRestController {
 	private static final Logger LOGGER = Logger.getLogger(EvuntuRequesterRestController.class);
 
 	@RequestMapping(value = "/createCustomer", method = RequestMethod.POST, consumes = MediaType.APPLICATION_JSON_VALUE)
-	public ResponseEntity<Status> addCustomer(@RequestBody CustomerVO customer) {
+	public ResponseEntity<Status> addCustomer(@RequestBody CustomerRequestVO customer) {
 		LOGGER.info("contoller::addCustomer-start");
 		Status status;
 		try {
@@ -51,7 +51,7 @@ public class EvuntuRequesterRestController {
 	}
 
 	@RequestMapping(value = "/updateCustomer", method = RequestMethod.POST, consumes = MediaType.APPLICATION_JSON_VALUE)
-	public ResponseEntity<Status> updateCustomer(@RequestBody CustomerVO customer) {
+	public ResponseEntity<Status> updateCustomer(@RequestBody CustomerRequestVO customer) {
 		Status status;
 		LOGGER.info("contoller::updateCustomer-start");
 		if(customer.getId()==null && customer.getUserId()==null){
@@ -71,9 +71,9 @@ public class EvuntuRequesterRestController {
 
 	}
 	@RequestMapping(value = "/getCustomer", method = RequestMethod.GET)
-	public ResponseEntity<CustomerVO>  getCustomer(@RequestParam(value="id", required=true) long id) throws EvuntuManagementException {
+	public ResponseEntity<CustomerResponseVO>  getCustomer(@RequestParam(value="id", required=true) long id) throws EvuntuManagementException {
 		LOGGER.info("contoller::getCustomer-start");
-		CustomerVO customer = null;
+		CustomerResponseVO customer = null;
 		try {
 			customer = evuntuServices.getCustomerById(id);
 
@@ -85,9 +85,9 @@ public class EvuntuRequesterRestController {
 	}
 
 	@RequestMapping(value = "/listCustomer", method = RequestMethod.GET, produces="application/json")
-	public ResponseEntity<List<CustomerVO>> getCustomerList() throws EvuntuManagementException {
+	public ResponseEntity<List<CustomerResponseVO>> getCustomerList() throws EvuntuManagementException {
 		LOGGER.info("contoller::getCustomerList-start");
-		List<CustomerVO> customerList = null;
+		List<CustomerResponseVO> customerList = null;
 		try {
 			customerList = evuntuServices.listCustomer();
 		} catch (Exception e) {

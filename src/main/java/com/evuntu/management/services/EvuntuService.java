@@ -7,9 +7,11 @@ import com.evuntu.management.model.Company;
 import com.evuntu.management.model.CompanyEventBidding;
 import com.evuntu.management.model.Customer;
 import com.evuntu.management.vo.CompanyEventBiddingVO;
-import com.evuntu.management.vo.CompanyVO;
+import com.evuntu.management.vo.CompanyRequestVO;
+import com.evuntu.management.vo.CompanyResponseVO;
 import com.evuntu.management.vo.CustomerEventRequestVO;
-import com.evuntu.management.vo.CustomerVO;
+import com.evuntu.management.vo.CustomerRequestVO;
+import com.evuntu.management.vo.CustomerResponseVO;
 import com.evuntu.management.vo.EventMasterVO;
 import com.evuntu.management.vo.EventServicesResponseVO;
 import com.evuntu.management.vo.EventServicesVO;
@@ -17,17 +19,16 @@ import com.evuntu.management.vo.EventServicesVO;
 
 public interface EvuntuService {
 
-	public boolean addCustomer(CustomerVO c) throws EvuntuManagementException;
-	public boolean updateCustomer(CustomerVO c) throws EvuntuManagementException;
-	public List<CustomerVO> listCustomer()throws EvuntuManagementException;
-	public CustomerVO getCustomerById(Long id)throws EvuntuManagementException;
+	public boolean addCustomer(CustomerRequestVO c) throws EvuntuManagementException;
+	public boolean updateCustomer(CustomerRequestVO c) throws EvuntuManagementException;
+	public List<CustomerResponseVO> listCustomer()throws EvuntuManagementException;
+	public CustomerResponseVO getCustomerById(Long id)throws EvuntuManagementException;
 	public boolean removeCustomer(Long id)throws EvuntuManagementException;
-	//public Customer authenticate(String userName, String password);
 	
-	public boolean addCompany(CompanyVO company) throws EvuntuManagementException;
-	public boolean updateCompany(CompanyVO company)throws EvuntuManagementException;
-	public List<CompanyVO> listCompany()throws EvuntuManagementException;
-	public CompanyVO getCompanyById(long id)throws EvuntuManagementException;	
+	public boolean addCompany(CompanyRequestVO company) throws EvuntuManagementException;
+	public boolean updateCompany(CompanyRequestVO company)throws EvuntuManagementException;
+	public List<CompanyResponseVO> listCompany()throws EvuntuManagementException;
+	public CompanyResponseVO getCompanyById(long id)throws EvuntuManagementException;	
 	public boolean removeCompany(long id)throws EvuntuManagementException;
 	
 	public boolean addEventServices(EventServicesVO eventServices)throws EvuntuManagementException;

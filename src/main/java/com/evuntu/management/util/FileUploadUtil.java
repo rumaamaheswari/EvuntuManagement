@@ -46,9 +46,8 @@ public class FileUploadUtil {
     	}
     }
 	
-	public FileDetails prepareObjectToStore(MultipartFile file,Long eventServicesId) {
+	public FileDetails prepareObjectToStore(MultipartFile file) {
 		FileDetails fileDetails = new FileDetails();
-		fileDetails.setEventServicesId(eventServicesId);
 		fileDetails.setFileName(file
 				.getOriginalFilename());
 		fileDetails.setStatus('A');

@@ -19,18 +19,22 @@ import com.evuntu.management.model.Company;
 import com.evuntu.management.model.CompanyEventBidding;
 import com.evuntu.management.model.Customer;
 import com.evuntu.management.model.CustomerEventRequest;
+import com.evuntu.management.model.EventFacilityDetailsVO;
 import com.evuntu.management.model.EventMaster;
 import com.evuntu.management.model.EventServices;
 import com.evuntu.management.model.FileDetails;
 import com.evuntu.management.model.User;
 import com.evuntu.management.util.FileUploadUtil;
 import com.evuntu.management.vo.CompanyEventBiddingVO;
-import com.evuntu.management.vo.CompanyVO;
+import com.evuntu.management.vo.CompanyRequestVO;
+import com.evuntu.management.vo.CompanyResponseVO;
 import com.evuntu.management.vo.CustomerEventRequestVO;
-import com.evuntu.management.vo.CustomerVO;
+import com.evuntu.management.vo.CustomerRequestVO;
+import com.evuntu.management.vo.CustomerResponseVO;
 import com.evuntu.management.vo.EventMasterVO;
 import com.evuntu.management.vo.EventServicesResponseVO;
 import com.evuntu.management.vo.EventServicesVO;
+import com.evuntu.management.vo.FacilityVO;
 
 
 
@@ -44,12 +48,12 @@ public class EvuntuServiceImpl implements EvuntuService {
 	private static final Logger LOGGER = Logger.getLogger(EvuntuManagementHelper.class); 
 		
 	@Override
-	public boolean addCustomer(CustomerVO customerVO) throws EvuntuManagementException {
+	public boolean addCustomer(CustomerRequestVO customerVO) throws EvuntuManagementException {
 		LOGGER.info("Service::addCustomer-start");
 		try{
 			EvuntuManagementHelper helper=new EvuntuManagementHelper();
-			Long id=evuntuDAO.addUser(helper.convertCustomerVOToUserDO(customerVO));
-			customerVO.setUserId(id);
+			/*Long id=evuntuDAO.addUser(helper.convertCustomerVOToUserDO(customerVO));
+			customerVO.setUserId(id);*/
 			evuntuDAO.addCustomer(helper.convertCustomerVOToDO(customerVO));
 		}
 		catch(HibernateException he){
@@ -59,7 +63,7 @@ public class EvuntuServiceImpl implements EvuntuService {
 	}
 
 	@Override
-	public boolean updateCustomer(CustomerVO customerVO) throws EvuntuManagementException{
+	public boolean updateCustomer(CustomerRequestVO customerVO) throws EvuntuManagementException{
 		LOGGER.info("Service::updateCustomer-start");
 		try{
 			EvuntuManagementHelper helper=new EvuntuManagementHelper();
@@ -71,23 +75,28 @@ public class EvuntuServiceImpl implements EvuntuService {
 	}
 
 	@Override
-	public List<CustomerVO> listCustomer() throws EvuntuManagementException{
+	public List<CustomerResponseVO> listCustomer() throws EvuntuManagementException{
 		LOGGER.info("Service::listCustomer-start");
-		List<Customer> list=evuntuDAO.listCustomer();		
 		EvuntuManagementHelper helper=new EvuntuManagementHelper();
-		return helper.convertCustomerDOToVO(list);
+		List<CustomerResponseVO> customerList=new ArrayList<>();
+		for(Customer customer:evuntuDAO.listCustomer()){			
+			customerList.add(helper.convertCustomerDOToVO(customer));
+		}
+		return customerList;
 	}
 
 	@Override
-	public CustomerVO getCustomerById(Long id) throws EvuntuManagementException { 
+	public CustomerResponseVO getCustomerById(Long id) throws EvuntuManagementException { 
 		LOGGER.info("Service::getCustomerById-start");
-		List<?> list=evuntuDAO.getCustomerById(id);
-		CustomerVO customer=new CustomerVO();
+		EvuntuManagementHelper helper=new EvuntuManagementHelper();
+		List<Customer> list=evuntuDAO.getCustomerById(id);
+		CustomerResponseVO customer=new CustomerResponseVO();
 		if(list.isEmpty()){			
-			return new CustomerVO();
+			return new CustomerResponseVO();
+		}else{
+			customer=helper.convertCustomerDOToVO(list.get(0));
 		}
-		BeanUtils.copyProperties(list.get(0), customer);
-		return customer;		
+		return customer;
 	}
 
 	@Override
@@ -97,14 +106,14 @@ public class EvuntuServiceImpl implements EvuntuService {
 	}
 	
 	@Override
-	public boolean addCompany(CompanyVO companyVO) throws EvuntuManagementException {
+	public boolean addCompany(CompanyRequestVO companyVO) throws EvuntuManagementException {
 		LOGGER.info("Service::addCompany-start");
 		/*EvuntuManagementHelper helper=new EvuntuManagementHelper();
 		return evuntuDAO.addCompany(helper.convertCompanyVOToDO(companyVO));*/
 		try{
 			EvuntuManagementHelper helper=new EvuntuManagementHelper();
-			Long id=evuntuDAO.addUser(helper.convertCompanyVOToUserDO(companyVO));
-			companyVO.setUserId(id);
+			/*Long id=evuntuDAO.addUser(helper.convertCompanyVOToUserDO(companyVO));
+			companyVO.setUserId(id);*/
 			evuntuDAO.addCompany(helper.convertCompanyVOToDO(companyVO));
 		}
 		catch(HibernateException he){
@@ -114,7 +123,7 @@ public class EvuntuServiceImpl implements EvuntuService {
 	}
 
 	@Override
-	public boolean updateCompany(CompanyVO companyVO) throws EvuntuManagementException {
+	public boolean updateCompany(CompanyRequestVO companyVO) throws EvuntuManagementException {
 		LOGGER.info("Service::updateCompany-start");
 		try{
 			EvuntuManagementHelper helper=new EvuntuManagementHelper();
@@ -126,23 +135,28 @@ public class EvuntuServiceImpl implements EvuntuService {
 	}
 
 	@Override
-	public CompanyVO getCompanyById(long id) throws EvuntuManagementException {
+	public CompanyResponseVO getCompanyById(long id) throws EvuntuManagementException {
 		LOGGER.info("Service::getCompanyById-start");
-		List<?> list=evuntuDAO.getCompanyById(id);
-		CompanyVO company=new CompanyVO();
-		if(list.isEmpty()){
-			return new CompanyVO();	
-		}	
-		BeanUtils.copyProperties(list.get(0), company);
+		EvuntuManagementHelper helper=new EvuntuManagementHelper();
+		List<Company> list=evuntuDAO.getCompanyById(id);
+		CompanyResponseVO company=new CompanyResponseVO();
+		if(list.isEmpty()){			
+			return new CompanyResponseVO();
+		}else{
+			company=helper.convertCompanyDOToVO(list.get(0));
+		}
 		return company;
 	}
 
 	@Override
-	public List<CompanyVO> listCompany() throws EvuntuManagementException {
+	public List<CompanyResponseVO> listCompany() throws EvuntuManagementException {
 		LOGGER.info("Service::listCompany-start");
-		List<Company> list=evuntuDAO.listCompany();		
 		EvuntuManagementHelper helper=new EvuntuManagementHelper();
-		return helper.convertCompanyDOToVO(list);
+		List<CompanyResponseVO> companyList=new ArrayList<>();
+		for(Company company:evuntuDAO.listCompany()){			
+			companyList.add(helper.convertCompanyDOToVO(company));
+		}
+		return companyList;
 	}
 
 	@Override
@@ -163,7 +177,7 @@ public class EvuntuServiceImpl implements EvuntuService {
 		for(MultipartFile file:eventServicesVO.getInputFile()){
 			if (file != null && (!file.isEmpty())) {
 			    fileUtil.upload(file,eventServicesVO.getCompanyId()); 
-			    FileDetails fileDetails =fileUtil.prepareObjectToStore(file,eventId);
+			    FileDetails fileDetails =fileUtil.prepareObjectToStore(file);
 				fileDetList.add(fileDetails);
 			}
 		}
@@ -259,7 +273,7 @@ public class EvuntuServiceImpl implements EvuntuService {
 	@Override
 	public List<EventMasterVO> getAllEvents() throws EvuntuManagementException {
 		LOGGER.info("Service::getAllEvents-start");
-		List<EventMaster> eventDOList=evuntuDAO.listEvents();
+		List<EventFacilityDetailsVO> eventDOList=evuntuDAO.listEvents();
 		EvuntuManagementHelper helper=new EvuntuManagementHelper();
 		return helper.convertEventMasterDOToEventMasterVO(eventDOList);
 	}
@@ -268,12 +282,11 @@ public class EvuntuServiceImpl implements EvuntuService {
 	public boolean addEvent(EventMasterVO eventVO) throws EvuntuManagementException {
 		LOGGER.info("Service::addEvent-start");
 		try{
-			/*EventMaster eventDO=new EventMaster();
-			BeanUtils.copyProperties(eventVO, eventDO);*/
-			
-			EvuntuManagementHelper helper=new EvuntuManagementHelper();
-			evuntuDAO.addEvent(helper.convertEventMasterVOToEventMasterDO(eventVO));
-
+			EventMaster eventMaster = new EventMaster(eventVO.getEventId(),eventVO.getEventName());	
+			for(FacilityVO facilityVO:eventVO.getFacility()){				
+				EvuntuManagementHelper helper=new EvuntuManagementHelper();
+			    evuntuDAO.addEvent(helper.convertEventMasterVOToDO(eventMaster,facilityVO));
+			}	
 		}
 		catch(HibernateException he){
 			throw new EvuntuManagementException(ERROR_WHILE_ACCESSING_DB+he);

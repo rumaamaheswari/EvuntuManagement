@@ -1,10 +1,14 @@
 package com.evuntu.management.model;
 
+import java.util.HashSet;
+import java.util.Set;
+
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
+import javax.persistence.OneToMany;
 import javax.persistence.Table;
 
 /**
@@ -34,6 +38,12 @@ public class User implements java.io.Serializable{
 	@Column(name="USERTYPE")
 	private String userType;
 	
+	@OneToMany(mappedBy = "user")
+	private Set<Company> company = new HashSet<Company>();
+	
+	@OneToMany(mappedBy = "user")
+	private Set<Customer> Customer = new HashSet<Customer>();
+	
 
 	public Long getId() {
 		return id;
@@ -45,6 +55,20 @@ public class User implements java.io.Serializable{
 
 	public String getUserName() {
 		return userName;
+	}
+
+	/**
+	 * @return the company
+	 */
+	public Set<Company> getCompany() {
+		return company;
+	}
+
+	/**
+	 * @param company the company to set
+	 */
+	public void setCompany(Set<Company> company) {
+		this.company = company;
 	}
 
 	public void setUserName(String userName) {

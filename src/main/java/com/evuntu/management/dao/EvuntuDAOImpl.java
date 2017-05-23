@@ -19,12 +19,11 @@ import com.evuntu.management.model.Company;
 import com.evuntu.management.model.CompanyEventBidding;
 import com.evuntu.management.model.Customer;
 import com.evuntu.management.model.CustomerEventRequest;
-import com.evuntu.management.model.EventMaster;
+import com.evuntu.management.model.EventFacility;
+import com.evuntu.management.model.EventFacilityDetailsVO;
 import com.evuntu.management.model.EventServices;
-import com.evuntu.management.model.Facility;
 import com.evuntu.management.model.FileDetails;
 import com.evuntu.management.model.User;
-import com.evuntu.management.vo.EventServicesVO;
 
 @Repository
 public class EvuntuDAOImpl implements EvuntuDAO {
@@ -130,10 +129,12 @@ public class EvuntuDAOImpl implements EvuntuDAO {
 		try{
 			session = sessionFactory.openSession();
 			tx = session.beginTransaction();
+			session.save(c.getUser());
 			id=(Long)session.save(c);
 			tx.commit();
 			LOGGER.info("Customer added successfully");
 		}catch(HibernateException e){
+			tx.rollback();
 			throw new EvuntuManagementException("Error while accessing db"+e);
 		}finally{
 			session.close();
@@ -231,10 +232,12 @@ public class EvuntuDAOImpl implements EvuntuDAO {
 		try{
 			session = sessionFactory.openSession();
 			tx = session.beginTransaction();
+			session.save(c.getUser());
 			session.save(c);
 			tx.commit();
 			LOGGER.info("Company added successfully");
 		}catch(HibernateException e){
+			tx.rollback();
 			throw new EvuntuManagementException("Error while accessing db"+e);
 		}finally{
 			session.close();
@@ -306,7 +309,7 @@ public class EvuntuDAOImpl implements EvuntuDAO {
 		LOGGER.info("DAO::removeCompany-start");
 		try{
 			session = sessionFactory.openSession();
-			Object o = session.load(Customer.class, id);
+			Object o = session.load(Company.class, id);
 			tx = session.getTransaction();
 			session.beginTransaction();
 			session.delete(o);
@@ -490,17 +493,28 @@ public class EvuntuDAOImpl implements EvuntuDAO {
 	}
 
 	@Override
-	public List<EventMaster> listEvents() throws EvuntuManagementException {
+	public List<EventFacilityDetailsVO> listEvents() throws EvuntuManagementException {
 		LOGGER.info("DAO::listEvents-start");
 		try{
 			session = sessionFactory.openSession();
-			tx = session.beginTransaction();
-			List<EventMaster> eventList = session.createQuery("FROM EventMaster").list();
-			System.out.println("List size: " + (eventList).size());
 
-			tx.commit();
+		/*	List<EventFacilityDetailsVO> efList = session.createQuery("select  ef.eventFacilityId as EVENT_FACILITY_ID, "
+					+ "ef.event.eventId as EVENT_ID, ef.event.eventName as EVENT_NAME, "
+					+ "ef.facility.facilityId as FACILITY_ID, ef.facility.facilityName as FACILITY_NAME "
+					+ "from EventFacility ef").list();*/
+			
+			
+			List<EventFacilityDetailsVO> efList = session.createQuery(
+					"select new com.evuntu.management.model.EventFacilityDetailsVO " 
+							+"(ef.eventFacilityId as EVENT_FACILITY_ID, "
+							+ "ef.event.eventId as EVENT_ID, ef.event.eventName as EVENT_NAME, "
+							+ "ef.facility.facilityId as FACILITY_ID, ef.facility.facilityName as FACILITY_NAME) "
+							+ "from EventFacility ef").list();
+
+			System.out.println("List size: " + (efList).size());
+
 			LOGGER.info("All the Event details fetched successfully");
-			return eventList;
+			return efList;
 
 		}catch(HibernateException e){
 			throw new EvuntuManagementException("Error while accessing db"+e);
@@ -510,20 +524,16 @@ public class EvuntuDAOImpl implements EvuntuDAO {
 	}
 
 	@Override
-	public void addEvent(EventMaster eventDO) throws EvuntuManagementException {
+	public void addEvent(EventFacility eventFacility) throws EvuntuManagementException {
 		LOGGER.info("DAO::addEvent-start");
 		try{
 			session = sessionFactory.openSession();
 			tx = session.beginTransaction();
-			for(Facility facility:eventDO.getFacility()){
-				session.save(facility);
-			}
-			session.save(eventDO);
-			
-			
+			session.save(eventFacility);
 			tx.commit();
 			LOGGER.info("Event added successfully");
 		}catch(HibernateException e){
+			tx.rollback();
 			throw new EvuntuManagementException("Error while accessing db"+e);
 		}finally{
 			session.close();

@@ -49,33 +49,20 @@ public class FileDetails implements Serializable{
 	@Column(name = "STATUS", nullable = false)
 	private char status;
 	
-	@Column(name = "EVENT_SERVICES_ID", nullable = false)
-	private Long eventServicesId;
-	
-	/*//bi-directional many-to-one association to EventService
+	//bi-directional many-to-one association to EventService
 	@ManyToOne(cascade=CascadeType.ALL)
 	@JoinColumn(name="EVENT_SERVICES_ID")
-	private EventServices eventServices;*/
+	private EventServices eventServices;
 	
-	
+
+
 	/**
 	 * @return the fileId
 	 */
 	public Long getFileId() {
 	    return fileId;
 	}
-	/**
-	 * @return the eventServicesId
-	 */
-	public Long getEventServicesId() {
-		return eventServicesId;
-	}
-	/**
-	 * @param eventServicesId the eventServicesId to set
-	 */
-	public void setEventServicesId(Long eventServicesId) {
-		this.eventServicesId = eventServicesId;
-	}
+	
 	/**
 	 * @param fileId the fileId to set
 	 */
@@ -174,6 +161,21 @@ public class FileDetails implements Serializable{
 		this.fileUploadedTime = fileUploadedTime;
 	}
 	
+	
+	
+	/**
+	 * @return the eventServices
+	 */
+	public EventServices getEventServices() {
+		return eventServices;
+	}
+
+	/**
+	 * @param eventServices the eventServices to set
+	 */
+	public void setEventServices(EventServices eventServices) {
+		this.eventServices = eventServices;
+	}
 	
 	/* (non-Javadoc)
 	 * @see java.lang.Object#hashCode()

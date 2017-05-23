@@ -4,14 +4,15 @@ import java.io.Serializable;
 import java.util.Date;
 import java.util.List;
 
+import javax.persistence.CascadeType;
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.Id;
+import javax.persistence.OneToMany;
 import javax.persistence.Table;
 import javax.persistence.Temporal;
 import javax.persistence.TemporalType;
-import javax.persistence.Transient;
 
 
 /**
@@ -45,29 +46,24 @@ public class EventServices implements Serializable {
 	@Column(name="CREATED_TIME")
 	private Date createdTime;
 
-	@Column(name="EVENT_NAME")
-	private String eventName;
-
 	@Column(name="FACEBOOK_LINK")
 	private String facebookLink;
-
-	/*@Column(name="FILE_ID")
-	private Long fileId;*/
 
 	@Temporal(TemporalType.TIMESTAMP)
 	@Column(name="UPDATED_TIME")
 	private Date updatedTime;
 
-	@Column(name="WEBSITE_LINK")
-	private String websiteLink;
-
 	@Column(name="YOUTUBE_LINK")
 	private String youtubeLink;
 
-	//bi-directional many-to-one association to FileDetail
-	//@OneToMany(cascade=CascadeType.ALL, mappedBy="eventServices")
-	@Transient
+	//bi-directional one-to-many association to FileDetail
+	@OneToMany(cascade=CascadeType.ALL, mappedBy="eventServices")
 	private List<FileDetails> fileDetails;
+	
+	
+	@Column(name="EVENT_FACILITY_ID")
+	private String eventFacilityId;
+
 
 
 
@@ -119,13 +115,6 @@ public class EventServices implements Serializable {
 		this.createdTime = createdTime;
 	}
 
-	public String getEventName() {
-		return this.eventName;
-	}
-
-	public void setEventName(String eventName) {
-		this.eventName = eventName;
-	}
 
 	public String getFacebookLink() {
 		return this.facebookLink;
@@ -135,28 +124,12 @@ public class EventServices implements Serializable {
 		this.facebookLink = facebookLink;
 	}
 
-	/*public Long getFileId() {
-		return this.fileId;
-	}
-
-	public void setFileId(Long fileId) {
-		this.fileId = fileId;
-	}*/
-
 	public Date getUpdatedTime() {
 		return this.updatedTime;
 	}
 
 	public void setUpdatedTime(Date updatedTime) {
 		this.updatedTime = updatedTime;
-	}
-
-	public String getWebsiteLink() {
-		return this.websiteLink;
-	}
-
-	public void setWebsiteLink(String websiteLink) {
-		this.websiteLink = websiteLink;
 	}
 
 	public String getYoutubeLink() {
@@ -175,7 +148,7 @@ public class EventServices implements Serializable {
 		this.fileDetails = fileDetails;
 	}
 
-	/*public FileDetails addFileDetail(FileDetails fileDetails) {
+	public FileDetails addFileDetail(FileDetails fileDetails) {
 		getFileDetails().add(fileDetails);
 		fileDetails.setEventServices(this);
 
@@ -187,6 +160,21 @@ public class EventServices implements Serializable {
 		fileDetails.setEventServices(null);
 
 		return fileDetails;
-	}*/
+	}
+	
+
+	/**
+	 * @return the eventFacilityId
+	 */
+	public String getEventFacilityId() {
+		return eventFacilityId;
+	}
+
+	/**
+	 * @param eventFacilityId the eventFacilityId to set
+	 */
+	public void setEventFacilityId(String eventFacilityId) {
+		this.eventFacilityId = eventFacilityId;
+	}
 
 }

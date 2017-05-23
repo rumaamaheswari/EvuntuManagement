@@ -1,9 +1,12 @@
 package com.evuntu.management.model;
 
+import javax.persistence.CascadeType;
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.Id;
+import javax.persistence.JoinColumn;
+import javax.persistence.ManyToOne;
 import javax.persistence.Table;
 
 /**
@@ -38,12 +41,12 @@ public class Customer {
 	@Column(name="ALLOW_TO_CONTACT")
 	private char allowToContact;
 	
-	/*@OneToOne(cascade = CascadeType.ALL)
-	@JoinColumn(name = "USER_ID")
-	private User user;*/
+	@ManyToOne(cascade=CascadeType.ALL)
+	@JoinColumn(name = "USER_ID", nullable = false, unique=true)
+	private User user;
 	
-	@Column(name="USER_ID")
-	private Long userId;
+/*	@Column(name="USER_ID")
+	private Long userId;*/
 	
 	/**
 	 * @return the id
@@ -146,26 +149,16 @@ public class Customer {
 
 	/**
 	 * @return the users
-	 *//*
-	public User getUsers() {
+	 */
+	public User getUser() {
 		return user;
 	}
 
-	*//**
+	/**
 	 * @param users the users to set
-	 *//*
-	public void setUsers(User users) {
-		this.user = users;
-	}*/
-
-	public Long getUserId() {
-		return userId;
+	 */
+	public void setUser(User user) {
+		this.user = user;
 	}
-
-	public void setUserId(Long userId) {
-		this.userId = userId;
-	}
-	
-
 	
 }

@@ -6,7 +6,7 @@ import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.Id;
 import javax.persistence.JoinColumn;
-import javax.persistence.OneToOne;
+import javax.persistence.ManyToOne;
 import javax.persistence.Table;
 
 /**
@@ -57,17 +57,11 @@ public class Company {
 	private String state;
 	
 	@Column(name="COUNTRY")
-	private String country;
-	
-	@Column(name="USER_ID")
-	private Long userId;
-	
-	/*@OneToOne(cascade = CascadeType.ALL)
-	@JoinColumn(name = "USER_ID")*/
-	/*@OneToOne(targetEntity=User.class,cascade=CascadeType.ALL)
-	@JoinColumn(name="USER_ID",referencedColumnName="USER_ID")
-	private User users;*/
-	
+	private String country;	
+
+	@ManyToOne(cascade=CascadeType.ALL)
+	@JoinColumn(name = "USER_ID", nullable = false,unique=true)
+	private User user;
 	
 
 	
@@ -190,32 +184,17 @@ public class Company {
 	
 
 	/**
-	 * @return the userId
-	 */
-	public Long getUserId() {
-		return userId;
-	}
-
-	/**
-	 * @param userId the userId to set
-	 */
-	public void setUserId(Long userId) {
-		this.userId = userId;
-	}
-
-	
-	/**
 	 * @return the users
 	 */
-	/*public User getUsers() {
-		return users;
-	}*/
+	public User getUser() {
+		return user;
+	}
 
 	/**
 	 * @param users the users to set
 	 */
-	/*public void setUsers(User users) {
-		this.users = users;
+	public void setUser(User user) {
+		this.user = user;
 	}
-*/
+
 }

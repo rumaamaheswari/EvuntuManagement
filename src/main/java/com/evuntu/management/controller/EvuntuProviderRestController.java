@@ -1,6 +1,5 @@
 package com.evuntu.management.controller;
 
-import java.math.BigInteger;
 import java.util.Arrays;
 import java.util.List;
 
@@ -20,7 +19,8 @@ import org.springframework.web.multipart.MultipartFile;
 import com.evuntu.management.model.Status;
 import com.evuntu.management.services.EvuntuService;
 import com.evuntu.management.vo.CompanyEventBiddingVO;
-import com.evuntu.management.vo.CompanyVO;
+import com.evuntu.management.vo.CompanyRequestVO;
+import com.evuntu.management.vo.CompanyResponseVO;
 import com.evuntu.management.vo.EventMasterVO;
 import com.evuntu.management.vo.EventServicesResponseVO;
 import com.evuntu.management.vo.EventServicesVO;
@@ -39,7 +39,7 @@ public class EvuntuProviderRestController {
 
 	
 	@RequestMapping(value = "/createCompany", method = RequestMethod.POST, consumes = MediaType.APPLICATION_JSON_VALUE)
-	public ResponseEntity<Status> addCompany(@RequestBody CompanyVO company) {
+	public ResponseEntity<Status> addCompany(@RequestBody CompanyRequestVO company) {
 		LOGGER.info("contoller::addCompany-start");
 		Status status;
 		try {
@@ -55,7 +55,7 @@ public class EvuntuProviderRestController {
 	}
 
 	@RequestMapping(value = "/updateCompany", method = RequestMethod.POST, consumes = MediaType.APPLICATION_JSON_VALUE)
-	public ResponseEntity<Status> updateCompany(@RequestBody CompanyVO company) {
+	public ResponseEntity<Status> updateCompany(@RequestBody CompanyRequestVO company) {
 		LOGGER.info("contoller::updateCompany-start");
 		Status status;
 		if(company.getId()==null && company.getUserId()==null){
@@ -75,9 +75,9 @@ public class EvuntuProviderRestController {
 
 	}
 	@RequestMapping(value = "/getCompany", method = RequestMethod.GET)
-	public ResponseEntity<CompanyVO> getCompany(@RequestParam(value="id", required=true) long id) {
+	public ResponseEntity<CompanyResponseVO> getCompany(@RequestParam(value="id", required=true) long id) {
 		LOGGER.info("contoller::getCompany-start");
-		CompanyVO company = null;
+		CompanyResponseVO company = null;
 		try {
 			company = evuntuServices.getCompanyById(id);
 
@@ -89,9 +89,9 @@ public class EvuntuProviderRestController {
 	}
 
 	@RequestMapping(value = "/listCompany", method = RequestMethod.GET, produces="application/json")
-	public ResponseEntity<List<CompanyVO>> getCompanyList() {
+	public ResponseEntity<List<CompanyResponseVO>> getCompanyList() {
 		LOGGER.info("contoller::getCompanyList-start");
-		List<CompanyVO> companyList = null;
+		List<CompanyResponseVO> companyList = null;
 		try {
 			companyList = evuntuServices.listCompany();
 		} catch (Exception e) {
