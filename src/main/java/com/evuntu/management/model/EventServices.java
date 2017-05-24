@@ -2,7 +2,9 @@ package com.evuntu.management.model;
 
 import java.io.Serializable;
 import java.util.Date;
+import java.util.HashSet;
 import java.util.List;
+import java.util.Set;
 
 import javax.persistence.CascadeType;
 import javax.persistence.Column;
@@ -58,14 +60,9 @@ public class EventServices implements Serializable {
 
 	//bi-directional one-to-many association to FileDetail
 	@OneToMany(cascade=CascadeType.ALL, mappedBy="eventServices")
-	private List<FileDetails> fileDetails;
+	private Set<FileDetails> fileDetails= new HashSet<>();
+
 	
-	
-	@Column(name="EVENT_FACILITY_ID")
-	private String eventFacilityId;
-
-
-
 
 	public Long getEventServiceId() {
 		return this.eventServiceId;
@@ -139,15 +136,16 @@ public class EventServices implements Serializable {
 	public void setYoutubeLink(String youtubeLink) {
 		this.youtubeLink = youtubeLink;
 	}
-
-	public List<FileDetails> getFileDetails() {
-		return this.fileDetails;
+	
+	public Set<FileDetails> getFileDetails() {
+		return fileDetails;
 	}
 
-	public void setFileDetails(List<FileDetails> fileDetails) {
+	public void setFileDetails(Set<FileDetails> fileDetails) {
 		this.fileDetails = fileDetails;
 	}
 
+	/*
 	public FileDetails addFileDetail(FileDetails fileDetails) {
 		getFileDetails().add(fileDetails);
 		fileDetails.setEventServices(this);
@@ -160,21 +158,6 @@ public class EventServices implements Serializable {
 		fileDetails.setEventServices(null);
 
 		return fileDetails;
-	}
-	
-
-	/**
-	 * @return the eventFacilityId
-	 */
-	public String getEventFacilityId() {
-		return eventFacilityId;
-	}
-
-	/**
-	 * @param eventFacilityId the eventFacilityId to set
-	 */
-	public void setEventFacilityId(String eventFacilityId) {
-		this.eventFacilityId = eventFacilityId;
-	}
+	}*/
 
 }

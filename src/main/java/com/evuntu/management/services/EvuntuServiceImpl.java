@@ -19,7 +19,6 @@ import com.evuntu.management.model.Company;
 import com.evuntu.management.model.CompanyEventBidding;
 import com.evuntu.management.model.Customer;
 import com.evuntu.management.model.CustomerEventRequest;
-import com.evuntu.management.model.EventFacilityDetailsVO;
 import com.evuntu.management.model.EventMaster;
 import com.evuntu.management.model.EventServices;
 import com.evuntu.management.model.FileDetails;
@@ -29,8 +28,10 @@ import com.evuntu.management.vo.CompanyEventBiddingVO;
 import com.evuntu.management.vo.CompanyRequestVO;
 import com.evuntu.management.vo.CompanyResponseVO;
 import com.evuntu.management.vo.CustomerEventRequestVO;
+import com.evuntu.management.vo.CustomerEventResponseVO;
 import com.evuntu.management.vo.CustomerRequestVO;
 import com.evuntu.management.vo.CustomerResponseVO;
+import com.evuntu.management.vo.EventFacilityDetailsVO;
 import com.evuntu.management.vo.EventMasterVO;
 import com.evuntu.management.vo.EventServicesResponseVO;
 import com.evuntu.management.vo.EventServicesVO;
@@ -181,7 +182,7 @@ public class EvuntuServiceImpl implements EvuntuService {
 				fileDetList.add(fileDetails);
 			}
 		}
-		evuntuDAO.fileUpload(fileDetList);		
+		//evuntuDAO.fileUpload(fileDetList);		
 		return true; 
 	}
 	
@@ -208,7 +209,7 @@ public class EvuntuServiceImpl implements EvuntuService {
 		if(!list.isEmpty()){
 			EventServices eventServices=(EventServices) list.get(0);
 			List<FileDetails> filesList=evuntuDAO.getFileDetails(eventServiceId);
-			eventServices.setFileDetails(filesList);
+			//eventServices.setFileDetails(filesList);
 			eventServicesVO=helper.convertEventServicesDOtoVO(eventServices);
 		}		
 		return eventServicesVO;	
@@ -228,7 +229,7 @@ public class EvuntuServiceImpl implements EvuntuService {
 		List<EventServices> list=evuntuDAO.searchServices(eventName, city);
 		for(EventServices eventServices:list){
 			List<FileDetails> filesList=evuntuDAO.getFileDetails(eventServices.getEventServiceId());
-			eventServices.setFileDetails(filesList);
+			//eventServices.setFileDetails(filesList);
 		}	
 		for(EventServices eventServices:list){
 			reponseList.add(helper.convertEventServicesDOtoVO(eventServices));
@@ -282,7 +283,9 @@ public class EvuntuServiceImpl implements EvuntuService {
 	public boolean addEvent(EventMasterVO eventVO) throws EvuntuManagementException {
 		LOGGER.info("Service::addEvent-start");
 		try{
-			EventMaster eventMaster = new EventMaster(eventVO.getEventId(),eventVO.getEventName());	
+			EventMaster eventMaster = new EventMaster();	
+			eventMaster.setEventId(eventVO.getEventId());
+			eventMaster.setEventName(eventVO.getEventName());
 			for(FacilityVO facilityVO:eventVO.getFacility()){				
 				EvuntuManagementHelper helper=new EvuntuManagementHelper();
 			    evuntuDAO.addEvent(helper.convertEventMasterVOToDO(eventMaster,facilityVO));
@@ -325,24 +328,25 @@ public class EvuntuServiceImpl implements EvuntuService {
 	}
 
 	@Override
-	public CustomerEventRequestVO getCustomerEventRequestDetails(long customerEventRequestId) throws EvuntuManagementException {
+	public CustomerEventResponseVO getCustomerEventRequestDetails(long customerEventRequestId) throws EvuntuManagementException {
 		LOGGER.info("Service::getCustomerEventRequest-start");
 		List list=evuntuDAO.getCustomerEventRequestDetails(customerEventRequestId);
 		if(list.isEmpty()){
-			return new CustomerEventRequestVO();	
+			return new CustomerEventResponseVO();	
 		}		
-		return (CustomerEventRequestVO) list.get(0);
+		EvuntuManagementHelper helper=new EvuntuManagementHelper();		
+		return helper.convertCustomerEventRequestDOToVO((CustomerEventRequest)list.get(0));
 	}
 
 	@Override
-	public List<CustomerEventRequestVO> listCustomerEventRequestByUserId(long userId) throws EvuntuManagementException {
+	public List<CustomerEventResponseVO> listCustomerEventRequestByUserId(long userId) throws EvuntuManagementException {
 		LOGGER.info("Service::listCustomerEventRequest-start");
-		List<CustomerEventRequestVO> customerEventRequestVOList=new ArrayList<>();
+		List<CustomerEventResponseVO> customerEventResponseVOList=new ArrayList<>();
 		EvuntuManagementHelper helper=new EvuntuManagementHelper();
 		for (CustomerEventRequest custRqr:evuntuDAO.listCustomerEventRequestByUserId(userId)){			
-			customerEventRequestVOList.add(helper.convertCustomerEventRequestDOToVO(custRqr));
+			customerEventResponseVOList.add(helper.convertCustomerEventRequestDOToVO(custRqr));
 		}
-		return customerEventRequestVOList;
+		return customerEventResponseVOList;
 		
 	}
 
@@ -411,7 +415,6 @@ public class EvuntuServiceImpl implements EvuntuService {
 		}
 		return companyEventBiddingVOList;
 	}
-
 	
 
 	

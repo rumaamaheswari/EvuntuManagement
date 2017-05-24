@@ -3,6 +3,7 @@ package com.evuntu.management.model;
 import java.util.HashSet;
 import java.util.Set;
 
+import javax.persistence.CascadeType;
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
@@ -22,21 +23,29 @@ public class Facility {
 
 	@Id
 	@Column(name="FACILITY_ID")
-	@GeneratedValue(strategy = GenerationType.IDENTITY)
+	@GeneratedValue(strategy=GenerationType.AUTO)
 	private Long facilityId;
 	
 	@Column(name="FACILITY_NAME")
 	private String facilityName;
 	
-	 @OneToMany(mappedBy = "facility")
+	@Column(name="FACILITY_CITY")
+	private String facilityCity;
+	
+	 @OneToMany(cascade = CascadeType.ALL, mappedBy = "facility")
 	 private Set<EventFacility> eventFacility = new HashSet<>();
 	
-	//no default constuctor -parent insert will not work if provided
+	 public Facility(){
+		 
+	 }
+	/*//no default constuctor -parent insert will not work if provided
 	 
-	public Facility(Long facilityId, String facilityName) {
+	public Facility(Long facilityId, String facilityName,String facilityCity) {
+		super();
 		this.facilityId = facilityId;
 		this.facilityName = facilityName;
-	}
+		this.facilityCity =facilityCity;
+	}*/
 
 	public Long getFacilityId() {
 		return facilityId;
@@ -52,6 +61,20 @@ public class Facility {
 
 	public void setFacilityName(String facilityName) {
 		this.facilityName = facilityName;
+	}
+	
+	/**
+	 * @return the facilityCity
+	 */
+	public String getFacilityCity() {
+		return facilityCity;
+	}
+
+	/**
+	 * @param facilityCity the facilityCity to set
+	 */
+	public void setFacilityCity(String facilityCity) {
+		this.facilityCity = facilityCity;
 	}
 
 	/**

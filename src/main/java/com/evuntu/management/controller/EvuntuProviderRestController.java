@@ -139,7 +139,7 @@ public class EvuntuProviderRestController {
 		}
 
 	}
-	
+	//file physical update is pending
 	@RequestMapping(value = "/updateEventServices", method = RequestMethod.POST)
 	public ResponseEntity<Status> updateEventServices(@RequestBody EventServicesVO eventServices) {
 		LOGGER.info("contoller::updateEvent-start");

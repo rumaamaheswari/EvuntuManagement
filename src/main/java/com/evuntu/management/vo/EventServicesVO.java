@@ -1,6 +1,5 @@
 package com.evuntu.management.vo;
 
-import java.math.BigInteger;
 import java.util.List;
 
 import org.springframework.web.multipart.MultipartFile;
@@ -18,7 +17,9 @@ public class EventServicesVO {
 	
 	private Long companyId;
 	
-	private String eventName;
+	private Long eventId;
+	
+	private Long facilityId;
 	
 	private String city;
 	
@@ -30,17 +31,9 @@ public class EventServicesVO {
 	
 	private String contactNumber;
 	
-/*	private BigInteger fileId;
-	
-	private String fileName;
-	
-	private String filePath;*/
-	
 	private  List<MultipartFile> inputFile;
 	
-	//private  List<FileDetailsVO> fileDetails;
 
-	
 	public String getFaceBookLink() {
 		return faceBookLink;
 	}
@@ -73,14 +66,6 @@ public class EventServicesVO {
 		this.city = city;
 	}
 
-	public String getEventName() {
-		return eventName;
-	}
-
-	public void setEventName(String eventName) {
-		this.eventName = eventName;
-	}
-
 	public Long getCompanyId() {
 		return companyId;
 	}
@@ -96,14 +81,6 @@ public class EventServicesVO {
 	public void setContactNumber(String contactNumber) {
 		this.contactNumber = contactNumber;
 	}
-
-	/*public BigInteger getFileId() {
-		return fileId;
-	}
-
-	public void setFileId(BigInteger fileId) {
-		this.fileId = fileId;
-	}*/
 
 	public Long getEventServiceId() {
 		return eventServiceId;
@@ -127,29 +104,20 @@ public class EventServicesVO {
 		this.inputFile = inputFile;
 	}
 
-	/*public String getFileName() {
-		return fileName;
+	public Long getEventId() {
+		return eventId;
 	}
 
-	public void setFileName(String fileName) {
-		this.fileName = fileName;
+	public void setEventId(Long eventId) {
+		this.eventId = eventId;
 	}
 
-	public String getFilePath() {
-		return filePath;
+	public Long getFacilityId() {
+		return facilityId;
 	}
 
-	public void setFilePath(String filePath) {
-		this.filePath = filePath;
-	}*/
-
-	/*public List<FileDetailsVO> getFileDetails() {
-		return fileDetails;
+	public void setFacilityId(Long facilityId) {
+		this.facilityId = facilityId;
 	}
-
-	public void setFileDetails(List<FileDetailsVO> fileDetails) {
-		this.fileDetails = fileDetails;
-	}*/
-
 	
 }

@@ -39,10 +39,10 @@ public class User implements java.io.Serializable{
 	private String userType;
 	
 	@OneToMany(mappedBy = "user")
-	private Set<Company> company = new HashSet<Company>();
-	
+	private Set<Company> company = new HashSet<>();	
+
 	@OneToMany(mappedBy = "user")
-	private Set<Customer> Customer = new HashSet<Customer>();
+	private Set<Customer> customer = new HashSet<>();
 	
 
 	public Long getId() {
@@ -55,20 +55,6 @@ public class User implements java.io.Serializable{
 
 	public String getUserName() {
 		return userName;
-	}
-
-	/**
-	 * @return the company
-	 */
-	public Set<Company> getCompany() {
-		return company;
-	}
-
-	/**
-	 * @param company the company to set
-	 */
-	public void setCompany(Set<Company> company) {
-		this.company = company;
 	}
 
 	public void setUserName(String userName) {
@@ -89,6 +75,22 @@ public class User implements java.io.Serializable{
 
 	public void setUserType(String userType) {
 		this.userType = userType;
+	}
+	
+	public Set<Customer> getCustomer() {
+		return customer;
+	}
+
+	public void setCustomer(Set<Customer> customer) {
+		this.customer = customer;
+	}
+
+	public Set<Company> getCompany() {
+		return company;
+	}
+
+	public void setCompany(Set<Company> company) {
+		this.company = company;
 	}
 
 }

@@ -3,13 +3,11 @@ package com.evuntu.management.services;
 import java.util.List;
 
 import com.evuntu.management.exception.EvuntuManagementException;
-import com.evuntu.management.model.Company;
-import com.evuntu.management.model.CompanyEventBidding;
-import com.evuntu.management.model.Customer;
 import com.evuntu.management.vo.CompanyEventBiddingVO;
 import com.evuntu.management.vo.CompanyRequestVO;
 import com.evuntu.management.vo.CompanyResponseVO;
 import com.evuntu.management.vo.CustomerEventRequestVO;
+import com.evuntu.management.vo.CustomerEventResponseVO;
 import com.evuntu.management.vo.CustomerRequestVO;
 import com.evuntu.management.vo.CustomerResponseVO;
 import com.evuntu.management.vo.EventMasterVO;
@@ -45,8 +43,8 @@ public interface EvuntuService {
 	
 	public boolean newCustomerEventRequest(CustomerEventRequestVO customerEventReqVO) throws EvuntuManagementException;
 	public boolean updateCustomerEventRequest(CustomerEventRequestVO customerEventReqVO)throws EvuntuManagementException;
-	public CustomerEventRequestVO getCustomerEventRequestDetails(long CustomerEventRequestId)throws EvuntuManagementException;
-	public List<CustomerEventRequestVO> listCustomerEventRequestByUserId(long userId)throws EvuntuManagementException;
+	public CustomerEventResponseVO getCustomerEventRequestDetails(long CustomerEventRequestId)throws EvuntuManagementException;
+	public List<CustomerEventResponseVO> listCustomerEventRequestByUserId(long userId)throws EvuntuManagementException;
 	public boolean removeCustomerEventRequest(long CustomerEventRequestId)throws EvuntuManagementException;
 	
 	public boolean addCompanyEventBidding(CompanyEventBiddingVO companyEventBiddingVO) throws EvuntuManagementException;

@@ -15,7 +15,6 @@ import com.evuntu.management.model.Company;
 import com.evuntu.management.model.Customer;
 import com.evuntu.management.model.CustomerEventRequest;
 import com.evuntu.management.model.EventFacility;
-import com.evuntu.management.model.EventFacilityDetailsVO;
 import com.evuntu.management.model.EventMaster;
 import com.evuntu.management.model.EventServices;
 import com.evuntu.management.model.Facility;
@@ -25,8 +24,10 @@ import com.evuntu.management.util.PassHashHelper;
 import com.evuntu.management.vo.CompanyRequestVO;
 import com.evuntu.management.vo.CompanyResponseVO;
 import com.evuntu.management.vo.CustomerEventRequestVO;
+import com.evuntu.management.vo.CustomerEventResponseVO;
 import com.evuntu.management.vo.CustomerRequestVO;
 import com.evuntu.management.vo.CustomerResponseVO;
+import com.evuntu.management.vo.EventFacilityDetailsVO;
 import com.evuntu.management.vo.EventMasterVO;
 import com.evuntu.management.vo.EventServicesResponseVO;
 import com.evuntu.management.vo.FacilityVO;
@@ -176,7 +177,10 @@ public class EvuntuManagementHelper {
 			EventFacility eventFacility=new EventFacility();
 			try{			
 								
-				Facility facility=new Facility(facilityVO.getFacilityId(),facilityVO.getFacilityName());
+				Facility facility=new Facility();
+				facility.setFacilityId(facilityVO.getFacilityId());
+				facility.setFacilityName(facilityVO.getFacilityName());
+				facility.setFacilityCity(facilityVO.getFacilityCity());
 				eventFacility.setEvent(eventMaster);
 				eventFacility.setFacility(facility);
 				
@@ -239,37 +243,45 @@ public class EvuntuManagementHelper {
 		public CustomerEventRequest convertCustomerEventRequestVOToDO(CustomerEventRequestVO customerEventReqVO) throws EvuntuManagementException {
 			LOGGER.info("Helper::convertCustomerEventRequestToDO-start");
 			CustomerEventRequest customerEventRequest = new CustomerEventRequest();
-			try{				
+			
+			try{	
+				EventMaster event=new EventMaster();
+				event.setEventId(customerEventReqVO.getEventId());
+				Facility facility=new Facility();
+				facility.setFacilityId(customerEventReqVO.getFacilityId());
+				User user=new User();
+				user.setId(customerEventReqVO.getUserId());
 				customerEventRequest.setCustomerEventRequestId(customerEventReqVO.getCustomerEventRequestId());
-				customerEventRequest.setUserId(customerEventReqVO.getUserId());
-				customerEventRequest.setEventId(customerEventReqVO.getEventId());
-				customerEventRequest.setFacilityId(customerEventReqVO.getFacilityId());
+				customerEventRequest.setUser(user);
+				customerEventRequest.setEvent(event);
+				customerEventRequest.setFacility(facility);
 				customerEventRequest.setBudget(customerEventReqVO.getBudget());
 				customerEventRequest.setExpectations(customerEventReqVO.getExpectations());
 				
 			}
 			catch(Exception e){
-				throw new EvuntuManagementException("Excption while converting VO to DO"+e);
+				throw new EvuntuManagementException("Exception while converting VO to DO"+e);
 			}
 			LOGGER.info("Helper::convertCustomerEventRequestVOToDO-end");
 			return customerEventRequest;
 		}
-		public CustomerEventRequestVO convertCustomerEventRequestDOToVO(CustomerEventRequest customerEventReq) throws EvuntuManagementException {
+		public CustomerEventResponseVO convertCustomerEventRequestDOToVO(CustomerEventRequest customerEventReq) throws EvuntuManagementException {
 			LOGGER.info("Helper::convertCustomerEventRequestDOToVO-start");
-			CustomerEventRequestVO customerEventRequestVO = new CustomerEventRequestVO();
+			CustomerEventResponseVO customerEventResponseVO = new CustomerEventResponseVO();
 			try{				
-				customerEventRequestVO.setCustomerEventRequestId(customerEventReq.getCustomerEventRequestId());
-				customerEventRequestVO.setUserId(customerEventReq.getUserId());
-				customerEventRequestVO.setEventId(customerEventReq.getEventId());
-				customerEventRequestVO.setFacilityId(customerEventReq.getFacilityId());
-				customerEventRequestVO.setBudget(customerEventReq.getBudget());
-				customerEventRequestVO.setExpectations(customerEventReq.getExpectations());				
+				customerEventResponseVO.setCustomerEventRequestId(customerEventReq.getCustomerEventRequestId());
+				customerEventResponseVO.setUserId(customerEventReq.getUser().getId());
+				customerEventResponseVO.setEventId(customerEventReq.getEvent().getEventId());
+				customerEventResponseVO.setEventName(customerEventReq.getEvent().getEventName());
+				//customerEventRequestVO.setFacilityId(customerEventReq.getFacilityId());
+				customerEventResponseVO.setBudget(customerEventReq.getBudget());
+				customerEventResponseVO.setExpectations(customerEventReq.getExpectations());				
 			}
 			catch(Exception e){
 				throw new EvuntuManagementException(EXCEPTION_WHILE_CONVERTING_VO_TO_DO+e);
 			}
 			LOGGER.info("Helper::convertCustomerEventRequestVOToDO-end");
-			return customerEventRequestVO;
+			return customerEventResponseVO;
 		}
 
 

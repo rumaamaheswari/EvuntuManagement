@@ -18,6 +18,8 @@ public class FacilityVO {
 	
 	private String facilityName;
 	
+	private String facilityCity;
+	
 
 /*	public FacilityVO(Long facilityId, String facilityName) {
 		this.facilityId = facilityId;
@@ -38,6 +40,14 @@ public class FacilityVO {
 
 	public void setFacilityName(String facilityName) {
 		this.facilityName = facilityName;
+	}
+
+	public String getFacilityCity() {
+		return facilityCity;
+	}
+
+	public void setFacilityCity(String facilityCity) {
+		this.facilityCity = facilityCity;
 	}
 	
 }

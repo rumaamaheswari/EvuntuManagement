@@ -17,6 +17,7 @@ import com.evuntu.management.exception.EvuntuManagementException;
 import com.evuntu.management.model.Status;
 import com.evuntu.management.services.EvuntuService;
 import com.evuntu.management.vo.CustomerEventRequestVO;
+import com.evuntu.management.vo.CustomerEventResponseVO;
 import com.evuntu.management.vo.CustomerRequestVO;
 import com.evuntu.management.vo.CustomerResponseVO;
 
@@ -152,32 +153,32 @@ public class EvuntuRequesterRestController {
 	
 	}
 	@RequestMapping(value = "/getCustomerEventRequestDetails", method = RequestMethod.GET)
-	public ResponseEntity<CustomerEventRequestVO>  getCustomerEventRequestDetails(@RequestParam(value="customerEventRequestId", required=true) long CustomerEventRequestId) throws EvuntuManagementException {
+	public ResponseEntity<CustomerEventResponseVO>  getCustomerEventRequestDetails(@RequestParam(value="customerEventRequestId", required=true) long customerEventRequestId) throws EvuntuManagementException {
 		LOGGER.info("contoller::getCustomerEventRequestDetails-start");
-		CustomerEventRequestVO customerEventRequestVO = null;
+		CustomerEventResponseVO customerEventResponseVO = null;
 		try {
-			customerEventRequestVO = evuntuServices.getCustomerEventRequestDetails(CustomerEventRequestId);
+			customerEventResponseVO = evuntuServices.getCustomerEventRequestDetails(customerEventRequestId);
 	
 		} catch (Exception e) {
 			LOGGER.error(INTERNAL_SERVER_ERROR+e);
 			throw new EvuntuManagementException(EXCEPTION_OCCURED+e);
 		}
 		LOGGER.info("contoller::getCustomerEventRequest-end");
-		return new ResponseEntity<>(customerEventRequestVO,HttpStatus.OK);
+		return new ResponseEntity<>(customerEventResponseVO,HttpStatus.OK);
 	}
 	
 	@RequestMapping(value = "/listCustomerEventRequest", method = RequestMethod.GET, produces="application/json")
-	public ResponseEntity<List<CustomerEventRequestVO>> listCustomerEventRequest(@RequestParam(value="userId", required=true) long userId) throws EvuntuManagementException {
+	public ResponseEntity<List<CustomerEventResponseVO>> listCustomerEventRequest(@RequestParam(value="userId", required=true) long userId) throws EvuntuManagementException {
 		LOGGER.info("contoller::listCustomerEventRequest-start");
-		List<CustomerEventRequestVO> customerEventRequestVOList = null;
+		List<CustomerEventResponseVO> customerEventResponseVOList = null;
 		try {
-			customerEventRequestVOList = evuntuServices.listCustomerEventRequestByUserId(userId);
+			customerEventResponseVOList = evuntuServices.listCustomerEventRequestByUserId(userId);
 		} catch (Exception e) {
 			LOGGER.error(INTERNAL_SERVER_ERROR+e);
 			throw new EvuntuManagementException(EXCEPTION_OCCURED+e);
 		}
 		LOGGER.info("contoller::listCustomerEventRequest-end");
-		return new ResponseEntity<>(customerEventRequestVOList,HttpStatus.OK);
+		return new ResponseEntity<>(customerEventResponseVOList,HttpStatus.OK);
 	}
 	
 	@RequestMapping(value = "/deleteCustomerEventRequest", method = RequestMethod.GET)

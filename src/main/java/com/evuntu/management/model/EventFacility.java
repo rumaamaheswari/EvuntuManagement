@@ -3,11 +3,11 @@ package com.evuntu.management.model;
 import javax.persistence.CascadeType;
 import javax.persistence.Column;
 import javax.persistence.Entity;
+import javax.persistence.FetchType;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.JoinColumn;
-import javax.persistence.ManyToMany;
 import javax.persistence.ManyToOne;
 import javax.persistence.Table;
 
@@ -23,21 +23,26 @@ public class EventFacility {
 
 	@Id
 	@Column(name="EVENT_FACILITY_ID")
-	@GeneratedValue(strategy = GenerationType.IDENTITY)
+	@GeneratedValue(strategy=GenerationType.AUTO)
 	private Long eventFacilityId;
 	
-	@ManyToOne(cascade = CascadeType.ALL)
-    @JoinColumn(name = "EVENT_ID") 
+	@ManyToOne(fetch=FetchType.EAGER,cascade = CascadeType.ALL)
+    @JoinColumn(name = "EVENT_ID", nullable=false) 
 	private EventMaster event;
    
 	
-	@ManyToOne(cascade = CascadeType.ALL)
-	@JoinColumn(name = "FACILITY_ID")
+	@ManyToOne(fetch=FetchType.EAGER,cascade = CascadeType.ALL)
+	@JoinColumn(name = "FACILITY_ID",nullable=false)
 	private Facility facility;
 
 	
 	public EventFacility() {
 		
+	}
+	
+	public EventFacility(Facility facility,EventMaster event) {
+		this.facility=facility;
+		this.event=event;
 	}
 
 	
@@ -82,7 +87,11 @@ public class EventFacility {
 	public void setFacility(Facility facility) {
 		this.facility = facility;
 	}
-
+	
+	/*public void addEventMaster(EventMaster event) {
+		this.event.add(event);
+	}
+*/
 	
 	
 }

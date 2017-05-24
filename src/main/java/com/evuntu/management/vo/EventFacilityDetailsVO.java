@@ -1,4 +1,4 @@
-package com.evuntu.management.model;
+package com.evuntu.management.vo;
 
 /**
  * Entity bean
@@ -8,13 +8,11 @@ package com.evuntu.management.model;
 public class EventFacilityDetailsVO {
 
 
-	private Long eventFacilityId;
-	
+	private Long eventFacilityId;	
  
 	private Long  eventId;
 	
-	private String  eventName;
-   
+	private String  eventName;   
 
 	private Long  facilityId;
 	

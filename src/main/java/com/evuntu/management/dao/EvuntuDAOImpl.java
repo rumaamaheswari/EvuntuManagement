@@ -1,6 +1,5 @@
 package com.evuntu.management.dao;
 
-import java.util.ArrayList;
 import java.util.List;
 
 import org.apache.log4j.Logger;
@@ -20,10 +19,10 @@ import com.evuntu.management.model.CompanyEventBidding;
 import com.evuntu.management.model.Customer;
 import com.evuntu.management.model.CustomerEventRequest;
 import com.evuntu.management.model.EventFacility;
-import com.evuntu.management.model.EventFacilityDetailsVO;
 import com.evuntu.management.model.EventServices;
 import com.evuntu.management.model.FileDetails;
 import com.evuntu.management.model.User;
+import com.evuntu.management.vo.EventFacilityDetailsVO;
 
 @Repository
 public class EvuntuDAOImpl implements EvuntuDAO {
@@ -326,7 +325,7 @@ public class EvuntuDAOImpl implements EvuntuDAO {
 		return false;
 	}
 
-	@Override
+	/*@Override
 	public List<FileDetails> fileUpload(List<FileDetails> fileDetails) throws EvuntuManagementException {
 		LOGGER.info("DAO::fileUpload-start");
 		session = sessionFactory.openSession();
@@ -355,7 +354,7 @@ public class EvuntuDAOImpl implements EvuntuDAO {
             throw new EvuntuManagementException("Internal server error"+e);
         } 
         return fileIdList;
-	 }
+	 }*/
 
 	@Override
 	public Long addEventServices(EventServices eServices) throws EvuntuManagementException {
@@ -505,7 +504,7 @@ public class EvuntuDAOImpl implements EvuntuDAO {
 			
 			
 			List<EventFacilityDetailsVO> efList = session.createQuery(
-					"select new com.evuntu.management.model.EventFacilityDetailsVO " 
+					"select new com.evuntu.management.vo.EventFacilityDetailsVO " 
 							+"(ef.eventFacilityId as EVENT_FACILITY_ID, "
 							+ "ef.event.eventId as EVENT_ID, ef.event.eventName as EVENT_NAME, "
 							+ "ef.facility.facilityId as FACILITY_ID, ef.facility.facilityName as FACILITY_NAME) "
@@ -529,6 +528,8 @@ public class EvuntuDAOImpl implements EvuntuDAO {
 		try{
 			session = sessionFactory.openSession();
 			tx = session.beginTransaction();
+			session.save(eventFacility.getEvent());
+			session.save(eventFacility.getFacility());
 			session.save(eventFacility);
 			tx.commit();
 			LOGGER.info("Event added successfully");
@@ -573,7 +574,7 @@ public class EvuntuDAOImpl implements EvuntuDAO {
 		}finally{
 			session.close();
 		}
-		LOGGER.info("Customer event request updated successfully for customer::"+customerEventRequest.getUserId());
+		LOGGER.info("Customer event request updated successfully for customer::"+customerEventRequest.getUser().getId());
 		return true;
 	}
 
@@ -603,7 +604,7 @@ public class EvuntuDAOImpl implements EvuntuDAO {
 			session = sessionFactory.openSession();
 			tx = session.beginTransaction();
 			Criteria cr = session.createCriteria(CustomerEventRequest.class);
-			cr.add(Restrictions.eq("userId",userId));
+			cr.add(Restrictions.eq("user.id",userId));
 			tx.commit();
 			LOGGER.info("All the event request details fetched successfully for the user "+userId);
 			return  cr.list();

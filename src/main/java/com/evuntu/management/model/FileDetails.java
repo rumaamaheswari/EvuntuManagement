@@ -53,8 +53,6 @@ public class FileDetails implements Serializable{
 	@ManyToOne(cascade=CascadeType.ALL)
 	@JoinColumn(name="EVENT_SERVICES_ID")
 	private EventServices eventServices;
-	
-
 
 	/**
 	 * @return the fileId
@@ -182,72 +180,83 @@ public class FileDetails implements Serializable{
 	 */
 	@Override
 	public int hashCode() {
-	    final int prime = 31;
-	    int result = 17;
-	    result = prime * result + ((fileDesc == null) ? 0 : fileDesc.hashCode());
-	    result = prime * result + ((fileId == null) ? 0 : fileId.hashCode());
-	    result = prime * result + ((fileName == null) ? 0 : fileName.hashCode());
-	    result = prime * result + ((filePath == null) ? 0 : filePath.hashCode());
-	    result = prime * result + ((fileSize == null) ? 0 : fileSize.hashCode());
-	    result = prime * result + ((fileType == null) ? 0 : fileType.hashCode());
-	    result = prime * result + ((fileUploadedTime == null) ? 0 : fileUploadedTime.hashCode());
-	    result = prime * result + ((userId == null) ? 0 : userId.hashCode());
-	    return result;
+		final int prime = 31;
+		int result = 1;
+		result = prime * result + ((eventServices == null) ? 0 : eventServices.hashCode());
+		result = prime * result + ((fileDesc == null) ? 0 : fileDesc.hashCode());
+		result = prime * result + ((fileId == null) ? 0 : fileId.hashCode());
+		result = prime * result + ((fileName == null) ? 0 : fileName.hashCode());
+		result = prime * result + ((filePath == null) ? 0 : filePath.hashCode());
+		result = prime * result + ((fileSize == null) ? 0 : fileSize.hashCode());
+		result = prime * result + ((fileType == null) ? 0 : fileType.hashCode());
+		result = prime * result + ((fileUploadedTime == null) ? 0 : fileUploadedTime.hashCode());
+		result = prime * result + status;
+		result = prime * result + ((userId == null) ? 0 : userId.hashCode());
+		return result;
 	}
+
 	/* (non-Javadoc)
 	 * @see java.lang.Object#equals(java.lang.Object)
 	 */
 	@Override
 	public boolean equals(Object obj) {
-	    if (this == obj)
-	        return true;
-	    if (obj == null)
-	        return false;
-	    if (getClass() != obj.getClass())
-	        return false;
-	    FileDetails other = (FileDetails) obj;
-	    if (fileDesc == null) {
-	        if (other.fileDesc != null)
-	            return false;
-	    } else if (!fileDesc.equals(other.fileDesc))
-	        return false;
-	    if (fileId == null) {
-	        if (other.fileId != null)
-	            return false;
-	    } else if (!fileId.equals(other.fileId))
-	        return false;
-	    if (fileName == null) {
-	        if (other.fileName != null)
-	            return false;
-	    } else if (!fileName.equals(other.fileName))
-	        return false;
-	    if (filePath == null) {
-	        if (other.filePath != null)
-	            return false;
-	    } else if (!filePath.equals(other.filePath))
-	        return false;
-	    if (fileSize == null) {
-	        if (other.fileSize != null)
-	            return false;
-	    } else if (!fileSize.equals(other.fileSize))
-	        return false;
-	    if (fileType == null) {
-	        if (other.fileType != null)
-	            return false;
-	    } else if (!fileType.equals(other.fileType))
-	        return false;
-	      if (fileUploadedTime == null) {
-	        if (other.fileUploadedTime != null)
-	            return false;
-	    } else if (!fileUploadedTime.equals(other.fileUploadedTime))
-	        return false;
-	    if (userId == null) {
-	        if (other.userId != null)
-	            return false;
-	    } else if (!userId.equals(other.userId))
-	        return false;
-	    return true;
+		if (this == obj)
+			return true;
+		if (obj == null)
+			return false;
+		if (!(obj instanceof FileDetails))
+			return false;
+		FileDetails other = (FileDetails) obj;
+		if (eventServices == null) {
+			if (other.eventServices != null)
+				return false;
+		} else if (!eventServices.equals(other.eventServices))
+			return false;
+		if (fileDesc == null) {
+			if (other.fileDesc != null)
+				return false;
+		} else if (!fileDesc.equals(other.fileDesc))
+			return false;
+		if (fileId == null) {
+			if (other.fileId != null)
+				return false;
+		} else if (!fileId.equals(other.fileId))
+			return false;
+		if (fileName == null) {
+			if (other.fileName != null)
+				return false;
+		} else if (!fileName.equals(other.fileName))
+			return false;
+		if (filePath == null) {
+			if (other.filePath != null)
+				return false;
+		} else if (!filePath.equals(other.filePath))
+			return false;
+		if (fileSize == null) {
+			if (other.fileSize != null)
+				return false;
+		} else if (!fileSize.equals(other.fileSize))
+			return false;
+		if (fileType == null) {
+			if (other.fileType != null)
+				return false;
+		} else if (!fileType.equals(other.fileType))
+			return false;
+		if (fileUploadedTime == null) {
+			if (other.fileUploadedTime != null)
+				return false;
+		} else if (!fileUploadedTime.equals(other.fileUploadedTime))
+			return false;
+		if (status != other.status)
+			return false;
+		if (userId == null) {
+			if (other.userId != null)
+				return false;
+		} else if (!userId.equals(other.userId))
+			return false;
+		return true;
 	}
+	
 	
 
 }

@@ -1,5 +1,7 @@
 package com.evuntu.management.model;
 
+import java.io.Serializable;
+
 import javax.persistence.CascadeType;
 import javax.persistence.Column;
 import javax.persistence.Entity;
@@ -16,7 +18,9 @@ import javax.persistence.Table;
  */
 @Entity
 @Table(name="CUSTOMER")
-public class Customer {
+public class Customer implements Serializable{
+
+	private static final long serialVersionUID = 8070332669886888087L;
 
 	@Id
 	@Column(name="CUSTOMER_ID")
