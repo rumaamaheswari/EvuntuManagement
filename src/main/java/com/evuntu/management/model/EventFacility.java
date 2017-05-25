@@ -26,12 +26,12 @@ public class EventFacility {
 	@GeneratedValue(strategy=GenerationType.AUTO)
 	private Long eventFacilityId;
 	
-	@ManyToOne(fetch=FetchType.EAGER,cascade = CascadeType.ALL)
+	@ManyToOne(cascade = CascadeType.ALL)
     @JoinColumn(name = "EVENT_ID", nullable=false) 
 	private EventMaster event;
    
 	
-	@ManyToOne(fetch=FetchType.EAGER,cascade = CascadeType.ALL)
+	@ManyToOne(cascade = CascadeType.ALL)
 	@JoinColumn(name = "FACILITY_ID",nullable=false)
 	private Facility facility;
 

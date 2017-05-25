@@ -3,14 +3,16 @@ package com.evuntu.management.model;
 import java.io.Serializable;
 import java.util.Date;
 import java.util.HashSet;
-import java.util.List;
 import java.util.Set;
 
 import javax.persistence.CascadeType;
 import javax.persistence.Column;
 import javax.persistence.Entity;
+import javax.persistence.FetchType;
 import javax.persistence.GeneratedValue;
 import javax.persistence.Id;
+import javax.persistence.JoinColumn;
+import javax.persistence.ManyToOne;
 import javax.persistence.OneToMany;
 import javax.persistence.Table;
 import javax.persistence.Temporal;
@@ -48,9 +50,6 @@ public class EventServices implements Serializable {
 	@Column(name="CREATED_TIME")
 	private Date createdTime;
 
-	@Column(name="FACEBOOK_LINK")
-	private String facebookLink;
-
 	@Temporal(TemporalType.TIMESTAMP)
 	@Column(name="UPDATED_TIME")
 	private Date updatedTime;
@@ -59,8 +58,12 @@ public class EventServices implements Serializable {
 	private String youtubeLink;
 
 	//bi-directional one-to-many association to FileDetail
-	@OneToMany(cascade=CascadeType.ALL, mappedBy="eventServices")
+	@OneToMany(fetch = FetchType.EAGER,cascade=CascadeType.ALL, mappedBy="eventServices")
 	private Set<FileDetails> fileDetails= new HashSet<>();
+	
+	@ManyToOne(fetch=FetchType.EAGER)
+	@JoinColumn(name="FACILITY_ID",nullable=false) 
+	private Facility facility;
 
 	
 
@@ -112,15 +115,6 @@ public class EventServices implements Serializable {
 		this.createdTime = createdTime;
 	}
 
-
-	public String getFacebookLink() {
-		return this.facebookLink;
-	}
-
-	public void setFacebookLink(String facebookLink) {
-		this.facebookLink = facebookLink;
-	}
-
 	public Date getUpdatedTime() {
 		return this.updatedTime;
 	}
@@ -145,6 +139,21 @@ public class EventServices implements Serializable {
 		this.fileDetails = fileDetails;
 	}
 
+	/**
+	 * @return the facility
+	 */
+	public Facility getFacility() {
+		return facility;
+	}
+
+	/**
+	 * @param facility the facility to set
+	 */
+	public void setFacility(Facility facility) {
+		this.facility = facility;
+	}
+	
+	
 	/*
 	public FileDetails addFileDetail(FileDetails fileDetails) {
 		getFileDetails().add(fileDetails);

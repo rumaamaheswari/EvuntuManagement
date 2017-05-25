@@ -3,12 +3,15 @@
  */
 package com.evuntu.management.helper;
 
+import java.sql.Timestamp;
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.List;
 import java.util.SortedSet;
 import java.util.TreeSet;
 
 import org.apache.log4j.Logger;
+import org.springframework.web.multipart.MultipartFile;
 
 import com.evuntu.management.exception.EvuntuManagementException;
 import com.evuntu.management.model.Company;
@@ -30,6 +33,7 @@ import com.evuntu.management.vo.CustomerResponseVO;
 import com.evuntu.management.vo.EventFacilityDetailsVO;
 import com.evuntu.management.vo.EventMasterVO;
 import com.evuntu.management.vo.EventServicesResponseVO;
+import com.evuntu.management.vo.EventServicesVO;
 import com.evuntu.management.vo.FacilityVO;
 import com.evuntu.management.vo.FileDetailsVO;
 
@@ -284,6 +288,40 @@ public class EvuntuManagementHelper {
 			return customerEventResponseVO;
 		}
 
+		
+		public EventServices convertEventServicesVOtoDO(EventServicesVO eventServicesVO) throws EvuntuManagementException {
+			LOGGER.info("Helper::convertCompanyVOToDO-start");
+			EventServices eventServices = new EventServices();
+			try{		
+				//eventServices.setUser(convertCompanyVOToUserDO(eventServicesVO));
+				eventServices.setEventServiceId(eventServicesVO.getEventServiceId());
+				eventServices.setCompanyId(eventServicesVO.getCompanyId());
+				eventServices.setContactNumber(eventServicesVO.getContactNumber());
+				eventServices.setContactPerson(eventServicesVO.getContactPerson());
+				eventServices.setYoutubeLink(eventServicesVO.getYouTubeLink());
+				eventServices.setCity(eventServicesVO.getCity());			
+			}
+			catch(Exception e){
+				throw new EvuntuManagementException(EXCEPTION_WHILE_CONVERTING_VO_TO_DO+e);
+			}
+			LOGGER.info("Helper::convertCompanyVOToDO-end");
+			return eventServices;
+		}
+		
+		
+		public FileDetails convertFileInfoToDO(MultipartFile file,String filePath) {
+			FileDetails fileDetails = new FileDetails();
+			fileDetails.setFileName(file
+					.getOriginalFilename());
+			fileDetails.setStatus('A');
+			fileDetails.setFileType(file.getContentType());
+			Date currentDate = new Date();
+			fileDetails.setFileUploadedTime(new Timestamp(
+					currentDate.getTime()));
+			fileDetails.setFileSize(file.getSize());
+			fileDetails.setFilePath(filePath);
+			return fileDetails;
+		}
 
 		public EventServicesResponseVO convertEventServicesDOtoVO(EventServices eventServices) throws EvuntuManagementException {
 			LOGGER.info("Helper::convertEventServicesDOtoVO-start");
@@ -296,7 +334,6 @@ public class EvuntuManagementHelper {
 					eventServicesVO.setContactPerson(eventServices.getContactPerson());
 					//eventServicesVO.setEventName(eventServices.getEventName());
 					eventServicesVO.setEventServiceId(eventServices.getEventServiceId());
-					eventServicesVO.setFaceBookLink(eventServices.getFacebookLink());
 					eventServicesVO.setYouTubeLink(eventServices.getYoutubeLink());
 					for(FileDetails fileDetails:eventServices.getFileDetails()){
 						FileDetailsVO fileDetailsVO=new FileDetailsVO();

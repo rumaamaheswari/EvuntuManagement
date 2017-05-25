@@ -364,6 +364,10 @@ public class EvuntuDAOImpl implements EvuntuDAO {
 			session = sessionFactory.openSession();
 			tx = session.beginTransaction();
 			id=(Long) session.save(eServices);
+			//test the above if not working enable.
+			/*for(FileDetails fd:eServices.getFileDetails()){
+				session.save(fd);
+			}*/
 			tx.commit();
 			LOGGER.info("Event Services added successfully");
 		}catch(HibernateException e){
@@ -401,12 +405,14 @@ public class EvuntuDAOImpl implements EvuntuDAO {
 		LOGGER.info("DAO::searchServices-start");
 		try{
 			session = sessionFactory.openSession();
-			Criteria servicesList = session.createCriteria(EventServices.class);
+			Criteria servicesList = session.createCriteria(EventServices.class,"eventservices");
 			if(eventName!=""){
-				servicesList.add(Restrictions.like("eventName", eventName));
+				servicesList.createAlias("eventservices.facility", "facility");
+				servicesList.add(Restrictions.like("facility.facilityName", eventName));
 			}
 			if(city!=""){
-				servicesList.add(Restrictions.eq("city", city));
+				servicesList.createAlias("eventservices.facility", "facility");
+				servicesList.add(Restrictions.eq("facility.facilityCity", city));
 			}
 			if(eventName=="" && city==""){
 				servicesList.addOrder(Order.asc("updatedTime"));

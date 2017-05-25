@@ -1,5 +1,6 @@
 package com.evuntu.management.model;
 
+import java.io.Serializable;
 import java.util.HashSet;
 import java.util.Set;
 
@@ -19,7 +20,12 @@ import javax.persistence.Table;
  */
 @Entity
 @Table(name="FACILITY")
-public class Facility {
+public class Facility implements Serializable {
+
+	/**
+	 * 
+	 */
+	private static final long serialVersionUID = 7149810174127736434L;
 
 	@Id
 	@Column(name="FACILITY_ID")

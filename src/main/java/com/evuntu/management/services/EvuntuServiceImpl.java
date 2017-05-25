@@ -3,7 +3,9 @@ package com.evuntu.management.services;
 import java.io.UnsupportedEncodingException;
 import java.net.URLDecoder;
 import java.util.ArrayList;
+import java.util.HashSet;
 import java.util.List;
+import java.util.Set;
 
 import org.apache.log4j.Logger;
 import org.hibernate.HibernateException;
@@ -109,8 +111,6 @@ public class EvuntuServiceImpl implements EvuntuService {
 	@Override
 	public boolean addCompany(CompanyRequestVO companyVO) throws EvuntuManagementException {
 		LOGGER.info("Service::addCompany-start");
-		/*EvuntuManagementHelper helper=new EvuntuManagementHelper();
-		return evuntuDAO.addCompany(helper.convertCompanyVOToDO(companyVO));*/
 		try{
 			EvuntuManagementHelper helper=new EvuntuManagementHelper();
 			/*Long id=evuntuDAO.addUser(helper.convertCompanyVOToUserDO(companyVO));
@@ -170,10 +170,11 @@ public class EvuntuServiceImpl implements EvuntuService {
   	@Override
 	public boolean addEventServices(EventServicesVO eventServicesVO) throws EvuntuManagementException {
 		LOGGER.info("Service::addEventServices-start");
-		List<FileDetails> fileDetList= new ArrayList<>();
-		EventServices eServices=new EventServices();		
-		BeanUtils.copyProperties(eventServicesVO, eServices);
-		Long eventId=evuntuDAO.addEventServices(eServices);
+		
+		/*EvuntuManagementHelper helper=new EvuntuManagementHelper();
+		
+		evuntuDAO.addEventServices(helper.convertCompanyVOToDO(companyVO));
+		Long eventId=evuntuDAO.addEventServices(helper.convertEventServicesVOtoDO(eventServicesVO));
 		FileUploadUtil fileUtil=new FileUploadUtil();
 		for(MultipartFile file:eventServicesVO.getInputFile()){
 			if (file != null && (!file.isEmpty())) {
@@ -182,8 +183,28 @@ public class EvuntuServiceImpl implements EvuntuService {
 				fileDetList.add(fileDetails);
 			}
 		}
-		//evuntuDAO.fileUpload(fileDetList);		
-		return true; 
+		evuntuDAO.fileUpload(fileDetList);	*/
+		Set<FileDetails> fileDetList= new HashSet<>();
+		try{
+			FileUploadUtil fileUtil=new FileUploadUtil();
+			EvuntuManagementHelper helper=new EvuntuManagementHelper();
+			EventServices eventServices=helper.convertEventServicesVOtoDO(eventServicesVO);
+
+			for(MultipartFile file:eventServicesVO.getInputFile()){	
+				
+				if (file != null && (!file.isEmpty())) {
+					String path=fileUtil.upload(file,eventServicesVO.getCompanyId()); 
+					FileDetails fileDetails =helper.convertFileInfoToDO(file,path);
+					fileDetList.add(fileDetails);	
+				}
+			}	
+			eventServices.setFileDetails(fileDetList);
+			evuntuDAO.addEventServices(eventServices);
+		}
+		catch(HibernateException he){
+			throw new EvuntuManagementException(ERROR_WHILE_ACCESSING_DB+he);
+		}
+		return true;
 	}
 	
 	@Override
@@ -227,10 +248,10 @@ public class EvuntuServiceImpl implements EvuntuService {
 			city="";
 		}
 		List<EventServices> list=evuntuDAO.searchServices(eventName, city);
-		for(EventServices eventServices:list){
+		/*for(EventServices eventServices:list){
 			List<FileDetails> filesList=evuntuDAO.getFileDetails(eventServices.getEventServiceId());
 			//eventServices.setFileDetails(filesList);
-		}	
+		}*/	
 		for(EventServices eventServices:list){
 			reponseList.add(helper.convertEventServicesDOtoVO(eventServices));
 		}		

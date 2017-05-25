@@ -25,22 +25,12 @@ public class EventServicesVO {
 	
 	private String contactPerson;
 	
-	private String faceBookLink;
-	
 	private String youTubeLink;
 	
 	private String contactNumber;
 	
 	private  List<MultipartFile> inputFile;
 	
-
-	public String getFaceBookLink() {
-		return faceBookLink;
-	}
-
-	public void setFaceBookLink(String faceBookLink) {
-		this.faceBookLink = faceBookLink;
-	}
 
 	public String getYouTubeLink() {
 		return youTubeLink;

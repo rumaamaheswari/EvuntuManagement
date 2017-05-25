@@ -23,7 +23,7 @@ public class FileUploadUtil {
 	 * @throws EvuntuManagementException 
 	 * @throws IOException
 	 */
-	public boolean upload(MultipartFile inputFile,Long companyId) throws EvuntuManagementException  {
+	public String upload(MultipartFile inputFile,Long companyId) throws EvuntuManagementException  {
 		LOGGER.info("FileUploadController::upload-start");
 		String filePath="D:\\evuntuLog\\uploaded\\"+companyId;
 		String originalFilename = inputFile.getOriginalFilename();
@@ -31,7 +31,7 @@ public class FileUploadUtil {
 		File destinationFile = new File(filePath+  File.separator + originalFilename);
 		try{
 			inputFile.transferTo(destinationFile);
-			return true;
+			return filePath+"\\"+originalFilename;
 		}  catch (IOException e) {
 			LOGGER.error(INTERNAL_SERVER_ERROR+e);
 			throw new EvuntuManagementException("IO Exception occured::"+e);			
