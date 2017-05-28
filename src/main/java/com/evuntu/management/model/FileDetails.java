@@ -3,6 +3,7 @@ package com.evuntu.management.model;
 import java.io.Serializable;
 import java.sql.Timestamp;
 
+import javax.persistence.CascadeType;
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.FetchType;
@@ -50,7 +51,7 @@ public class FileDetails implements Serializable{
 	private char status;
 	
 	//bi-directional many-to-one association to EventService
-	@ManyToOne(fetch=FetchType.EAGER)
+	@ManyToOne(fetch=FetchType.EAGER,cascade=CascadeType.ALL)
 	@JoinColumn(name="EVENT_SERVICES_ID",nullable=false)
 	private EventServices eventServices;
 
