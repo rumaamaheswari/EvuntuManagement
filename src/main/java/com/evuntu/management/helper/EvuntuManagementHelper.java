@@ -290,7 +290,7 @@ public class EvuntuManagementHelper {
 
 		
 		public EventServices convertEventServicesVOtoDO(EventServicesVO eventServicesVO) throws EvuntuManagementException {
-			LOGGER.info("Helper::convertCompanyVOToDO-start");
+			LOGGER.info("Helper::convertEventServicesVOtoDO-start");
 			EventServices eventServices = new EventServices();
 			try{		
 				//eventServices.setUser(convertCompanyVOToUserDO(eventServicesVO));
@@ -299,12 +299,15 @@ public class EvuntuManagementHelper {
 				eventServices.setContactNumber(eventServicesVO.getContactNumber());
 				eventServices.setContactPerson(eventServicesVO.getContactPerson());
 				eventServices.setYoutubeLink(eventServicesVO.getYouTubeLink());
-				eventServices.setCity(eventServicesVO.getCity());			
+				eventServices.setCity(eventServicesVO.getCity());
+				Facility facility=new Facility();
+				facility.setFacilityId(eventServicesVO.getFacilityId());
+				eventServices.setFacility(facility);
 			}
 			catch(Exception e){
 				throw new EvuntuManagementException(EXCEPTION_WHILE_CONVERTING_VO_TO_DO+e);
 			}
-			LOGGER.info("Helper::convertCompanyVOToDO-end");
+			LOGGER.info("Helper::convertEventServicesVOtoDO-end");
 			return eventServices;
 		}
 		

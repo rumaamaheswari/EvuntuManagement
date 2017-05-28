@@ -61,7 +61,7 @@ public class EventServices implements Serializable {
 	@OneToMany(fetch = FetchType.EAGER,cascade=CascadeType.ALL, mappedBy="eventServices")
 	private Set<FileDetails> fileDetails= new HashSet<>();
 	
-	@ManyToOne(fetch=FetchType.EAGER)
+	@ManyToOne(fetch=FetchType.EAGER,cascade=CascadeType.DETACH)
 	@JoinColumn(name="FACILITY_ID",nullable=false) 
 	private Facility facility;
 
