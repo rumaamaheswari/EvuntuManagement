@@ -276,8 +276,8 @@ public class EvuntuManagementHelper {
 				customerEventResponseVO.setCustomerEventRequestId(customerEventReq.getCustomerEventRequestId());
 				customerEventResponseVO.setUserId(customerEventReq.getUser().getId());
 				customerEventResponseVO.setEventId(customerEventReq.getEvent().getEventId());
-				customerEventResponseVO.setEventName(customerEventReq.getEvent().getEventName());
-				//customerEventRequestVO.setFacilityId(customerEventReq.getFacilityId());
+				customerEventResponseVO.setFacilityName(customerEventReq.getFacility().getFacilityName());
+				customerEventResponseVO.setFacilityId(customerEventReq.getFacility().getFacilityId());
 				customerEventResponseVO.setBudget(customerEventReq.getBudget());
 				customerEventResponseVO.setExpectations(customerEventReq.getExpectations());				
 			}

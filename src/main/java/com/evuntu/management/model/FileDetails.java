@@ -34,10 +34,10 @@ public class FileDetails implements Serializable{
 	@Column(name = "FILE_TYPE", nullable = false)
 	private String fileType;
 	
-	@Column(name = "FILE_DESC", nullable = false)
+	@Column(name = "FILE_DESC")
 	private String fileDesc;
 	
-	@Column(name = "TIMESTAMP", nullable = false)
+	@Column(name = "TIMESTAMP")
 	private Timestamp fileUploadedTime;
 	
 	@Column(name = "USER_ID", nullable = false)

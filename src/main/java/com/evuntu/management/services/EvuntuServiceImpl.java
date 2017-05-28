@@ -189,7 +189,6 @@ public class EvuntuServiceImpl implements EvuntuService {
 			FileUploadUtil fileUtil=new FileUploadUtil();
 			EvuntuManagementHelper helper=new EvuntuManagementHelper();
 			EventServices eventServices=helper.convertEventServicesVOtoDO(eventServicesVO);
-
 			for(MultipartFile file:eventServicesVO.getInputFile()){	
 				
 				if (file != null && (!file.isEmpty())) {

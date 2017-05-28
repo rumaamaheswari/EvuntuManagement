@@ -20,7 +20,7 @@ public class CustomerEventResponseVO {
 	
 	private String expectations;
 	
-	private String eventName;
+	private String facilityName;
 
 	/**
 	 * @return the customerEventRequestId
@@ -108,12 +108,12 @@ public class CustomerEventResponseVO {
 		this.expectations = expectations;
 	}
 
-	public String getEventName() {
-		return eventName;
+	public String getFacilityName() {
+		return facilityName;
 	}
 
-	public void setEventName(String eventName) {
-		this.eventName = eventName;
+	public void setFacilityName(String facilityName) {
+		this.facilityName = facilityName;
 	}
 	
 	

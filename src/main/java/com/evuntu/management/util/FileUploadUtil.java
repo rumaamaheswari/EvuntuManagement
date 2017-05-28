@@ -46,7 +46,7 @@ public class FileUploadUtil {
     	}
     }
 	
-	public FileDetails prepareObjectToStore(MultipartFile file) {
+	/*public FileDetails prepareObjectToStore(MultipartFile file) {
 		FileDetails fileDetails = new FileDetails();
 		fileDetails.setFileName(file
 				.getOriginalFilename());
@@ -57,6 +57,6 @@ public class FileUploadUtil {
 				currentDate.getTime()));
 		fileDetails.setFileSize(file.getSize());
 		return fileDetails;
-	}
+	}*/
 	
 }
