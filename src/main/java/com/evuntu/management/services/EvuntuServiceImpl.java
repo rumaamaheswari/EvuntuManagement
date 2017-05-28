@@ -26,6 +26,7 @@ import com.evuntu.management.model.EventServices;
 import com.evuntu.management.model.FileDetails;
 import com.evuntu.management.model.User;
 import com.evuntu.management.util.FileUploadUtil;
+import com.evuntu.management.vo.AuthenticateResponseVO;
 import com.evuntu.management.vo.CompanyEventBiddingVO;
 import com.evuntu.management.vo.CompanyRequestVO;
 import com.evuntu.management.vo.CompanyResponseVO;
@@ -266,8 +267,10 @@ public class EvuntuServiceImpl implements EvuntuService {
 	}
 
 	@Override
-	public String authenticate(String userName, String password) throws EvuntuManagementException {
+	public AuthenticateResponseVO authenticate(String userName, String password) throws EvuntuManagementException {
 		
+		LOGGER.info("Service::authenticate-start");
+		AuthenticateResponseVO authenticateResponseVO=new AuthenticateResponseVO();
 		User user=evuntuDAO.getUserDetails(userName);
 		Long authString=0L;
 		if(user==null){
@@ -286,9 +289,25 @@ public class EvuntuServiceImpl implements EvuntuService {
 			throw new EvuntuManagementException("Invalid password");
 		}
 		if(userName.equals(user.getUserName()) && password.equals(hashedPassword)){
-			authString = System.currentTimeMillis();			
+			authString = System.currentTimeMillis();
+			String userType=user.getUserType();
+			authenticateResponseVO.setAuthToken(authString);
+			authenticateResponseVO.setUserType(userType);
+   			/*if("CUSTOMER".equals(type)){
+				Set<Customer> temp=user.getCustomer();
+				for(Customer e:temp){
+					System.out.println(e.getFirstName());
+				}
+			}
+			else{
+				Set<Company> temp=user.getCompany();
+				for(Company e:temp){
+					System.out.println(e.getAddress());
+				}
+			}*/
 		}
-		return authString.toString();
+		LOGGER.info("Service::authenticate-end");
+		return authenticateResponseVO;
 	}
 
 	@Override

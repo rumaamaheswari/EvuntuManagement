@@ -3,6 +3,7 @@ package com.evuntu.management.services;
 import java.util.List;
 
 import com.evuntu.management.exception.EvuntuManagementException;
+import com.evuntu.management.vo.AuthenticateResponseVO;
 import com.evuntu.management.vo.CompanyEventBiddingVO;
 import com.evuntu.management.vo.CompanyRequestVO;
 import com.evuntu.management.vo.CompanyResponseVO;
@@ -35,7 +36,7 @@ public interface EvuntuService {
 	public EventServicesResponseVO getEventServicesById(long id)throws EvuntuManagementException;
 	public boolean deleteEventServices(long id)throws EvuntuManagementException;
 	
-	public String authenticate(String userName, String password)throws EvuntuManagementException;
+	public AuthenticateResponseVO authenticate(String userName, String password)throws EvuntuManagementException;
 	
 	public List<EventMasterVO> getAllEvents()throws EvuntuManagementException;
 	public boolean addEvent(EventMasterVO event)throws EvuntuManagementException;

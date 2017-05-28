@@ -1,7 +1,6 @@
 package com.evuntu.management.controller;
 
 import java.net.URLDecoder;
-import java.net.URLEncoder;
 
 import org.apache.log4j.Logger;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -16,6 +15,7 @@ import com.evuntu.management.exception.EvuntuManagementException;
 import com.evuntu.management.model.Status;
 import com.evuntu.management.services.EvuntuService;
 import com.evuntu.management.util.PassHashHelper;
+import com.evuntu.management.vo.AuthenticateResponseVO;
 
 
 @RestController
@@ -31,10 +31,9 @@ public class EvuntuManagementRestController {
 
 	
 	@RequestMapping(value = "/authenticate", method = RequestMethod.GET)
-	public ResponseEntity<Status> authenticate(@RequestParam(value="userName", required=true) String userName,@RequestParam(value="password", required=true) String password) throws EvuntuManagementException {
+	public ResponseEntity<AuthenticateResponseVO> authenticate(@RequestParam(value="userName", required=true) String userName,@RequestParam(value="password", required=true) String password) throws EvuntuManagementException {
 		LOGGER.info("EvuntuManagementRestController::authenticate-start");
-		Status status=new Status();
-		
+		AuthenticateResponseVO status =new AuthenticateResponseVO();
 		if (userName == null || userName.isEmpty()) {
 			throw new EvuntuManagementException("Username is required");
 		}
@@ -42,12 +41,10 @@ public class EvuntuManagementRestController {
 			throw new EvuntuManagementException("Password is required");
 		}
 		try {
-			String authToken = evuntuServices.authenticate(userName,password);	
-			status.setMessage(authToken);
+			status = evuntuServices.authenticate(userName,password);	
 			return new ResponseEntity<>(status,HttpStatus.OK);
 		} catch (Exception e) {
 			LOGGER.error(INTERNAL_SERVER_ERROR+e);
-			status=  new Status(0, e.toString());
 			return new ResponseEntity<>(status,HttpStatus.INTERNAL_SERVER_ERROR);
 		}
 	}
