@@ -363,11 +363,13 @@ public class EvuntuDAOImpl implements EvuntuDAO {
 		try{
 			session = sessionFactory.openSession();
 			tx = session.beginTransaction();
-			id=(Long) session.save(eServices);
+			/*id=(Long) session.save(eServices);
+			session.save(eServices.getFileDetails());*/
 			//test the above if not working enable.
-			/*for(FileDetails fd:eServices.getFileDetails()){
+			id=(Long) session.save(eServices);
+			 for(FileDetails fd:eServices.getFileDetails()){
 				session.save(fd);
-			}*/
+			}
 			tx.commit();
 			LOGGER.info("Event Services added successfully");
 		}catch(HibernateException e){
