@@ -118,7 +118,7 @@ public class EvuntuProviderRestController {
 	}
 	
 	@RequestMapping(value = "/addEventServices", method = RequestMethod.POST, consumes = {"multipart/form-data"})
-	public ResponseEntity<Status> addEventServices(@RequestPart EventServicesVO eventServicesVO,@RequestParam("file") MultipartFile[] inputFile) {
+	public ResponseEntity<Status> addEventServices(@RequestPart(value = "EventServicesVO") EventServicesVO eventServicesVO,@RequestParam("file") MultipartFile[] inputFile) {
 		LOGGER.info("contoller::addEvent-start");
 		Status status;
 		Long companyId=eventServicesVO.getCompanyId();
