@@ -122,7 +122,7 @@ public class EvuntuProviderRestController {
 		LOGGER.info("contoller::addEvent-start");
 		Status status;
 		Long companyId=eventServicesVO.getCompanyId();
-		if(companyId==null || "".equals(companyId)){
+		if(companyId==null || companyId==0){
 			LOGGER.error("company id should not be null");
 			status= new Status(0, "company id should not be null");
 			return new ResponseEntity<>(status,HttpStatus.BAD_REQUEST); 

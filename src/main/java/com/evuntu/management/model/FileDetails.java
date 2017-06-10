@@ -41,7 +41,7 @@ public class FileDetails implements Serializable{
 	@Column(name = "TIMESTAMP")
 	private Timestamp fileUploadedTime;
 	
-	@Column(name = "USER_ID", nullable = false)
+	@Column(name = "USER_ID")
 	private String userId;
 	
 	@Column(name = "FILE_SIZE", nullable = true)
@@ -52,7 +52,7 @@ public class FileDetails implements Serializable{
 	
 	//bi-directional many-to-one association to EventService
 	@ManyToOne(fetch=FetchType.EAGER,cascade=CascadeType.ALL)
-	@JoinColumn(name="EVENT_SERVICES_ID",nullable=false)
+	@JoinColumn(name="EVENT_SERVICES_ID")
 	private EventServices eventServices;
 
 	/**

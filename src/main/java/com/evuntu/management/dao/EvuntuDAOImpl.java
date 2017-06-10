@@ -368,8 +368,8 @@ public class EvuntuDAOImpl implements EvuntuDAO {
 			//test the above if not working enable.
 			id=(Long) session.save(eServices);
 			 for(FileDetails fd:eServices.getFileDetails()){
-				 eServices.setEventServiceId(id);
-				 fd.setEventServices(eServices);
+				eServices.setEventServiceId(id);
+				fd.setEventServices(eServices);
 				session.save(fd);
 			}
 			tx.commit();
