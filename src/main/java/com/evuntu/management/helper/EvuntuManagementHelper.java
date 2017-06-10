@@ -236,6 +236,7 @@ public class EvuntuManagementHelper {
 					FacilityVO facilityVO=new FacilityVO();
 					facilityVO.setFacilityId(eventVO.getFacilityId());
 					facilityVO.setFacilityName(eventVO.getFacilityName());	
+					facilityVO.setFacilityCity(eventVO.getFacilityCity());
 					fList.add(facilityVO);							
 					event.setFacility(fList);
 				}										

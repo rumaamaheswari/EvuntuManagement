@@ -267,8 +267,7 @@ public class EvuntuServiceImpl implements EvuntuService {
 	}
 
 	@Override
-	public AuthenticateResponseVO authenticate(String userName, String password) throws EvuntuManagementException {
-		
+	public AuthenticateResponseVO authenticate(String userName, String password) throws EvuntuManagementException {		
 		LOGGER.info("Service::authenticate-start");
 		AuthenticateResponseVO authenticateResponseVO=new AuthenticateResponseVO();
 		User user=evuntuDAO.getUserDetails(userName);

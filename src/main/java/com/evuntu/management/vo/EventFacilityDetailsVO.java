@@ -17,14 +17,17 @@ public class EventFacilityDetailsVO {
 	private Long  facilityId;
 	
 	private String  facilityName;
+	
+	private String  facilityCity;
 
 	
-	public EventFacilityDetailsVO(Long eventFacilityId, Long  eventId,String  eventName, Long  facilityId, String  facilityName) {
+	public EventFacilityDetailsVO(Long eventFacilityId, Long  eventId,String  eventName, Long  facilityId, String  facilityName, String  facilityCity) {
 		this.eventFacilityId=eventFacilityId;
 		this.eventId=eventId;
 		this.eventName=eventName;
 		this.facilityId=facilityId;
 		this.facilityName=facilityName;
+		this.facilityCity=facilityCity;
 	}
 
 
@@ -107,8 +110,21 @@ public class EventFacilityDetailsVO {
 		this.facilityName = facililityName;
 	}
 
-	
-	
+
+	/**
+	 * @return the facilityCity
+	 */
+	public String getFacilityCity() {
+		return facilityCity;
+	}
+
+
+	/**
+	 * @param facilityCity the facilityCity to set
+	 */
+	public void setFacilityCity(String facilityCity) {
+		this.facilityCity = facilityCity;
+	}
 	
 	
 }

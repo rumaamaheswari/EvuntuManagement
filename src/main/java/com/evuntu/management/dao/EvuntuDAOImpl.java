@@ -368,6 +368,8 @@ public class EvuntuDAOImpl implements EvuntuDAO {
 			//test the above if not working enable.
 			id=(Long) session.save(eServices);
 			 for(FileDetails fd:eServices.getFileDetails()){
+				 eServices.setEventServiceId(id);
+				 fd.setEventServices(eServices);
 				session.save(fd);
 			}
 			tx.commit();
@@ -515,7 +517,8 @@ public class EvuntuDAOImpl implements EvuntuDAO {
 					"select new com.evuntu.management.vo.EventFacilityDetailsVO " 
 							+"(ef.eventFacilityId as EVENT_FACILITY_ID, "
 							+ "ef.event.eventId as EVENT_ID, ef.event.eventName as EVENT_NAME, "
-							+ "ef.facility.facilityId as FACILITY_ID, ef.facility.facilityName as FACILITY_NAME) "
+							+ "ef.facility.facilityId as FACILITY_ID, ef.facility.facilityName as FACILITY_NAME,"
+							+ "ef.facility.facilityCity as FACILITY_CITY) "
 							+ "from EventFacility ef").list();
 
 			System.out.println("List size: " + (efList).size());
