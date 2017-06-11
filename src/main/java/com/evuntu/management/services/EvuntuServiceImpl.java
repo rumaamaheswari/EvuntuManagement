@@ -350,8 +350,7 @@ public class EvuntuServiceImpl implements EvuntuService {
 		return evuntuDAO.addCompany(helper.convertCompanyVOToDO(companyVO));*/
 		try{
 			EvuntuManagementHelper helper=new EvuntuManagementHelper();
-			Long id=evuntuDAO.addCustomerEventRequest(helper.convertCustomerEventRequestVOToDO(customerEventReqVO));
-			
+			evuntuDAO.addCustomerEventRequest(helper.convertCustomerEventRequestVOToDO(customerEventReqVO));
 		}
 		catch(HibernateException he){
 			throw new EvuntuManagementException(ERROR_WHILE_ACCESSING_DB+he);
@@ -393,8 +392,7 @@ public class EvuntuServiceImpl implements EvuntuService {
 		for (CustomerEventRequest custRqr:evuntuDAO.listCustomerEventRequestByUserId(userId)){			
 			customerEventResponseVOList.add(helper.convertCustomerEventRequestDOToVO(custRqr));
 		}
-		return customerEventResponseVOList;
-		
+		return customerEventResponseVOList;		
 	}
 
 	@Override
@@ -462,7 +460,5 @@ public class EvuntuServiceImpl implements EvuntuService {
 		}
 		return companyEventBiddingVOList;
 	}
-	
-
 	
 }

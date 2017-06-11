@@ -18,6 +18,9 @@ import javax.persistence.Table;
 import javax.persistence.Temporal;
 import javax.persistence.TemporalType;
 
+import org.hibernate.annotations.CreationTimestamp;
+import org.hibernate.annotations.UpdateTimestamp;
+
 
 /**
  * Entity bean
@@ -46,10 +49,12 @@ public class EventServices implements Serializable {
 	@Column(name="CONTACT_PERSON")
 	private String contactPerson;
 
+	@CreationTimestamp
 	@Temporal(TemporalType.TIMESTAMP)
-	@Column(name="CREATED_TIME")
+	@Column(name="CREATED_TIME", updatable=false)
 	private Date createdTime;
 
+	@UpdateTimestamp
 	@Temporal(TemporalType.TIMESTAMP)
 	@Column(name="UPDATED_TIME")
 	private Date updatedTime;

@@ -27,6 +27,10 @@ import com.evuntu.management.vo.EventFacilityDetailsVO;
 @Repository
 public class EvuntuDAOImpl implements EvuntuDAO {
 	
+	private static final String INTERNAL_SERVER_ERROR = "Internal server error";
+
+	private static final String ERROR_WHILE_ACCESSING_DB = "Error while accessing db";
+
 	private static final Logger LOGGER = Logger.getLogger(EvuntuDAOImpl.class);
 		
 	@Autowired
@@ -47,7 +51,7 @@ public class EvuntuDAOImpl implements EvuntuDAO {
 			tx.commit();
 			LOGGER.info("USer added successfully");
 		}catch(HibernateException e){
-			throw new EvuntuManagementException("Error while accessing db"+e);
+			throw new EvuntuManagementException(ERROR_WHILE_ACCESSING_DB+e);
 		}finally{
 			session.close();
 		}
@@ -68,7 +72,7 @@ public class EvuntuDAOImpl implements EvuntuDAO {
 			session.update(u);
 			tx.commit();
 		}catch(HibernateException e){
-			throw new EvuntuManagementException("Error while accessing db"+e);
+			throw new EvuntuManagementException(ERROR_WHILE_ACCESSING_DB+e);
 		}finally{
 			session.close();
 		}
@@ -88,9 +92,9 @@ public class EvuntuDAOImpl implements EvuntuDAO {
 			tx.commit();
 			LOGGER.info("User removed successfully"+id);
 		}catch(HibernateException e){
-			throw new EvuntuManagementException("Error while accessing db"+e);
+			throw new EvuntuManagementException(ERROR_WHILE_ACCESSING_DB+e);
 		}catch(Exception e){
-			throw new EvuntuManagementException("Internal server error"+e);
+			throw new EvuntuManagementException(INTERNAL_SERVER_ERROR+e);
 		}
 		finally{
 			session.close();
@@ -101,7 +105,6 @@ public class EvuntuDAOImpl implements EvuntuDAO {
 	@Override
 	public User getUserDetails(String userName) throws EvuntuManagementException {
 		LOGGER.info("UserId in getUserDetails :::" + userName);
-		Session session = null;
 		User userDetails = null;
 		try {
 			session = sessionFactory.openSession();
@@ -134,7 +137,7 @@ public class EvuntuDAOImpl implements EvuntuDAO {
 			LOGGER.info("Customer added successfully");
 		}catch(HibernateException e){
 			tx.rollback();
-			throw new EvuntuManagementException("Error while accessing db"+e);
+			throw new EvuntuManagementException(ERROR_WHILE_ACCESSING_DB+e);
 		}finally{
 			session.close();
 		}
@@ -155,7 +158,7 @@ public class EvuntuDAOImpl implements EvuntuDAO {
 			session.update(c);
 			tx.commit();
 		}catch(HibernateException e){
-			throw new EvuntuManagementException("Error while accessing db"+e);
+			throw new EvuntuManagementException(ERROR_WHILE_ACCESSING_DB+e);
 		}finally{
 			session.close();
 		}
@@ -178,12 +181,13 @@ public class EvuntuDAOImpl implements EvuntuDAO {
 			return custList;
 
 		}catch(HibernateException e){
-			throw new EvuntuManagementException("Error while accessing db"+e);
+			throw new EvuntuManagementException(ERROR_WHILE_ACCESSING_DB+e);
 		}finally{
 			session.close();
 		}
 	}
 
+	@SuppressWarnings("rawtypes")
 	@Override
 	public List getCustomerById(Long id) throws EvuntuManagementException  {
 		LOGGER.info("DAO::getCustomerById-start");
@@ -194,9 +198,9 @@ public class EvuntuDAOImpl implements EvuntuDAO {
 			LOGGER.info("Customer details loaded for customer="+id);
 			return  cr.list();
 		}catch(HibernateException e){
-			throw new EvuntuManagementException("Error while accessing db"+e);
+			throw new EvuntuManagementException(ERROR_WHILE_ACCESSING_DB+e);
 		}catch(Exception e){
-			throw new EvuntuManagementException("Internal server error"+e);
+			throw new EvuntuManagementException(INTERNAL_SERVER_ERROR+e);
 		}
 		finally{
 			session.close();
@@ -216,9 +220,9 @@ public class EvuntuDAOImpl implements EvuntuDAO {
 			tx.commit();
 			LOGGER.info("Customer removed successfully"+id);
 		}catch(HibernateException e){
-			throw new EvuntuManagementException("Error while accessing db"+e);
+			throw new EvuntuManagementException(ERROR_WHILE_ACCESSING_DB+e);
 		}catch(Exception e){
-			throw new EvuntuManagementException("Internal server error"+e);
+			throw new EvuntuManagementException(INTERNAL_SERVER_ERROR+e);
 		}
 		finally{
 			session.close();
@@ -237,7 +241,7 @@ public class EvuntuDAOImpl implements EvuntuDAO {
 			LOGGER.info("Company added successfully");
 		}catch(HibernateException e){
 			tx.rollback();
-			throw new EvuntuManagementException("Error while accessing db"+e);
+			throw new EvuntuManagementException(ERROR_WHILE_ACCESSING_DB+e);
 		}finally{
 			session.close();
 		}
@@ -257,7 +261,7 @@ public class EvuntuDAOImpl implements EvuntuDAO {
 			session.update(c);
 			tx.commit();
 		}catch(HibernateException e){
-			throw new EvuntuManagementException("Error while accessing db"+e);
+			throw new EvuntuManagementException(ERROR_WHILE_ACCESSING_DB+e);
 		}finally{
 			session.close();
 		}
@@ -267,7 +271,7 @@ public class EvuntuDAOImpl implements EvuntuDAO {
 	@SuppressWarnings("unchecked")
 	@Override
 	public List<Company> listCompany()throws EvuntuManagementException  {
-		LOGGER.info("DAO::listCompanyr-start");
+		LOGGER.info("DAO::listCompany-start");
 		try{
 			session = sessionFactory.openSession();
 			tx = session.beginTransaction();
@@ -278,11 +282,12 @@ public class EvuntuDAOImpl implements EvuntuDAO {
 			return cmpnyList;
 
 		}catch(HibernateException e){
-			throw new EvuntuManagementException("Error while accessing db"+e);
+			throw new EvuntuManagementException(ERROR_WHILE_ACCESSING_DB+e);
 		}finally{
 			session.close();
 		}
 	}
+	@SuppressWarnings("rawtypes")
 	@Override
 	public List getCompanyById(Long id) throws EvuntuManagementException  {
 		LOGGER.info("DAO::getCompanyById-start");
@@ -293,9 +298,9 @@ public class EvuntuDAOImpl implements EvuntuDAO {
 			LOGGER.info("Company details loaded for accountid="+id);
 			return  cr.list();
 		}catch(HibernateException e){
-			throw new EvuntuManagementException("Error while accessing db"+e);
+			throw new EvuntuManagementException(ERROR_WHILE_ACCESSING_DB+e);
 		}catch(Exception e){
-			throw new EvuntuManagementException("Internal server error"+e);
+			throw new EvuntuManagementException(INTERNAL_SERVER_ERROR+e);
 		}
 		finally{
 			session.close();
@@ -315,9 +320,9 @@ public class EvuntuDAOImpl implements EvuntuDAO {
 			tx.commit();
 			LOGGER.info("Company removed successfully"+id);
 		}catch(HibernateException e){
-			throw new EvuntuManagementException("Error while accessing db"+e);
+			throw new EvuntuManagementException(ERROR_WHILE_ACCESSING_DB+e);
 		}catch(Exception e){
-			throw new EvuntuManagementException("Internal server error"+e);
+			throw new EvuntuManagementException(INTERNAL_SERVER_ERROR+e);
 		}
 		finally{
 			session.close();
@@ -359,7 +364,6 @@ public class EvuntuDAOImpl implements EvuntuDAO {
 	@Override
 	public boolean addEventServices(EventServices eServices) throws EvuntuManagementException {
 		LOGGER.info("DAO::addEventServices-start");
-		Long id=0L;
 		try{
 			session = sessionFactory.openSession();
 			tx = session.beginTransaction();
@@ -367,7 +371,7 @@ public class EvuntuDAOImpl implements EvuntuDAO {
 			tx.commit();
 			LOGGER.info("Event Services added successfully");
 		}catch(HibernateException e){
-			throw new EvuntuManagementException("Error while accessing db"+e);
+			throw new EvuntuManagementException(ERROR_WHILE_ACCESSING_DB+e);
 		}finally{
 			session.close();
 		}
@@ -388,7 +392,7 @@ public class EvuntuDAOImpl implements EvuntuDAO {
 			session.update(eServices);
 			tx.commit();
 		}catch(HibernateException e){
-			throw new EvuntuManagementException("Error while accessing db"+e);
+			throw new EvuntuManagementException(ERROR_WHILE_ACCESSING_DB+e);
 		}finally{
 			session.close();
 		}
@@ -396,6 +400,7 @@ public class EvuntuDAOImpl implements EvuntuDAO {
 		return true;		
 	}
 
+	@SuppressWarnings("unchecked")
 	@Override
 	public List<EventServices> searchServices(String eventName,String city)throws EvuntuManagementException  {
 		LOGGER.info("DAO::searchServices-start");
@@ -418,12 +423,13 @@ public class EvuntuDAOImpl implements EvuntuDAO {
 			return servicesList.list();
 
 		}catch(HibernateException e){
-			throw new EvuntuManagementException("Error while accessing db"+e);
+			throw new EvuntuManagementException(ERROR_WHILE_ACCESSING_DB+e);
 		}finally{
 			session.close();
 		}
 	}
 	
+	@SuppressWarnings("unchecked")
 	@Override
 	public List<FileDetails> getFileDetails(Long eventServicesId)throws EvuntuManagementException  {
 		LOGGER.info("DAO::getFileDetails-start");
@@ -434,15 +440,16 @@ public class EvuntuDAOImpl implements EvuntuDAO {
 			LOGGER.info("Filedetails loaded fro service="+eventServicesId);
 			return  cr.list();
 		}catch(HibernateException e){
-			throw new EvuntuManagementException("Error while accessing db"+e);
+			throw new EvuntuManagementException(ERROR_WHILE_ACCESSING_DB+e);
 		}catch(Exception e){
-			throw new EvuntuManagementException("Internal server error"+e);
+			throw new EvuntuManagementException(INTERNAL_SERVER_ERROR+e);
 		}
 		finally{
 			session.close();
 		}
 	}
 	
+	@SuppressWarnings("rawtypes")
 	@Override
 	public List getEventServicesById(Long eventServiceId) throws EvuntuManagementException  {
 		LOGGER.info("DAO::getEventServices-start");
@@ -453,9 +460,9 @@ public class EvuntuDAOImpl implements EvuntuDAO {
 			LOGGER.info("Event Services details loaded for accountid="+eventServiceId);
 			return  cr.list();
 		}catch(HibernateException e){
-			throw new EvuntuManagementException("Error while accessing db"+e);
+			throw new EvuntuManagementException(ERROR_WHILE_ACCESSING_DB+e);
 		}catch(Exception e){
-			throw new EvuntuManagementException("Internal server error"+e);
+			throw new EvuntuManagementException(INTERNAL_SERVER_ERROR+e);
 		}
 		finally{
 			session.close();
@@ -475,9 +482,9 @@ public class EvuntuDAOImpl implements EvuntuDAO {
 			tx.commit();
 			LOGGER.info("Event Services removed successfully"+eventServiceId);
 		}catch(HibernateException e){
-			throw new EvuntuManagementException("Error while accessing db"+e);
+			throw new EvuntuManagementException(ERROR_WHILE_ACCESSING_DB+e);
 		}catch(Exception e){
-			throw new EvuntuManagementException("Internal server error"+e);
+			throw new EvuntuManagementException(INTERNAL_SERVER_ERROR+e);
 		}
 		finally{
 			session.close();
@@ -493,6 +500,7 @@ public class EvuntuDAOImpl implements EvuntuDAO {
 		return session != null ? true : false;
 	}
 
+	@SuppressWarnings("unchecked")
 	@Override
 	public List<EventFacilityDetailsVO> listEvents() throws EvuntuManagementException {
 		LOGGER.info("DAO::listEvents-start");
@@ -519,7 +527,7 @@ public class EvuntuDAOImpl implements EvuntuDAO {
 			return efList;
 
 		}catch(HibernateException e){
-			throw new EvuntuManagementException("Error while accessing db"+e);
+			throw new EvuntuManagementException(ERROR_WHILE_ACCESSING_DB+e);
 		}finally{
 			session.close();
 		}
@@ -538,7 +546,7 @@ public class EvuntuDAOImpl implements EvuntuDAO {
 			LOGGER.info("Event added successfully");
 		}catch(HibernateException e){
 			tx.rollback();
-			throw new EvuntuManagementException("Error while accessing db"+e);
+			throw new EvuntuManagementException(ERROR_WHILE_ACCESSING_DB+e);
 		}finally{
 			session.close();
 		}
@@ -556,7 +564,7 @@ public class EvuntuDAOImpl implements EvuntuDAO {
 			tx.commit();
 			LOGGER.info("Customer added successfully");
 		}catch(HibernateException e){
-			throw new EvuntuManagementException("Error while accessing db"+e);
+			throw new EvuntuManagementException(ERROR_WHILE_ACCESSING_DB+e);
 		}finally{
 			session.close();
 		}
@@ -573,7 +581,7 @@ public class EvuntuDAOImpl implements EvuntuDAO {
 			session.update(customerEventRequest);
 			tx.commit();
 		}catch(HibernateException e){
-			throw new EvuntuManagementException("Error while accessing db"+e);
+			throw new EvuntuManagementException(ERROR_WHILE_ACCESSING_DB+e);
 		}finally{
 			session.close();
 		}
@@ -581,6 +589,7 @@ public class EvuntuDAOImpl implements EvuntuDAO {
 		return true;
 	}
 
+	@SuppressWarnings("rawtypes")
 	@Override
 	public List getCustomerEventRequestDetails(long customerEventRequestId) throws EvuntuManagementException {
 		LOGGER.info("DAO::getCustomerEventRequestDetails-start");
@@ -591,18 +600,19 @@ public class EvuntuDAOImpl implements EvuntuDAO {
 			LOGGER.info("Customer event request details loaded for the request="+customerEventRequestId);
 			return  cr.list();
 		}catch(HibernateException e){
-			throw new EvuntuManagementException("Error while accessing db"+e);
+			throw new EvuntuManagementException(ERROR_WHILE_ACCESSING_DB+e);
 		}catch(Exception e){
-			throw new EvuntuManagementException("Internal server error"+e);
+			throw new EvuntuManagementException(INTERNAL_SERVER_ERROR+e);
 		}
 		finally{
 			session.close();
 		}
 	}
 
+	@SuppressWarnings("unchecked")
 	@Override
 	public List<CustomerEventRequest> listCustomerEventRequestByUserId(long userId) throws EvuntuManagementException {
-		LOGGER.info("DAO::listCompanyr-start");
+		LOGGER.info("DAO::listCustomerEventRequestByUserId-start");
 		try{
 			session = sessionFactory.openSession();
 			tx = session.beginTransaction();
@@ -613,7 +623,7 @@ public class EvuntuDAOImpl implements EvuntuDAO {
 			return  cr.list();
 
 		}catch(HibernateException e){
-			throw new EvuntuManagementException("Error while accessing db"+e);
+			throw new EvuntuManagementException(ERROR_WHILE_ACCESSING_DB+e);
 		}finally{
 			session.close();
 		}
@@ -631,9 +641,9 @@ public class EvuntuDAOImpl implements EvuntuDAO {
 			tx.commit();
 			LOGGER.info("Company removed successfully"+customerEventRequestId);
 		}catch(HibernateException e){
-			throw new EvuntuManagementException("Error while accessing db"+e);
+			throw new EvuntuManagementException(ERROR_WHILE_ACCESSING_DB+e);
 		}catch(Exception e){
-			throw new EvuntuManagementException("Internal server error"+e);
+			throw new EvuntuManagementException(INTERNAL_SERVER_ERROR+e);
 		}
 		finally{
 			session.close();
@@ -652,7 +662,7 @@ public class EvuntuDAOImpl implements EvuntuDAO {
 			tx.commit();
 			LOGGER.info("Company bidding added successfully");
 		}catch(HibernateException e){
-			throw new EvuntuManagementException("Error while accessing db"+e);
+			throw new EvuntuManagementException(ERROR_WHILE_ACCESSING_DB+e);
 		}finally{
 			session.close();
 		}
@@ -669,7 +679,7 @@ public class EvuntuDAOImpl implements EvuntuDAO {
 			session.update(companyEventBidding);
 			tx.commit();
 		}catch(HibernateException e){
-			throw new EvuntuManagementException("Error while accessing db"+e);
+			throw new EvuntuManagementException(ERROR_WHILE_ACCESSING_DB+e);
 		}finally{
 			session.close();
 		}
@@ -689,9 +699,9 @@ public class EvuntuDAOImpl implements EvuntuDAO {
 			tx.commit();
 			LOGGER.info("Company event bidding removed successfully"+companyEventBiddingId);
 		}catch(HibernateException e){
-			throw new EvuntuManagementException("Error while accessing db"+e);
+			throw new EvuntuManagementException(ERROR_WHILE_ACCESSING_DB+e);
 		}catch(Exception e){
-			throw new EvuntuManagementException("Internal server error"+e);
+			throw new EvuntuManagementException(INTERNAL_SERVER_ERROR+e);
 		}
 		finally{
 			session.close();
@@ -699,6 +709,7 @@ public class EvuntuDAOImpl implements EvuntuDAO {
 		return false;
 	}
 	
+	@SuppressWarnings("rawtypes")
 	@Override
 	public List getCompanyEventBiddingDetails(long companyEventBiddingId) throws EvuntuManagementException {
 		LOGGER.info("DAO::getCompanyEventBiddingDetails-start");
@@ -709,18 +720,19 @@ public class EvuntuDAOImpl implements EvuntuDAO {
 			LOGGER.info("Company event Bidding details loaded for the bid="+companyEventBiddingId);
 			return  cr.list();
 		}catch(HibernateException e){
-			throw new EvuntuManagementException("Error while accessing db"+e);
+			throw new EvuntuManagementException(ERROR_WHILE_ACCESSING_DB+e);
 		}catch(Exception e){
-			throw new EvuntuManagementException("Internal server error"+e);
+			throw new EvuntuManagementException(INTERNAL_SERVER_ERROR+e);
 		}
 		finally{
 			session.close();
 		}
 	}
 
+	@SuppressWarnings("unchecked")
 	@Override
 	public List<CompanyEventBidding> listCompanyEventBiddingByCompanyId(long companyId) throws EvuntuManagementException {
-		LOGGER.info("DAO::listCompanyr-start");
+		LOGGER.info("DAO::listCompanyEventBiddingByCompanyId-start");
 		try{
 			session = sessionFactory.openSession();
 			tx = session.beginTransaction();
@@ -731,7 +743,7 @@ public class EvuntuDAOImpl implements EvuntuDAO {
 			return  cr.list();
 
 		}catch(HibernateException e){
-			throw new EvuntuManagementException("Error while accessing db"+e);
+			throw new EvuntuManagementException(ERROR_WHILE_ACCESSING_DB+e);
 		}finally{
 			session.close();
 		}
