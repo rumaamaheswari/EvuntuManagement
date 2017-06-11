@@ -359,19 +359,11 @@ public class EvuntuDAOImpl implements EvuntuDAO {
 	@Override
 	public Long addEventServices(EventServices eServices) throws EvuntuManagementException {
 		LOGGER.info("DAO::addEventServices-start");
-		Long id;
+		Long id=0L;
 		try{
 			session = sessionFactory.openSession();
 			tx = session.beginTransaction();
-			/*id=(Long) session.save(eServices);
-			session.save(eServices.getFileDetails());*/
-			//test the above if not working enable.
-			id=(Long) session.save(eServices);
-			 for(FileDetails fd:eServices.getFileDetails()){
-				eServices.setEventServiceId(id);
-				fd.setEventServices(eServices);
-				session.save(fd);
-			}
+			session.saveOrUpdate(eServices);
 			tx.commit();
 			LOGGER.info("Event Services added successfully");
 		}catch(HibernateException e){

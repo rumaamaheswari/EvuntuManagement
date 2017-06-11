@@ -51,8 +51,8 @@ public class FileDetails implements Serializable{
 	private char status;
 	
 	//bi-directional many-to-one association to EventService
-	@ManyToOne(fetch=FetchType.EAGER,cascade=CascadeType.ALL)
-	@JoinColumn(name="EVENT_SERVICES_ID")
+	@ManyToOne(fetch=FetchType.LAZY,cascade=CascadeType.ALL)
+	@JoinColumn(name="EVENT_SERVICES_ID", nullable = false)
 	private EventServices eventServices;
 
 	/**

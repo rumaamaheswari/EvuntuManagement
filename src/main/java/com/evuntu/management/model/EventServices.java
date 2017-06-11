@@ -58,7 +58,7 @@ public class EventServices implements Serializable {
 	private String youtubeLink;
 
 	//bi-directional one-to-many association to FileDetail
-	@OneToMany(fetch = FetchType.EAGER,cascade=CascadeType.ALL, mappedBy="eventServices")
+	@OneToMany(fetch = FetchType.LAZY,cascade=CascadeType.ALL, mappedBy="eventServices")
 	private Set<FileDetails> fileDetails= new HashSet<>();
 	
 	@ManyToOne(fetch=FetchType.EAGER,cascade=CascadeType.DETACH)
@@ -154,19 +154,17 @@ public class EventServices implements Serializable {
 	}
 	
 	
-	/*
+	
 	public FileDetails addFileDetail(FileDetails fileDetails) {
-		getFileDetails().add(fileDetails);
-		fileDetails.setEventServices(this);
-
+		 this.getFileDetails().add(fileDetails);
+		 fileDetails.setEventServices(this);
 		return fileDetails;
 	}
 
 	public FileDetails removeFileDetail(FileDetails fileDetails) {
-		getFileDetails().remove(fileDetails);
-		fileDetails.setEventServices(null);
-
+		this.getFileDetails().remove(fileDetails);
+		fileDetails.setEventServices(this);
 		return fileDetails;
-	}*/
+	}
 
 }

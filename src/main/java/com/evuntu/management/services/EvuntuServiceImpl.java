@@ -196,9 +196,9 @@ public class EvuntuServiceImpl implements EvuntuService {
 					String path=fileUtil.upload(file,eventServicesVO.getCompanyId()); 
 					FileDetails fileDetails =helper.convertFileInfoToDO(file,path);
 					fileDetList.add(fileDetails);	
+					eventServices.addFileDetail(fileDetails);
 				}
 			}	
-			eventServices.setFileDetails(fileDetList);
 			evuntuDAO.addEventServices(eventServices);
 		}
 		catch(HibernateException he){

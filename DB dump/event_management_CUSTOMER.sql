@@ -1,3 +1,5 @@
+CREATE DATABASE  IF NOT EXISTS `event_management` /*!40100 DEFAULT CHARACTER SET utf8 */;
+USE `event_management`;
 -- MySQL dump 10.13  Distrib 5.7.12, for Win32 (AMD64)
 --
 -- Host: localhost    Database: event_management
@@ -34,7 +36,7 @@ CREATE TABLE `CUSTOMER` (
   PRIMARY KEY (`CUSTOMER_ID`),
   UNIQUE KEY `UK_pfmbgp1qy1etgdmnfbkivgcet` (`USER_ID`),
   CONSTRAINT `FK_pfmbgp1qy1etgdmnfbkivgcet` FOREIGN KEY (`USER_ID`) REFERENCES `USER` (`USER_ID`)
-) ENGINE=InnoDB AUTO_INCREMENT=3 DEFAULT CHARSET=utf8;
+) ENGINE=InnoDB DEFAULT CHARSET=utf8;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
@@ -43,7 +45,6 @@ CREATE TABLE `CUSTOMER` (
 
 LOCK TABLES `CUSTOMER` WRITE;
 /*!40000 ALTER TABLE `CUSTOMER` DISABLE KEYS */;
-INSERT INTO `CUSTOMER` VALUES (1,'Y','testset','testset','testset','123123','testset',1),(2,'Y','testset','testset','testset','123123','testset',2);
 /*!40000 ALTER TABLE `CUSTOMER` ENABLE KEYS */;
 UNLOCK TABLES;
 /*!40103 SET TIME_ZONE=@OLD_TIME_ZONE */;
@@ -56,4 +57,4 @@ UNLOCK TABLES;
 /*!40101 SET COLLATION_CONNECTION=@OLD_COLLATION_CONNECTION */;
 /*!40111 SET SQL_NOTES=@OLD_SQL_NOTES */;
 
--- Dump completed on 2017-05-25 10:04:25
+-- Dump completed on 2017-06-11 18:34:47
