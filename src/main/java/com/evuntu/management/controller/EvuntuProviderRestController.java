@@ -151,7 +151,7 @@ public class EvuntuProviderRestController {
 		}
 		try {
 			evuntuServices.updateEventServices(eventServices);
-			status= new Status(1, "Event service  updated Successfully !");
+			status= new Status(1, "Event service  updated successfully !");
 			return new ResponseEntity<>(status,HttpStatus.OK);
 		} catch (Exception e) {
 			LOGGER.error(INTERNAL_SERVER_ERROR+e);

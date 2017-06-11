@@ -63,6 +63,7 @@ public class EvuntuServiceImpl implements EvuntuService {
 		catch(HibernateException he){
 			throw new EvuntuManagementException(ERROR_WHILE_ACCESSING_DB+he);
 		}
+		LOGGER.info("Service::addCustomer-end");
 		return true;	
 	}
 
@@ -86,15 +87,17 @@ public class EvuntuServiceImpl implements EvuntuService {
 		for(Customer customer:evuntuDAO.listCustomer()){			
 			customerList.add(helper.convertCustomerDOToVO(customer));
 		}
+		LOGGER.info("Service::listCustomer-end");
 		return customerList;
 	}
 
+	@SuppressWarnings("unchecked")
 	@Override
 	public CustomerResponseVO getCustomerById(Long id) throws EvuntuManagementException { 
 		LOGGER.info("Service::getCustomerById-start");
+		CustomerResponseVO customer;
 		EvuntuManagementHelper helper=new EvuntuManagementHelper();
-		List<Customer> list=evuntuDAO.getCustomerById(id);
-		CustomerResponseVO customer=new CustomerResponseVO();
+		List<Customer> list=evuntuDAO.getCustomerById(id);		
 		if(list.isEmpty()){			
 			return new CustomerResponseVO();
 		}else{
@@ -121,6 +124,7 @@ public class EvuntuServiceImpl implements EvuntuService {
 		catch(HibernateException he){
 			throw new EvuntuManagementException(ERROR_WHILE_ACCESSING_DB+he);
 		}
+		LOGGER.info("Service::addCompany-end");
 		return true;
 	}
 
@@ -135,11 +139,13 @@ public class EvuntuServiceImpl implements EvuntuService {
 			throw new EvuntuManagementException(ERROR_WHILE_ACCESSING_DB+he);
 		}	
 	}
-
+	
+	@SuppressWarnings("unchecked")
 	@Override
 	public CompanyResponseVO getCompanyById(long id) throws EvuntuManagementException {
 		LOGGER.info("Service::getCompanyById-start");
 		EvuntuManagementHelper helper=new EvuntuManagementHelper();
+		
 		List<Company> list=evuntuDAO.getCompanyById(id);
 		CompanyResponseVO company=new CompanyResponseVO();
 		if(list.isEmpty()){			
@@ -221,6 +227,7 @@ public class EvuntuServiceImpl implements EvuntuService {
 		
 	}
 	
+	@SuppressWarnings("unused")
 	@Override
 	public EventServicesResponseVO getEventServicesById(long eventServiceId) throws EvuntuManagementException {
 		LOGGER.info("Service::getEventServicesById-start");
@@ -270,8 +277,9 @@ public class EvuntuServiceImpl implements EvuntuService {
 	public AuthenticateResponseVO authenticate(String userName, String password) throws EvuntuManagementException {		
 		LOGGER.info("Service::authenticate-start");
 		AuthenticateResponseVO authenticateResponseVO=new AuthenticateResponseVO();
+		EvuntuManagementHelper helper=new EvuntuManagementHelper();
 		User user=evuntuDAO.getUserDetails(userName);
-		Long authString=0L;
+		Long authString;
 		if(user==null){
 			throw new EvuntuManagementException("User does not exist");
 		}
@@ -292,18 +300,18 @@ public class EvuntuServiceImpl implements EvuntuService {
 			String userType=user.getUserType();
 			authenticateResponseVO.setAuthToken(authString);
 			authenticateResponseVO.setUserType(userType);
-   			/*if("CUSTOMER".equals(type)){
+   			if("CUSTOMER".equals(userType) && !user.getCustomer().isEmpty()){
 				Set<Customer> temp=user.getCustomer();
-				for(Customer e:temp){
-					System.out.println(e.getFirstName());
+				for(Customer customer:temp){					
+					authenticateResponseVO.setCustomerDetails(helper.convertCustomerDOToVO(customer));						
 				}
 			}
-			else{
+			else if("COMPANY".equals(userType) && !user.getCompany().isEmpty()){				
 				Set<Company> temp=user.getCompany();
-				for(Company e:temp){
-					System.out.println(e.getAddress());
+				for(Company company:temp){					
+					authenticateResponseVO.setCompanyDetails(helper.convertCompanyDOToVO(company));						
 				}
-			}*/
+			}
 		}
 		LOGGER.info("Service::authenticate-end");
 		return authenticateResponseVO;
@@ -365,6 +373,7 @@ public class EvuntuServiceImpl implements EvuntuService {
 		}	
 	}
 
+	@SuppressWarnings("rawtypes")
 	@Override
 	public CustomerEventResponseVO getCustomerEventRequestDetails(long customerEventRequestId) throws EvuntuManagementException {
 		LOGGER.info("Service::getCustomerEventRequest-start");
@@ -389,9 +398,9 @@ public class EvuntuServiceImpl implements EvuntuService {
 	}
 
 	@Override
-	public boolean removeCustomerEventRequest(long CustomerEventRequestId) throws EvuntuManagementException {
+	public boolean removeCustomerEventRequest(long customerEventRequestId) throws EvuntuManagementException {
 		LOGGER.info("Service::removeCustomerEventRequest-start");
-		return evuntuDAO.removeCustomerEventRequest(CustomerEventRequestId);	
+		return evuntuDAO.removeCustomerEventRequest(customerEventRequestId);	
 	}
 
 	@Override

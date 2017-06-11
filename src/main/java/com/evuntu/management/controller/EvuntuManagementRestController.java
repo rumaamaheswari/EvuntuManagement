@@ -28,7 +28,6 @@ public class EvuntuManagementRestController {
 	EvuntuService evuntuServices;
 
 	private static final Logger LOGGER = Logger.getLogger(EvuntuManagementRestController.class);
-
 	
 	@RequestMapping(value = "/authenticate", method = RequestMethod.GET)
 	public ResponseEntity<AuthenticateResponseVO> authenticate(@RequestParam(value="userName", required=true) String userName,@RequestParam(value="password", required=true) String password) throws EvuntuManagementException {

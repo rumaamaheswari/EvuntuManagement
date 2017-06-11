@@ -357,7 +357,7 @@ public class EvuntuDAOImpl implements EvuntuDAO {
 	 }*/
 
 	@Override
-	public Long addEventServices(EventServices eServices) throws EvuntuManagementException {
+	public boolean addEventServices(EventServices eServices) throws EvuntuManagementException {
 		LOGGER.info("DAO::addEventServices-start");
 		Long id=0L;
 		try{
@@ -371,7 +371,7 @@ public class EvuntuDAOImpl implements EvuntuDAO {
 		}finally{
 			session.close();
 		}
-		return id;
+		return true;
 	}
 	
 	@Override

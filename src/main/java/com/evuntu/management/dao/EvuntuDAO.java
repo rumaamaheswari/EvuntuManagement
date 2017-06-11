@@ -34,7 +34,7 @@ public interface EvuntuDAO {
 	
 	//public List<FileDetails> fileUpload(List<FileDetails> filedetails)throws EvuntuManagementException;
 	
-	public Long addEventServices(EventServices eServices)throws EvuntuManagementException;
+	public boolean addEventServices(EventServices eServices)throws EvuntuManagementException;
 	public boolean updateEventServices(EventServices eServices) throws EvuntuManagementException;
 	public List<EventServices> searchServices(String eventName,String city)throws EvuntuManagementException ;
 	public List<FileDetails> getFileDetails(Long eventServicesId) throws EvuntuManagementException;
