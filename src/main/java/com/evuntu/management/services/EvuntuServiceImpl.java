@@ -56,8 +56,6 @@ public class EvuntuServiceImpl implements EvuntuService {
 		LOGGER.info("Service::addCustomer-start");
 		try{
 			EvuntuManagementHelper helper=new EvuntuManagementHelper();
-			/*Long id=evuntuDAO.addUser(helper.convertCustomerVOToUserDO(customerVO));
-			customerVO.setUserId(id);*/
 			evuntuDAO.addCustomer(helper.convertCustomerVOToDO(customerVO));
 		}
 		catch(HibernateException he){
@@ -117,8 +115,6 @@ public class EvuntuServiceImpl implements EvuntuService {
 		LOGGER.info("Service::addCompany-start");
 		try{
 			EvuntuManagementHelper helper=new EvuntuManagementHelper();
-			/*Long id=evuntuDAO.addUser(helper.convertCompanyVOToUserDO(companyVO));
-			companyVO.setUserId(id);*/
 			evuntuDAO.addCompany(helper.convertCompanyVOToDO(companyVO));
 		}
 		catch(HibernateException he){
@@ -144,10 +140,9 @@ public class EvuntuServiceImpl implements EvuntuService {
 	@Override
 	public CompanyResponseVO getCompanyById(long id) throws EvuntuManagementException {
 		LOGGER.info("Service::getCompanyById-start");
-		EvuntuManagementHelper helper=new EvuntuManagementHelper();
-		
+		CompanyResponseVO company;
+		EvuntuManagementHelper helper=new EvuntuManagementHelper();		
 		List<Company> list=evuntuDAO.getCompanyById(id);
-		CompanyResponseVO company=new CompanyResponseVO();
 		if(list.isEmpty()){			
 			return new CompanyResponseVO();
 		}else{
@@ -178,19 +173,6 @@ public class EvuntuServiceImpl implements EvuntuService {
 	public boolean addEventServices(EventServicesVO eventServicesVO) throws EvuntuManagementException {
 		LOGGER.info("Service::addEventServices-start");
 		
-		/*EvuntuManagementHelper helper=new EvuntuManagementHelper();
-		
-		evuntuDAO.addEventServices(helper.convertCompanyVOToDO(companyVO));
-		Long eventId=evuntuDAO.addEventServices(helper.convertEventServicesVOtoDO(eventServicesVO));
-		FileUploadUtil fileUtil=new FileUploadUtil();
-		for(MultipartFile file:eventServicesVO.getInputFile()){
-			if (file != null && (!file.isEmpty())) {
-			    fileUtil.upload(file,eventServicesVO.getCompanyId()); 
-			    FileDetails fileDetails =fileUtil.prepareObjectToStore(file);
-				fileDetList.add(fileDetails);
-			}
-		}
-		evuntuDAO.fileUpload(fileDetList);	*/
 		Set<FileDetails> fileDetList= new HashSet<>();
 		try{
 			FileUploadUtil fileUtil=new FileUploadUtil();
@@ -227,7 +209,6 @@ public class EvuntuServiceImpl implements EvuntuService {
 		
 	}
 	
-	@SuppressWarnings("unused")
 	@Override
 	public EventServicesResponseVO getEventServicesById(long eventServiceId) throws EvuntuManagementException {
 		LOGGER.info("Service::getEventServicesById-start");
@@ -236,8 +217,6 @@ public class EvuntuServiceImpl implements EvuntuService {
 		EventServicesResponseVO eventServicesVO=new EventServicesResponseVO();
 		if(!list.isEmpty()){
 			EventServices eventServices=(EventServices) list.get(0);
-			List<FileDetails> filesList=evuntuDAO.getFileDetails(eventServiceId);
-			//eventServices.setFileDetails(filesList);
 			eventServicesVO=helper.convertEventServicesDOtoVO(eventServices);
 		}		
 		return eventServicesVO;	
@@ -255,10 +234,6 @@ public class EvuntuServiceImpl implements EvuntuService {
 			city="";
 		}
 		List<EventServices> list=evuntuDAO.searchServices(eventName, city);
-		/*for(EventServices eventServices:list){
-			List<FileDetails> filesList=evuntuDAO.getFileDetails(eventServices.getEventServiceId());
-			//eventServices.setFileDetails(filesList);
-		}*/	
 		for(EventServices eventServices:list){
 			reponseList.add(helper.convertEventServicesDOtoVO(eventServices));
 		}		
@@ -277,7 +252,7 @@ public class EvuntuServiceImpl implements EvuntuService {
 	public AuthenticateResponseVO authenticate(String userName, String password) throws EvuntuManagementException {		
 		LOGGER.info("Service::authenticate-start");
 		AuthenticateResponseVO authenticateResponseVO=new AuthenticateResponseVO();
-		EvuntuManagementHelper helper=new EvuntuManagementHelper();
+		
 		User user=evuntuDAO.getUserDetails(userName);
 		Long authString;
 		if(user==null){
@@ -297,24 +272,30 @@ public class EvuntuServiceImpl implements EvuntuService {
 		}
 		if(userName.equals(user.getUserName()) && password.equals(hashedPassword)){
 			authString = System.currentTimeMillis();
-			String userType=user.getUserType();
-			authenticateResponseVO.setAuthToken(authString);
-			authenticateResponseVO.setUserType(userType);
-   			if("CUSTOMER".equals(userType) && !user.getCustomer().isEmpty()){
-				Set<Customer> temp=user.getCustomer();
-				for(Customer customer:temp){					
-					authenticateResponseVO.setCustomerDetails(helper.convertCustomerDOToVO(customer));						
-				}
-			}
-			else if("COMPANY".equals(userType) && !user.getCompany().isEmpty()){				
-				Set<Company> temp=user.getCompany();
-				for(Company company:temp){					
-					authenticateResponseVO.setCompanyDetails(helper.convertCompanyDOToVO(company));						
-				}
-			}
+			authenticateResponseVO.setAuthToken(authString);			
+   			setUserDetailsBasedOnType(authenticateResponseVO, user);
 		}
 		LOGGER.info("Service::authenticate-end");
 		return authenticateResponseVO;
+	}
+
+	private void setUserDetailsBasedOnType(AuthenticateResponseVO authenticateResponseVO, 
+			User user) throws EvuntuManagementException {
+		EvuntuManagementHelper helper=new EvuntuManagementHelper();
+		String userType=user.getUserType();		
+		authenticateResponseVO.setUserType(userType);
+		if("CUSTOMER".equals(userType) && !user.getCustomer().isEmpty()){
+			Set<Customer> temp=user.getCustomer();
+			for(Customer customer:temp){					
+				authenticateResponseVO.setCustomerDetails(helper.convertCustomerDOToVO(customer));						
+			}
+		}
+		else if("COMPANY".equals(userType) && !user.getCompany().isEmpty()){				
+			Set<Company> temp=user.getCompany();
+			for(Company company:temp){					
+				authenticateResponseVO.setCompanyDetails(helper.convertCompanyDOToVO(company));						
+			}
+		}
 	}
 
 	@Override
